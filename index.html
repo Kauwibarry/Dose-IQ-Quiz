@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Personalised Nutrition Guide | Byour best now</title>
+  <meta name="description" content="Take our free 20-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F9F5F0;
+      --surface: #FFFFFF;
+      --text: #2C2420;
+      --muted: #6B5E55;
+      --accent: #C45C3E;
+      --accent-soft: #F3E4DE;
+      --border: #E8DFD6;
+      --shadow: 0 20px 50px rgba(44, 36, 32, 0.07);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; line-height: 1.15; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(249, 245, 240, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px;
+    }
+    .logo-img { height: 46px; width: auto; }
+    .nav-cta {
+      background: var(--text); color: white;
+      padding: 11px 22px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 600;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+    /* Hero */
+    .hero { padding: 56px 0 72px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px; align-items: center;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft); color: var(--accent);
+      font-size: 0.78rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 999px;
+      margin-bottom: 18px; letter-spacing: 0.03em;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.6rem);
+      margin-bottom: 18px; letter-spacing: -0.03em;
+    }
+    .hero h1 span { color: var(--accent); font-style: italic; }
+    .hero-lead {
+      font-size: 1.15rem; color: var(--muted);
+      max-width: 460px; margin-bottom: 32px;
+    }
+    .btn-main {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent); color: white;
+      padding: 17px 30px; border-radius: 999px;
+      font-size: 1.05rem; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(196, 92, 62, 0.25);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(196, 92, 62, 0.3);
+    }
+    .hero-note {
+      margin-top: 20px; font-size: 0.88rem; color: var(--muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-visual img {
+      border-radius: 28px; box-shadow: var(--shadow);
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+    }
+
+    /* Trust */
+    .trust {
+      padding: 22px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .trust-list {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 28px 40px; font-size: 0.9rem; color: var(--muted); font-weight: 500;
+    }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-head {
+      text-align: center; max-width: 580px; margin: 0 auto 48px;
+    }
+    .section-head h2 {
+      font-size: clamp(1.9rem, 3.5vw, 2.5rem); margin-bottom: 14px;
+    }
+    .section-head p { color: var(--muted); font-size: 1.08rem; }
+
+    /* Benefits */
+    .benefits {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .benefit {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px 26px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .benefit:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .benefit-icon {
+      width: 44px; height: 44px; background: var(--accent-soft);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 18px;
+    }
+    .benefit h3 {
+      font-family: 'DM Sans', sans-serif; font-size: 1.15rem;
+      font-weight: 600; margin-bottom: 8px;
+    }
+    .benefit p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Steps */
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    }
+    .step { text-align: center; padding: 0 10px; }
+    .step-num {
+      width: 52px; height: 52px; background: var(--text); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.2rem; margin: 0 auto 20px;
+    }
+    .step h3 {
+      font-family: 'DM Sans', sans-serif; font-size: 1.15rem;
+      font-weight: 600; margin-bottom: 10px;
+    }
+    .step p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Ebook block */
+    .ebook-block {
+      background: var(--surface); border-radius: 28px;
+      overflow: hidden; border: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr;
+      box-shadow: var(--shadow);
+    }
+    .ebook-text { padding: 52px 44px; display: flex; flex-direction: column; justify-content: center; }
+    .ebook-text h2 { font-size: 2rem; margin-bottom: 14px; }
+    .ebook-text p { color: var(--muted); margin-bottom: 22px; font-size: 1.05rem; }
+    .ebook-list { list-style: none; margin-bottom: 28px; }
+    .ebook-list li {
+      display: flex; gap: 12px; margin-bottom: 11px; font-size: 0.95rem;
+    }
+    .ebook-list li::before { content: "→"; color: var(--accent); font-weight: 700; }
+    .ebook-img { position: relative; min-height: 400px; }
+    .ebook-img img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* Final CTA */
+    .final {
+      text-align: center;
+      background: linear-gradient(180deg, var(--accent-soft) 0%, var(--bg) 100%);
+      border-radius: 28px; padding: 64px 36px; border: 1px solid var(--border);
+    }
+    .final h2 { font-size: clamp(1.9rem, 3.5vw, 2.5rem); margin-bottom: 14px; }
+    .final p { color: var(--muted); font-size: 1.1rem; max-width: 480px; margin: 0 auto 28px; }
+
+    /* Footer */
+    footer {
+      padding: 40px 0 28px; border-top: 1px solid var(--border); margin-top: 20px;
+    }
+    .footer-inner {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .footer-disclaimer { max-width: 620px; line-height: 1.5; }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+      .hero-visual { order: -1; max-width: 400px; margin: 0 auto; }
+      .benefits, .steps { grid-template-columns: 1fr; }
+      .ebook-block { grid-template-columns: 1fr; }
+      .ebook-img { min-height: 260px; order: -1; }
+      .ebook-text { padding: 36px 28px; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 36px 0 48px; }
+      section { padding: 56px 0; }
+      .btn-main { width: 100%; justify-content: center; }
+    }
+  </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');   // ← Replace with your real Pixel ID
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a href="index.html"><img src="assets/logo-byourbestnow.png" alt="Byour best now" class="logo-img"></a>
+      <a href="quiz.html" class="nav-cta">Get your Fit Score</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge">Free · 10 questions · Fit Score</div>
+        <h1>Find out what your body is <span>actually asking for</span></h1>
+        <p class="hero-lead">
+          Generic multivitamins treat everyone the same. Answer 20 simple lifestyle questions and receive a free personalised nutrition guide tailored to your real habits and goals.
+        </p>
+        <a href="quiz.html" class="btn-main">
+          Discover your Fit Score
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p class="hero-note">No purchase required · Instant results · Free 7-page guide</p>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/hero-smoothie.jpg" alt="Bright healthy breakfast flat lay" width="520" height="650">
+      </div>
+    </div>
+  </section>
+
+  <div class="trust">
+    <div class="container">
+      <div class="trust-list">
+        <span>Swiss granule technology</span>
+        <span>Authorised EU claims only</span>
+        <span>Science-backed approach</span>
+        <span>No medical claims</span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>Why a personalised approach works better</h2>
+        <p>One formula cannot serve every lifestyle. A short assessment surfaces the areas that actually matter for you.</p>
+      </div>
+      <div class="benefits">
+        <div class="benefit">
+          <div class="benefit-icon">⚡</div>
+          <h3>Energy that lasts</h3>
+          <p>Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">✨</div>
+          <h3>Visible wellbeing</h3>
+          <p>Selected nutrients contribute to the maintenance of normal skin, hair and nails — support that starts from the inside.</p>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🧠</div>
+          <h3>Clearer thinking</h3>
+          <p>Key micronutrients contribute to normal psychological function and the normal functioning of the nervous system.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--surface);">
+    <div class="container">
+      <div class="section-head">
+        <h2>How the free assessment works</h2>
+        <p>Designed purely for insight and education — completely separate from any purchase path.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Answer 10 questions</h3>
+          <p>Lifestyle, habits, sleep, stress and the areas you care about most. Takes around two minutes.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>See your Fit Score</h3>
+          <p>Get a score between 0–100% plus personalised insights for your age group.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Unlock the free guide</h3>
+          <p>Enter your email to download the 7-page Personalised Nutrition Guide instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="ebook-block">
+        <div class="ebook-text">
+          <h2>Your free 7-page guide</h2>
+          <p>A practical, beautifully designed guide that shows why personalised nutrition makes sense and how it can save you money compared with stacking separate products.</p>
+          <ul class="ebook-list">
+            <li>Why one-size-fits-all often costs more</li>
+            <li>How Swiss granules support daily consistency</li>
+            <li>What modern food systems miss</li>
+            <li>Simple next steps you can take today</li>
+          </ul>
+          <a href="quiz.html" class="btn-main">Get your Fit Score</a>
+        </div>
+        <div class="ebook-img">
+          <img src="assets/woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="final">
+        <h2>Ready for your personalised insights?</h2>
+        <p>Start the free 20-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
+        <a href="quiz.html" class="btn-main">Get your Fit Score</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-disclaimer">
+        <strong>Important:</strong> This free lifestyle assessment is for educational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to create a personalised Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle. All health claims used are authorised under EU regulation.
+      </div>
+      <div>
+        <a href="https://www.bioniq.com" target="_blank" rel="noopener">Official Bioniq site →</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
