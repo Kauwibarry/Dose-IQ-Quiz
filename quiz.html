@@ -3,13 +3,12 @@
 ============================================================
   AFFILIATE TEMPLATE - FIT SCORE QUIZ
 ============================================================
-  ALREADY DONE:
-  - Wellness Assessment link is set to your affiliate URL
-
-  YOU STILL NEED TO CHANGE:
-  1. Formspree form ID  →  search for: xnpajyyp
-  2. Meta Pixel ID      →  search for: 1770254607337497
-  3. Logo (optional)    →  replace assets/logo-byourbestnow.png
+  Things you MUST change before using:
+  1. Logo (assets/logo-byourbestnow.png)
+  2. Formspree form ID (search for YOUR_FORM_ID)
+  3. Meta Pixel ID (search for YOUR_PIXEL_ID)
+  4. Final "Wellness Assessment" link (search for bioniq.com)
+  5. Brand name "Dose-IQ" if you want (optional)
 ============================================================
 -->
 
@@ -17,20 +16,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Fit Score | Byour best now</title>
+  <title>Your Fit Score | Dose-IQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F0F7FA;
+      --bg: #F9F5F0;
       --surface: #FFFFFF;
-      --text: #0F172A;
-      --muted: #64748B;
-      --accent: #0E7490;
-      --accent-soft: #E0F2FE;
-      --border: #E2E8F0;
-      --shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+      --text: #2C2420;
+      --muted: #6B5E55;
+      --accent: #C45C3E;
+      --accent-soft: #F3E4DE;
+      --border: #E8DFD6;
+      --shadow: 0 16px 40px rgba(44, 36, 32, 0.06);
+      --good: #2E7D4F;
+      --mid: #C47A2A;
+      --low: #B33A2B;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -260,6 +262,59 @@
       margin-top: 28px;
       line-height: 1.5;
     }
+  
+    .footer-logo {
+      display: block;
+      margin: 0 auto 14px;
+      height: 48px;
+      width: auto;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .footer-logo:hover { opacity: 0.85; }
+    .footer-brand {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+
+  /* dose-iq footer */
+
+    footer {
+      background: #F7F5F2;
+      border-top: 1px solid #E8E4DE;
+      padding: 36px 20px 40px;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #94A3B8;
+    }
+    .footer-logo {
+      display: block;
+      margin: 0 auto 6px;
+      height: 44px;
+      width: auto;
+      opacity: 0.5;
+    }
+    .footer-brand {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #64748B;
+      margin: 0 0 4px;
+    }
+    .footer-disclaimer {
+      max-width: 640px;
+      line-height: 1.55;
+      font-size: 0.88rem;
+      color: #94A3B8;
+    }
+    .logo-img { height: 44px; width: auto; }
+
   </style>
 
   <!-- Meta Pixel Code -->
@@ -272,11 +327,11 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1770254607337497');
+    fbq('init', 'YOUR_PIXEL_ID');
     fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1770254607337497&ev=PageView&noscript=1"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
 
@@ -284,7 +339,7 @@
 <body>
   <header>
     <div class="container">
-      <a href="index.html"><img src="logo-byourbestnow.png" alt="Byour best now" class="logo-img"></a>
+      <a href="index.html" class="logo-link"><img src="dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
     </div>
   </header>
 
@@ -313,19 +368,19 @@
       <div class="insights" id="insightsList"></div>
 
       <div class="email-gate" id="emailGate">
-        <h3>Unlock your free Personalised Supplementation Guide</h3>
+        <h3>Unlock your free Personalised Nutrition Guide</h3>
         <p>Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.</p>
-        <form class="email-form" id="emailForm" action="https://formspree.io/f/xnpajyyp" method="POST">
+        <form class="email-form" id="emailForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
           <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
           <input type="hidden" name="fit_score" id="fitScoreField" value="">
-          <input type="hidden" name="_subject" value="New Fit Score Lead – Byour best now">
+          <input type="hidden" name="_subject" value="New Fit Score Lead – Dose-IQ">
           <button type="submit" id="submitBtn">Get my free guide</button>
         </form>
         <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
       </div>
 
       <div id="downloadArea">
-        <a href="Personalised_Supplementation_Guide.pdf" class="download-btn" download>
+        <a href="Personalised_Nutrition_Guide.pdf" class="download-btn" download>
           Download your free 7-page guide
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         </a>
@@ -334,7 +389,7 @@
         <div class="handoff">
           <p>Want a fully personalised daily formula created for you?</p>
           <!-- ===== AFFILIATE: CHANGE THE LINK BELOW TO YOUR OWN WELLNESS ASSESSMENT / AFFILIATE URL ===== -->
-          <a href="https://shopbioniq.com/en-GB/ByourbestnowGB" target="_blank" rel="noopener">Continue to the official Bioniq Wellness Assessment →</a>
+          <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" target="_blank" rel="noopener">Continue to the official Bioniq Wellness Assessment →</a>
         </div>
       </div>
 
@@ -635,32 +690,50 @@
       btn.disabled = true;
       btn.textContent = 'Sending...';
 
-      // Always unlock the download for the user
-      const unlock = () => {
-        localStorage.setItem('bioniq_lead_email', email);
-        localStorage.setItem('bioniq_fit_score', scoreNumber.textContent);
-        if (typeof fbq === 'function') {
-          fbq('track', 'Lead', { content_name: 'Fit Score Guide' });
-        }
-        emailGate.style.display = 'none';
-        downloadArea.style.display = 'block';
-      };
-
       try {
         const res = await fetch(emailForm.action, {
           method: 'POST',
           body: new FormData(emailForm),
           headers: { 'Accept': 'application/json' }
         });
-        // Always unlock so the user can download
-        unlock();
+
+        if (res.ok) {
+          // Success – unlock download
+          localStorage.setItem('bioniq_lead_email', email);
+          localStorage.setItem('bioniq_fit_score', scoreNumber.textContent);
+
+          // Meta Pixel Lead event
+          if (typeof fbq === 'function') {
+            fbq('track', 'Lead', { content_name: 'Fit Score Guide' });
+          }
+
+          emailGate.style.display = 'none';
+          downloadArea.style.display = 'block';
+        } else {
+          status.style.display = 'block';
+          status.textContent = 'Something went wrong. Please try again.';
+          btn.disabled = false;
+          btn.textContent = 'Get my free guide';
+        }
       } catch (err) {
-        // Even if the request fails, still unlock the download
-        unlock();
+        // Fallback: still unlock so user is not blocked
+        emailGate.style.display = 'none';
+        downloadArea.style.display = 'block';
       }
     });
 
     renderQuestion();
   </script>
+<footer>
+    <div class="container footer-inner" style="text-align:center;flex-direction:column;align-items:center;">
+      <a href="index.html" style="text-decoration:none">
+        <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
+      </a>
+      <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
+      <div class="footer-disclaimer">
+        This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

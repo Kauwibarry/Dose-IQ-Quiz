@@ -1,23 +1,35 @@
 <!DOCTYPE html>
+<!--
+============================================================
+  AFFILIATE TEMPLATE - LANDING PAGE
+============================================================
+  Things you MUST change before using:
+  1. Logo (assets/logo-byourbestnow.png)
+  2. Meta Pixel ID (search for YOUR_PIXEL_ID)
+  3. Final "Official Bioniq site" / Wellness Assessment link
+  4. Brand name if desired
+============================================================
+-->
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Personalised Supplementation Guide | Byour best now</title>
-  <meta name="description" content="Take our free 10-question lifestyle assessment and unlock your Personalised Supplementation Guide. Completely free, no purchase required.">
+  <title>Free Personalised Nutrition Guide | Dose-IQ</title>
+  <meta name="description" content="Take our free 20-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F0F7FA;
+      --bg: #F9F5F0;
       --surface: #FFFFFF;
-      --text: #0F172A;
-      --muted: #64748B;
-      --accent: #0E7490;
-      --accent-soft: #E0F2FE;
-      --border: #E2E8F0;
-      --shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+      --text: #2C2420;
+      --muted: #6B5E55;
+      --accent: #C45C3E;
+      --accent-soft: #F3E4DE;
+      --border: #E8DFD6;
+      --shadow: 0 20px 50px rgba(44, 36, 32, 0.07);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -206,6 +218,59 @@
       section { padding: 56px 0; }
       .btn-main { width: 100%; justify-content: center; }
     }
+  
+    .footer-logo {
+      display: block;
+      margin: 0 auto 14px;
+      height: 48px;
+      width: auto;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .footer-logo:hover { opacity: 0.85; }
+    .footer-brand {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+
+  /* dose-iq footer */
+
+    footer {
+      background: #F7F5F2;
+      border-top: 1px solid #E8E4DE;
+      padding: 36px 20px 40px;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #94A3B8;
+    }
+    .footer-logo {
+      display: block;
+      margin: 0 auto 6px;
+      height: 44px;
+      width: auto;
+      opacity: 0.5;
+    }
+    .footer-brand {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #64748B;
+      margin: 0 0 4px;
+    }
+    .footer-disclaimer {
+      max-width: 640px;
+      line-height: 1.55;
+      font-size: 0.88rem;
+      color: #94A3B8;
+    }
+    .logo-img { height: 44px; width: auto; }
+
   </style>
 
   <!-- Meta Pixel Code -->
@@ -218,11 +283,11 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1770254607337497');   // ← Replace with your real Pixel ID
+    fbq('init', 'YOUR_PIXEL_ID');
     fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1770254607337497&ev=PageView&noscript=1"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
 
@@ -230,7 +295,7 @@
 <body>
   <header>
     <div class="container header-inner">
-      <a href="index.html"><img src="logo-byourbestnow.png" alt="Byour best now" class="logo-img"></a>
+      <a href="index.html" class="logo-link"><img src="dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
       <a href="quiz.html" class="nav-cta">Get your Fit Score</a>
     </div>
   </header>
@@ -241,7 +306,7 @@
         <div class="badge">Free · 10 questions · Fit Score</div>
         <h1>Find out what your body is <span>actually asking for</span></h1>
         <p class="hero-lead">
-          Generic multivitamins treat everyone the same. Answer 10 simple lifestyle questions and receive a free personalised supplementation guide tailored to your real habits and goals.
+          Generic multivitamins treat everyone the same. Answer 20 simple lifestyle questions and receive a free personalised nutrition guide tailored to your real habits and goals.
         </p>
         <a href="quiz.html" class="btn-main">
           Discover your Fit Score
@@ -250,7 +315,7 @@
         <p class="hero-note">No purchase required · Instant results · Free 7-page guide</p>
       </div>
       <div class="hero-visual">
-        <img src="hero-smoothie.jpg" alt="Bright healthy breakfast flat lay" width="520" height="650">
+        <img src="assets/hero-smoothie.jpg" alt="Bright healthy breakfast flat lay" width="520" height="650">
       </div>
     </div>
   </section>
@@ -312,7 +377,7 @@
         <div class="step">
           <div class="step-num">3</div>
           <h3>Unlock the free guide</h3>
-          <p>Enter your email to download the 7-page Personalised Supplementation Guide instantly.</p>
+          <p>Enter your email to download the 7-page Personalised Nutrition Guide instantly.</p>
         </div>
       </div>
     </div>
@@ -323,7 +388,7 @@
       <div class="ebook-block">
         <div class="ebook-text">
           <h2>Your free 7-page guide</h2>
-          <p>A practical, beautifully designed guide that shows why personalised supplementation makes sense and how it can save you money compared with stacking separate products.</p>
+          <p>A practical, beautifully designed guide that shows why personalised nutrition makes sense and how it can save you money compared with stacking separate products.</p>
           <ul class="ebook-list">
             <li>Why one-size-fits-all often costs more</li>
             <li>How Swiss granules support daily consistency</li>
@@ -333,7 +398,7 @@
           <a href="quiz.html" class="btn-main">Get your Fit Score</a>
         </div>
         <div class="ebook-img">
-          <img src="woman-pouch-new.jpg" alt="Woman with personalised supplementation pouch" width="520" height="650">
+          <img src="assets/woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
         </div>
       </div>
     </div>
@@ -343,18 +408,21 @@
     <div class="container">
       <div class="final">
         <h2>Ready for your personalised insights?</h2>
-        <p>Start the free 10-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
+        <p>Start the free 20-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
         <a href="quiz.html" class="btn-main">Get your Fit Score</a>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="container footer-inner">
+    <div class="container footer-inner" style="text-align:center;flex-direction:column;align-items:center;">
+      <a href="index.html" style="text-decoration:none">
+        <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
+      </a>
+      <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
       <div class="footer-disclaimer">
-        <strong>Important:</strong> This free lifestyle assessment is for educational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to create a personalised Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle. All health claims used are authorised under EU regulation.
+        This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
       </div>
-
     </div>
   </footer>
 </body>
