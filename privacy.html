@@ -86,6 +86,32 @@
       font-size: 0.85rem;
       color: #94A3B8;
     }
+
+    .footer-contact-panel { margin: 6px 0 2px; }
+    .footer-contact-panel summary {
+      list-style: none;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748B;
+      border: 1px solid #E8E4DE;
+      background: #fff;
+      padding: 7px 18px;
+      border-radius: 999px;
+      user-select: none;
+    }
+    .footer-contact-panel summary::-webkit-details-marker { display: none; }
+    .footer-contact-panel summary::marker { content: ""; }
+    .footer-contact-panel[open] summary { border-color: #C45C3E; color: #C45C3E; }
+    .footer-contact-details {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #94A3B8;
+      line-height: 1.65;
+    }
+    .footer-contact-details a { color: #64748B; }
+
     .footer-contact a, .footer-links a {
       color: #64748B;
       text-decoration: underline;
@@ -171,8 +197,15 @@
         <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
       </a>
       <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
-      <div class="footer-identity">BK International EOOD · Bart Kauwenberghs · Svetulka 3, 1415 Sofia</div>
-      <div class="footer-contact">Contact: <a href="mailto:info@dose-iq.com">info@dose-iq.com</a></div>
+      <details class="footer-contact-panel">
+        <summary>Contact</summary>
+        <div class="footer-contact-details">
+          <a href="mailto:info@dose-iq.com">info@dose-iq.com</a><br>
+          BK International EOOD<br>
+          Bart Kauwenberghs<br>
+          Svetulka 3, 1415 Sofia
+        </div>
+      </details>
       <div class="footer-links">
         <a href="privacy.html">Privacy Policy</a>
         <span aria-hidden="true">·</span>

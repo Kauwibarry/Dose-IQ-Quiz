@@ -44,6 +44,12 @@ h1 em{color:var(--blue);font-style:normal}
 .no{background:#FFF7ED;border:1px solid #FED7AA;border-radius:14px;padding:14px 16px;color:#9A3412;margin:12px 0}
 .ok strong,.no strong{display:block;margin-bottom:6px;color:inherit}
 footer{text-align:center;font-size:12px;line-height:1.65;color:var(--muted);padding:28px 12px 40px}
+footer .footer-contact-panel{margin:10px 0}
+footer .footer-contact-panel summary{list-style:none;cursor:pointer;display:inline-block;font-size:12px;font-weight:600;color:#64748B;border:1px solid var(--border);background:#fff;padding:7px 18px;border-radius:999px}
+footer .footer-contact-panel summary::-webkit-details-marker{display:none}
+footer .footer-contact-panel summary::marker{content:""}
+footer .footer-contact-details{margin-top:10px;font-size:12px;line-height:1.65}
+
 @media print{
   body{background:#fff}
   .page{break-inside:avoid;page-break-inside:avoid;box-shadow:none}
@@ -157,8 +163,15 @@ footer{text-align:center;font-size:12px;line-height:1.65;color:var(--muted);padd
   Je leest dit omdat je de Fit Score-gids vroeg op dose-iq.fit.<br />
   <a href="https://www.dose-iq.fit/privacy.html">Privacy</a> · <a href="https://www.dose-iq.com/terms.html">Voorwaarden</a><br /><br />
   <strong style="color:#0F172A">Dose-IQ</strong> — Officiële Bioniq-distributeur<br />
-  BK International EOOD · Bart Kauwenberghs · Svetulka 3, 1415 Sofia, Bulgarije<br />
-  <a href="mailto:info@dose-iq.com">info@dose-iq.com</a><br /><br />
+  <details class="footer-contact-panel">
+    <summary>Contact</summary>
+    <div class="footer-contact-details">
+      <a href="mailto:info@dose-iq.com">info@dose-iq.com</a><br />
+      BK International EOOD<br />
+      Bart Kauwenberghs<br />
+      Svetulka 3, 1415 Sofia, Bulgarije
+    </div>
+  </details>
   Bioniq-producten zijn voedingssupplementen, geen geneesmiddelen. Voedingssupplementen mogen een gevarieerde, evenwichtige voeding en een gezonde levensstijl niet vervangen. Alleen toegelaten EU-gezondheidsclaims zijn bedoeld.
 </footer>
 </body>
