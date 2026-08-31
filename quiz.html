@@ -380,7 +380,7 @@
       <div class="email-gate" id="emailGate">
         <h3>Unlock your free Personalised Nutrition Guide</h3>
         <p>Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.</p>
-        <form class="email-form" id="emailForm" action="https://formspree.io/f/xnpajyyp" method="POST">
+        <form class="email-form" id="emailForm" action="/api/subscribe" method="POST">
           <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
           <input type="hidden" name="fit_score" id="fitScoreField" value="">
           <input type="hidden" name="_subject" value="New Fit Score Lead – Dose-IQ">
@@ -716,10 +716,14 @@
       btn.textContent = 'Sending...';
 
       try {
-        const res = await fetch(emailForm.action, {
+        const res = await fetch('/api/subscribe', {
           method: 'POST',
-          body: new FormData(emailForm),
-          headers: { 'Accept': 'application/json' }
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            privacy_consent: 'yes',
+            fit_score: scoreNumber.textContent
+          })
         });
 
         if (res.ok) {
