@@ -1,22 +1,10 @@
 <!DOCTYPE html>
-<!--
-============================================================
-  AFFILIATE TEMPLATE - LANDING PAGE
-============================================================
-  Things you MUST change before using:
-  1. Logo (assets/logo-byourbestnow.png)
-  2. Meta Pixel ID (search for YOUR_PIXEL_ID)
-  3. Final "Official Bioniq site" / Wellness Assessment link
-  4. Brand name if desired
-============================================================
--->
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Personalised Nutrition Guide | Dose-IQ</title>
-  <meta name="description" content="Take our free 20-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.">
+  <meta name="description" content="Take our free 10-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -271,25 +259,27 @@
     }
     .logo-img { height: 44px; width: auto; }
 
+    .footer-identity, .footer-contact {
+      font-size: 0.85rem;
+      color: #94A3B8;
+    }
+    .footer-contact a, .footer-links a {
+      color: #64748B;
+      text-decoration: underline;
+    }
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      margin: 4px 0;
+      flex-wrap: wrap;
+    }
+
   </style>
 
-  <!-- Meta Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', 'YOUR_PIXEL_ID');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
+
 
 </head>
 <body>
@@ -304,9 +294,9 @@
     <div class="container hero-grid">
       <div>
         <div class="badge">Free · 10 questions · Fit Score</div>
-        <h1>Find out what your body is <span>actually asking for</span></h1>
+        <h1>See how your daily habits <span>line up with nutrition</span></h1>
         <p class="hero-lead">
-          Generic multivitamins treat everyone the same. Answer 20 simple lifestyle questions and receive a free personalised nutrition guide tailored to your real habits and goals.
+          One-size-fits-all multivitamins are built for an average person. Answer 10 simple lifestyle questions and receive a free personalised nutrition guide based on your habits and goals.
         </p>
         <a href="quiz.html" class="btn-main">
           Discover your Fit Score
@@ -315,7 +305,7 @@
         <p class="hero-note">No purchase required · Instant results · Free 7-page guide</p>
       </div>
       <div class="hero-visual">
-        <img src="assets/hero-smoothie.jpg" alt="Bright healthy breakfast flat lay" width="520" height="650">
+        <img src="hero-smoothie.jpg" alt="Bright healthy breakfast flat lay" width="520" height="650">
       </div>
     </div>
   </section>
@@ -398,7 +388,7 @@
           <a href="quiz.html" class="btn-main">Get your Fit Score</a>
         </div>
         <div class="ebook-img">
-          <img src="assets/woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
+          <img src="woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
         </div>
       </div>
     </div>
@@ -408,7 +398,7 @@
     <div class="container">
       <div class="final">
         <h2>Ready for your personalised insights?</h2>
-        <p>Start the free 20-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
+        <p>Start the free 10-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
         <a href="quiz.html" class="btn-main">Get your Fit Score</a>
       </div>
     </div>
@@ -420,6 +410,13 @@
         <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
       </a>
       <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
+      <div class="footer-identity">BK International EOOD · Bart Kauwenberghs · Svetulka 3, 1415 Sofia</div>
+      <div class="footer-contact">Contact: <a href="mailto:info@dose-iq.com">info@dose-iq.com</a></div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Terms of Use</a>
+      </div>
       <div class="footer-disclaimer">
         This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
       </div>

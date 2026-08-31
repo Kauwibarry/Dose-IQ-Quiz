@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-<!--
-============================================================
-  AFFILIATE TEMPLATE - FIT SCORE QUIZ
-============================================================
-  Things you MUST change before using:
-  1. Logo (assets/logo-byourbestnow.png)
-  2. Formspree form ID (search for YOUR_FORM_ID)
-  3. Meta Pixel ID (search for YOUR_PIXEL_ID)
-  4. Final "Wellness Assessment" link (search for bioniq.com)
-  5. Brand name "Dose-IQ" if you want (optional)
-============================================================
--->
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -315,25 +302,48 @@
     }
     .logo-img { height: 44px; width: auto; }
 
+    .footer-identity, .footer-contact {
+      font-size: 0.85rem;
+      color: #94A3B8;
+    }
+    .footer-contact a, .footer-links a {
+      color: #64748B;
+      text-decoration: underline;
+    }
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      margin: 4px 0;
+      flex-wrap: wrap;
+    }
+
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .consent-row input[type="checkbox"] {
+      width: auto;
+      margin-top: 3px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+    .consent-row a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .email-form button:disabled { opacity: 0.35; cursor: not-allowed; }
+
   </style>
 
-  <!-- Meta Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', 'YOUR_PIXEL_ID');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
+
 
 </head>
 <body>
@@ -370,11 +380,15 @@
       <div class="email-gate" id="emailGate">
         <h3>Unlock your free Personalised Nutrition Guide</h3>
         <p>Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.</p>
-        <form class="email-form" id="emailForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form class="email-form" id="emailForm" action="https://formspree.io/f/xnpajyyp" method="POST">
           <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
           <input type="hidden" name="fit_score" id="fitScoreField" value="">
           <input type="hidden" name="_subject" value="New Fit Score Lead – Dose-IQ">
-          <button type="submit" id="submitBtn">Get my free guide</button>
+          <div class="consent-row">
+            <input type="checkbox" id="consentCheck" name="privacy_consent" value="yes" required>
+            <label for="consentCheck">I agree to the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Nutrition Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
+          </div>
+          <button type="submit" id="submitBtn" disabled>Get my free guide</button>
         </form>
         <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
       </div>
@@ -388,7 +402,6 @@
 
         <div class="handoff">
           <p>Want a fully personalised daily formula created for you?</p>
-          <!-- ===== AFFILIATE: CHANGE THE LINK BELOW TO YOUR OWN WELLNESS ASSESSMENT / AFFILIATE URL ===== -->
           <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" target="_blank" rel="noopener">Continue to the official Bioniq Wellness Assessment →</a>
         </div>
       </div>
@@ -674,6 +687,15 @@
       }, 25);
     }
 
+    const consentCheck = document.getElementById('consentCheck');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function syncConsentButton() {
+      submitBtn.disabled = !consentCheck.checked;
+    }
+    consentCheck.addEventListener('change', syncConsentButton);
+    syncConsentButton();
+
     emailForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = emailInput.value.trim();
@@ -681,8 +703,11 @@
         emailInput.focus();
         return;
       }
+      if (!consentCheck.checked) {
+        consentCheck.focus();
+        return;
+      }
 
-      // Fill hidden fit score
       document.getElementById('fitScoreField').value = scoreNumber.textContent;
 
       const btn = document.getElementById('submitBtn');
@@ -698,38 +723,39 @@
         });
 
         if (res.ok) {
-          // Success – unlock download
-          localStorage.setItem('bioniq_lead_email', email);
-          localStorage.setItem('bioniq_fit_score', scoreNumber.textContent);
-
-          // Meta Pixel Lead event
-          if (typeof fbq === 'function') {
-            fbq('track', 'Lead', { content_name: 'Fit Score Guide' });
-          }
-
+          localStorage.setItem('doseiq_lead_email', email);
+          localStorage.setItem('doseiq_fit_score', scoreNumber.textContent);
           emailGate.style.display = 'none';
           downloadArea.style.display = 'block';
         } else {
           status.style.display = 'block';
           status.textContent = 'Something went wrong. Please try again.';
-          btn.disabled = false;
           btn.textContent = 'Get my free guide';
+          syncConsentButton();
         }
       } catch (err) {
-        // Fallback: still unlock so user is not blocked
-        emailGate.style.display = 'none';
-        downloadArea.style.display = 'block';
+        status.style.display = 'block';
+        status.textContent = 'Something went wrong. Please try again.';
+        btn.textContent = 'Get my free guide';
+        syncConsentButton();
       }
     });
 
     renderQuestion();
   </script>
-<footer>
+  <footer>
     <div class="container footer-inner" style="text-align:center;flex-direction:column;align-items:center;">
       <a href="index.html" style="text-decoration:none">
         <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
       </a>
       <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
+      <div class="footer-identity">BK International EOOD · Bart Kauwenberghs · Svetulka 3, 1415 Sofia</div>
+      <div class="footer-contact">Contact: <a href="mailto:info@dose-iq.com">info@dose-iq.com</a></div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="terms.html">Terms of Use</a>
+      </div>
       <div class="footer-disclaimer">
         This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
       </div>
