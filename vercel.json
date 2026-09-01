@@ -1,0 +1,148 @@
+{
+  "rewrites": [
+    {
+      "source": "/en",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/de",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/de/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fr",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fr/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/it",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/it/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/es",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/es/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pt",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pt/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/nl",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/nl/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pl",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pl/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cs",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cs/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/en/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/de/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/de/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/fr/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/fr/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/it/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/it/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/es/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/es/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/pt/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/pt/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/nl/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/nl/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/pl/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/pl/quiz/",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/cs/quiz",
+      "destination": "/quiz.html"
+    },
+    {
+      "source": "/cs/quiz/",
+      "destination": "/quiz.html"
+    }
+  ]
+}

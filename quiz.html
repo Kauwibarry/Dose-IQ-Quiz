@@ -2,6 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+<script>
+(function(){
+  var LANGS=["en","de","fr","it","es","pt","nl","pl","cs"];
+  var path=location.pathname.replace(/\/+$/,"")||"/";
+  var segs=path.split("/").filter(Boolean);
+  var first=(segs[0]||"").toLowerCase();
+  if(LANGS.indexOf(first)!==-1) return;
+  if(path!=="/quiz" && path!=="/quiz.html") return;
+  var saved=null; try{saved=localStorage.getItem("bonq_lang")}catch(e){}
+  var nav=(navigator.language||navigator.userLanguage||"en").slice(0,2).toLowerCase();
+  var lang=(saved&&LANGS.indexOf(saved)!==-1)?saved:(LANGS.indexOf(nav)!==-1?nav:"en");
+  location.replace("/"+lang+"/quiz"+location.search+location.hash);
+})();
+</script>
+<link rel="alternate" hreflang="en" href="https://www.dose-iq.fit/en/quiz" />
+<link rel="alternate" hreflang="de" href="https://www.dose-iq.fit/de/quiz" />
+<link rel="alternate" hreflang="fr" href="https://www.dose-iq.fit/fr/quiz" />
+<link rel="alternate" hreflang="it" href="https://www.dose-iq.fit/it/quiz" />
+<link rel="alternate" hreflang="es" href="https://www.dose-iq.fit/es/quiz" />
+<link rel="alternate" hreflang="pt" href="https://www.dose-iq.fit/pt/quiz" />
+<link rel="alternate" hreflang="nl" href="https://www.dose-iq.fit/nl/quiz" />
+<link rel="alternate" hreflang="pl" href="https://www.dose-iq.fit/pl/quiz" />
+<link rel="alternate" hreflang="cs" href="https://www.dose-iq.fit/cs/quiz" />
+<link rel="alternate" hreflang="x-default" href="https://www.dose-iq.fit/en/quiz" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Fit Score | Dose-IQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -370,17 +394,43 @@
     .email-form button:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .topbar{background:#5BA3D9;color:#fff;text-align:center;font-size:.85rem;font-weight:500;padding:10px 16px}
+
+    .header-inner{display:flex;align-items:center;justify-content:space-between;max-width:620px;margin:0 auto;padding:0 20px}
+    .header-actions{display:flex;align-items:center;gap:10px}
+    .lang-wrap{position:relative}
+    .lang-btn{background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .lang-btn:hover{border-color:#CBD5E1}
+    .lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border);border-radius:12px;min-width:160px;box-shadow:0 12px 30px rgba(0,0,0,.12);z-index:60;padding:6px;max-height:280px;overflow-y:auto}
+    .lang-menu.open{display:block}
+    .lang-menu button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 12px;font-size:.88rem;cursor:pointer;border-radius:8px;font-family:inherit;color:var(--text)}
+    .lang-menu button:hover,.lang-menu button.active{background:#F0F7FA;color:var(--blue)}
   </style>
 
 
 
 </head>
 <body>
-  <div class="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
+  <div class="topbar" data-i18n="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
 
   <header>
-    <div class="container">
-      <a href="index.html" class="logo-link"><img src="dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
+    <div class="header-inner">
+      <a href="/en" class="logo-link home-link"><img src="/dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
+      <div class="header-actions">
+        <div class="lang-wrap">
+          <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" aria-label="Language">EN ▾</button>
+          <div class="lang-menu" id="langMenu">
+            <button data-lang="en" onclick="setLang('en')">English</button>
+<button data-lang="de" onclick="setLang('de')">Deutsch</button>
+<button data-lang="fr" onclick="setLang('fr')">Français</button>
+<button data-lang="it" onclick="setLang('it')">Italiano</button>
+<button data-lang="es" onclick="setLang('es')">Español</button>
+<button data-lang="pt" onclick="setLang('pt')">Português</button>
+<button data-lang="nl" onclick="setLang('nl')">Nederlands</button>
+<button data-lang="pl" onclick="setLang('pl')">Polski</button>
+<button data-lang="cs" onclick="setLang('cs')">Čeština</button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -397,150 +447,63 @@
         <div class="score-circle" id="scoreCircle">
           <div class="score-inner">
             <div class="score-number" id="scoreNumber">0</div>
-            <div class="score-label">Fit Score</div>
+            <div class="score-label" data-i18n="fit_score">Fit Score</div>
           </div>
         </div>
       </div>
 
-      <h2 class="score-title" id="scoreTitle">Your Fit Score</h2>
+      <h2 class="score-title" id="scoreTitle" data-i18n="score_title">Your Fit Score</h2>
       <div class="score-band" id="scoreBand"></div>
       <p class="age-tag" id="ageTag"></p>
 
       <div class="insights" id="insightsList"></div>
 
       <div class="email-gate" id="emailGate">
-        <h3>Unlock your free Personalised Nutrition Guide</h3>
-        <p>Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.</p>
+        <h3 data-i18n="email_h3">Unlock your free Personalised Nutrition Guide</h3>
+        <p data-i18n="email_p">Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.</p>
         <form class="email-form" id="emailForm" action="/api/subscribe" method="POST">
-          <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
+          <input type="email" name="email" id="emailInput" placeholder="Your email address" data-i18n-placeholder="email_ph" required autocomplete="email">
           <input type="hidden" name="fit_score" id="fitScoreField" value="">
+          <input type="hidden" name="lang" id="langField" value="en">
           <input type="hidden" name="_subject" value="New Fit Score Lead – Dose-IQ">
           <div class="consent-row">
             <input type="checkbox" id="consentCheck" name="privacy_consent" value="yes" required>
-            <label for="consentCheck">I agree to the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Nutrition Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
+            <label for="consentCheck" data-i18n="consent">I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Nutrition Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
           </div>
-          <button type="submit" id="submitBtn" disabled>Get my free guide</button>
+          <button type="submit" id="submitBtn" disabled data-i18n="submit">Get my free guide</button>
         </form>
         <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
       </div>
 
       <div id="downloadArea">
-        <a href="Personalised_Nutrition_Guide.pdf" class="download-btn" download>
-          Download your free 7-page guide
+        <a href="/guides/en.pdf" class="download-btn" id="downloadBtn" download>
+          <span data-i18n="download">Download your free 7-page guide</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         </a>
-        <p style="margin-top:12px;font-size:0.9rem;color:var(--muted);">PDF · Instant download</p>
+        <p style="margin-top:12px;font-size:0.9rem;color:var(--muted);" data-i18n="pdf_note">PDF · Instant download</p>
 
         <div class="handoff">
-          <p>Want a fully personalised daily formula created for you?</p>
-          <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" target="_blank" rel="noopener">Continue to the official Bioniq Wellness Assessment →</a>
+          <p data-i18n="handoff_p">Want a fully personalised daily formula created for you?</p>
+          <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" target="_blank" rel="noopener" data-i18n="handoff_a">Continue to the official Bioniq Wellness Assessment →</a>
         </div>
       </div>
 
-      <p class="disclaimer">
+      <p class="disclaimer" data-i18n="disclaimer">
         This Fit Score is for educational and motivational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to generate a Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle.
       </p>
     </div>
   </div>
 
   <script>
-    // 10 questions – first is age group, rest are scored 0-10
-    const questions = [
-      {
-        q: "Which age group are you in?",
-        options: [
-          { text: "18 – 30 years", points: 0, age: "18-30" },
-          { text: "30 – 45 years", points: 0, age: "30-45" },
-          { text: "45 – 60 years", points: 0, age: "45-60" },
-          { text: "60 – 90 years", points: 0, age: "60-90" }
-        ]
-      },
-      {
-        q: "How would you describe your energy across a typical day?",
-        options: [
-          { text: "Steady and good from morning to evening", points: 10 },
-          { text: "Good mornings, noticeable afternoon dip", points: 6 },
-          { text: "Often low even after sleep", points: 3 },
-          { text: "Very up and down", points: 2 }
-        ]
-      },
-      {
-        q: "How many servings of colourful vegetables or fruit do you usually eat per day?",
-        options: [
-          { text: "5 or more", points: 10 },
-          { text: "3–4", points: 7 },
-          { text: "1–2", points: 4 },
-          { text: "Less than 1", points: 1 }
-        ]
-      },
-      {
-        q: "How many days per week do you move your body for at least 30 minutes?",
-        options: [
-          { text: "6–7 days", points: 10 },
-          { text: "4–5 days", points: 8 },
-          { text: "2–3 days", points: 5 },
-          { text: "0–1 day", points: 1 }
-        ]
-      },
-      {
-        q: "How consistent is your sleep (same bedtime & wake time most days)?",
-        options: [
-          { text: "Very consistent, even on weekends", points: 10 },
-          { text: "Mostly consistent on weekdays", points: 7 },
-          { text: "Quite irregular", points: 3 },
-          { text: "Varies a lot", points: 1 }
-        ]
-      },
-      {
-        q: "How would you rate your typical stress level over the past month?",
-        options: [
-          { text: "Low and manageable", points: 10 },
-          { text: "Moderate but under control", points: 7 },
-          { text: "Often high", points: 3 },
-          { text: "Very high most days", points: 1 }
-        ]
-      },
-      {
-        q: "How often do you eat ultra-processed foods (packaged snacks, fast food, sugary drinks)?",
-        options: [
-          { text: "Rarely or never", points: 10 },
-          { text: "A few times a week", points: 6 },
-          { text: "Most days", points: 3 },
-          { text: "Multiple times a day", points: 0 }
-        ]
-      },
-      {
-        q: "How is your daily water / hydration habit?",
-        options: [
-          { text: "I drink water consistently throughout the day", points: 10 },
-          { text: "I try but often forget", points: 6 },
-          { text: "I mostly drink when thirsty", points: 4 },
-          { text: "I know I don’t drink enough", points: 1 }
-        ]
-      },
-      {
-        q: "Do you currently take any daily supplements or multivitamins?",
-        options: [
-          { text: "Yes, consistently every day", points: 8 },
-          { text: "Sometimes / on and off", points: 5 },
-          { text: "Only when I feel run down", points: 3 },
-          { text: "No", points: 2 }
-        ]
-      },
-      {
-        q: "If you could improve one area in the next 90 days, which would it be?",
-        options: [
-          { text: "Daily energy & less tiredness", points: 7 },
-          { text: "Skin, hair or nail quality", points: 7 },
-          { text: "Mental sharpness & focus", points: 7 },
-          { text: "Recovery & physical resilience", points: 7 },
-          { text: "Overall long-term wellbeing", points: 8 }
-        ]
-      }
-    ];
+    const LANG_PATHS = ["en", "de", "fr", "it", "es", "pt", "nl", "pl", "cs"];
+    const LANG_LABELS = {"en": "EN", "de": "DE", "fr": "FR", "it": "IT", "es": "ES", "pt": "PT", "nl": "NL", "pl": "PL", "cs": "CS"};
+    const T = {"en": {"title": "Your Fit Score | Dose-IQ", "topbar": "Official Bioniq distributor · Educational guide · No diagnosis", "q_of": "Question {n} of 10", "back": "Back", "next": "Next", "reveal": "Reveal my Fit Score", "fit_score": "Fit Score", "score_title": "Your Fit Score", "band_optimal": "Optimal Fit", "title_optimal": "Excellent Fit Score", "band_good": "Good Fit", "title_good": "Solid Fit Score", "band_fair": "Fair Fit", "title_fair": "Room to Improve", "band_low": "Needs Attention", "title_low": "Let's Build a Better Foundation", "age_18": "In your 20s and early 30s, consistency and recovery habits set the foundation for decades ahead.", "age_30": "In your 30s and early 40s, balancing energy, stress and recovery becomes especially important.", "age_45": "In your mid-40s to 60s, supporting steady energy, bones and long-term resilience pays off.", "age_60": "After 60, simple daily habits around nutrition, movement and sleep make a meaningful difference.", "ins_energy_h": "Energy support", "ins_energy_p": "Your answers suggest daily energy could be more consistent. Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue.", "ins_plant_h": "Plant diversity", "ins_plant_p": "Increasing colourful vegetables and fruit is one of the highest-impact changes for overall nutrient intake.", "ins_move_h": "Movement", "ins_move_p": "Regular movement supports many systems in the body. Even 30 minutes most days makes a difference.", "ins_sleep_h": "Sleep consistency", "ins_sleep_p": "A more regular sleep schedule often improves energy, recovery and how you feel during the day.", "ins_stress_h": "Stress load", "ins_stress_p": "High ongoing stress can affect sleep, energy and nutrient needs. Small daily recovery habits help.", "ins_base_h": "Strong base", "ins_base_p": "You already have several solid habits. Fine-tuning consistency and covering potential nutrient gaps can push your score even higher.", "ins_pers_h": "Personalisation advantage", "ins_pers_p": "A single daily formula matched to your lifestyle often outperforms stacking multiple generic products.", "email_h3": "Unlock your free Personalised Nutrition Guide", "email_p": "Enter your email to download the 7-page guide and get practical tips tailored to your Fit Score.", "email_ph": "Your email address", "consent": "I agree to the <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Nutrition Guide. I can request deletion at any time via <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Get my free guide", "sending": "Sending...", "error": "Something went wrong. Please try again.", "download": "Download your free 7-page guide", "pdf_note": "PDF · Instant download", "handoff_p": "Want a fully personalised daily formula created for you?", "handoff_a": "Continue to the official Bioniq Wellness Assessment →", "disclaimer": "This Fit Score is for educational and motivational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to generate a Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle.", "footer_brand": "Dose-IQ — Official Bioniq distributor", "contact": "Contact", "privacy": "Privacy Policy", "terms": "Terms of Use", "footer_disc": "This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.", "questions": [["Which age group are you in?", ["18 – 30 years", "30 – 45 years", "45 – 60 years", "60 – 90 years"]], ["How would you describe your energy across a typical day?", ["Steady and good from morning to evening", "Good mornings, noticeable afternoon dip", "Often low even after sleep", "Very up and down"]], ["How many servings of colourful vegetables or fruit do you usually eat per day?", ["5 or more", "3–4", "1–2", "Less than 1"]], ["How many days per week do you move your body for at least 30 minutes?", ["6–7 days", "4–5 days", "2–3 days", "0–1 day"]], ["How consistent is your sleep (same bedtime & wake time most days)?", ["Very consistent, even on weekends", "Mostly consistent on weekdays", "Quite irregular", "Varies a lot"]], ["How would you rate your typical stress level over the past month?", ["Low and manageable", "Moderate but under control", "Often high", "Very high most days"]], ["How often do you eat ultra-processed foods (packaged snacks, fast food, sugary drinks)?", ["Rarely or never", "A few times a week", "Most days", "Multiple times a day"]], ["How is your daily water / hydration habit?", ["I drink water consistently throughout the day", "I try but often forget", "I mostly drink when thirsty", "I know I don’t drink enough"]], ["Do you currently take any daily supplements or multivitamins?", ["Yes, consistently every day", "Sometimes / on and off", "Only when I feel run down", "No"]], ["If you could improve one area in the next 90 days, which would it be?", ["Daily energy & less tiredness", "Skin, hair or nail quality", "Mental sharpness & focus", "Recovery & physical resilience", "Overall long-term wellbeing"]]]}, "de": {"title": "Ihr Fit Score | Dose-IQ", "topbar": "Offizieller Bioniq-Vertriebspartner · Bildungsratgeber · Keine Diagnose", "q_of": "Frage {n} von 10", "back": "Zurück", "next": "Weiter", "reveal": "Fit Score anzeigen", "fit_score": "Fit Score", "score_title": "Ihr Fit Score", "band_optimal": "Optimaler Fit", "title_optimal": "Ausgezeichneter Fit Score", "band_good": "Guter Fit", "title_good": "Solider Fit Score", "band_fair": "Fairer Fit", "title_fair": "Spielraum nach oben", "band_low": "Aufmerksamkeit nötig", "title_low": "Legen wir ein besseres Fundament", "age_18": "In den 20ern und frühen 30ern legen Beständigkeit und Erholung den Grundstein für die kommenden Jahrzehnte.", "age_30": "In den 30ern und frühen 40ern wird die Balance aus Energie, Stress und Erholung besonders wichtig.", "age_45": "Mitte 40 bis 60 zahlt sich die Unterstützung von Energie, Knochen und langfristiger Belastbarkeit aus.", "age_60": "Nach 60 machen einfache Alltagsgewohnheiten bei Ernährung, Bewegung und Schlaf einen spürbaren Unterschied.", "ins_energy_h": "Energieunterstützung", "ins_energy_p": "Ihre Antworten deuten darauf hin, dass die Tagesenergie gleichmäßiger sein könnte. Bestimmte Vitamine und Mineralstoffe tragen zu einem normalen Energiestoffwechsel und zur Verringerung von Müdigkeit und Ermüdung bei.", "ins_plant_h": "Pflanzenvielfalt", "ins_plant_p": "Mehr buntes Gemüse und Obst ist eine der wirksamsten Änderungen für die Nährstoffaufnahme.", "ins_move_h": "Bewegung", "ins_move_p": "Regelmäßige Bewegung unterstützt viele Systeme im Körper. Schon 30 Minuten an den meisten Tagen wirken sich aus.", "ins_sleep_h": "Schlaf-Regelmäßigkeit", "ins_sleep_p": "Ein regelmäßigerer Schlafrhythmus verbessert oft Energie, Erholung und das Tagesgefühl.", "ins_stress_h": "Stressbelastung", "ins_stress_p": "Anhaltend hoher Stress kann Schlaf, Energie und Nährstoffbedarf beeinflussen. Kleine tägliche Erholungsrituale helfen.", "ins_base_h": "Solide Basis", "ins_base_p": "Sie haben bereits mehrere gute Gewohnheiten. Mehr Beständigkeit und das Schließen möglicher Nährstofflücken können den Score weiter erhöhen.", "ins_pers_h": "Vorteil der Personalisierung", "ins_pers_p": "Eine tägliche Formel, die zu Ihrem Lebensstil passt, ist oft wirksamer als viele generische Produkte zu kombinieren.", "email_h3": "Kostenlosen personalisierten Ernährungsratgeber freischalten", "email_p": "E-Mail eingeben, den 7-Seiten-Ratgeber herunterladen und praktische Tipps zu Ihrem Fit Score erhalten.", "email_ph": "Ihre E-Mail-Adresse", "consent": "Ich stimme der <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung</a> zu und damit, dass Dose-IQ meine E-Mail nutzt, um den kostenlosen personalisierten Ernährungsratgeber zu senden. Eine Löschung kann ich jederzeit über <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a> verlangen.", "submit": "Kostenlosen Ratgeber holen", "sending": "Senden...", "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen.", "download": "Kostenlosen 7-Seiten-Ratgeber herunterladen", "pdf_note": "PDF · Sofortiger Download", "handoff_p": "Möchten Sie eine vollständig personalisierte Tagesformel?", "handoff_a": "Weiter zur offiziellen Bioniq Wellness Assessment →", "disclaimer": "Dieser Fit Score dient nur der Information und Motivation. Er ist keine medizinische Diagnose und kein Ersatz für professionellen Rat. Er ist vollständig getrennt von der detaillierten Wellness Assessment zur Erstellung einer Bioniq-GO-Formel. Nahrungsergänzungsmittel ersetzen keine abwechslungsreiche, ausgewogene Ernährung und eine gesunde Lebensweise.", "footer_brand": "Dose-IQ — Offizieller Bioniq-Vertriebspartner", "contact": "Kontakt", "privacy": "Datenschutz", "terms": "Nutzungsbedingungen", "footer_disc": "Diese Website dient der Information. Nahrungsergänzungsmittel ersetzen keine abwechslungsreiche, ausgewogene Ernährung und eine gesunde Lebensweise.", "questions": [["In welcher Altersgruppe sind Sie?", ["18 – 30 Jahre", "30 – 45 Jahre", "45 – 60 Jahre", "60 – 90 Jahre"]], ["Wie beschreiben Sie Ihre Energie an einem typischen Tag?", ["Gleichmäßig und gut von morgens bis abends", "Gute Vormittage, spürbares Nachmittagstief", "Oft niedrig, auch nach dem Schlaf", "Sehr schwankend"]], ["Wie viele Portionen buntes Gemüse oder Obst essen Sie üblicherweise pro Tag?", ["5 oder mehr", "3–4", "1–2", "Weniger als 1"]], ["An wie vielen Tagen pro Woche bewegen Sie sich mindestens 30 Minuten?", ["6–7 Tage", "4–5 Tage", "2–3 Tage", "0–1 Tag"]], ["Wie regelmäßig ist Ihr Schlaf (gleiche Schlaf- und Aufstehzeit an den meisten Tagen)?", ["Sehr regelmäßig, auch am Wochenende", "Meist regelmäßig unter der Woche", "Ziemlich unregelmäßig", "Schwankt stark"]], ["Wie schätzen Sie Ihr typisches Stresslevel im letzten Monat ein?", ["Niedrig und gut zu bewältigen", "Mittel, aber unter Kontrolle", "Oft hoch", "An den meisten Tagen sehr hoch"]], ["Wie oft essen Sie stark verarbeitete Lebensmittel (Snacks, Fast Food, zuckerhaltige Getränke)?", ["Selten oder nie", "Ein paar Mal pro Woche", "An den meisten Tagen", "Mehrmals täglich"]], ["Wie ist Ihre tägliche Trinkgewohnheit?", ["Ich trinke über den Tag verteilt regelmäßig Wasser", "Ich versuche es, vergesse es aber oft", "Ich trinke vor allem, wenn ich Durst habe", "Ich weiß, dass ich zu wenig trinke"]], ["Nehmen Sie derzeit täglich Nahrungsergänzung oder Multivitamine?", ["Ja, jeden Tag konsequent", "Manchmal / unregelmäßig", "Nur wenn ich mich schlapp fühle", "Nein"]], ["Wenn Sie in den nächsten 90 Tagen einen Bereich verbessern könnten, welcher wäre es?", ["Tagesenergie und weniger Müdigkeit", "Haut, Haar oder Nägel", "Geistige Klarheit und Fokus", "Erholung und körperliche Belastbarkeit", "Langfristiges Wohlbefinden insgesamt"]]]}, "fr": {"title": "Votre Fit Score | Dose-IQ", "topbar": "Distributeur officiel Bioniq · Guide éducatif · Pas de diagnostic", "q_of": "Question {n} sur 10", "back": "Retour", "next": "Suivant", "reveal": "Voir mon Fit Score", "fit_score": "Fit Score", "score_title": "Votre Fit Score", "band_optimal": "Fit optimal", "title_optimal": "Excellent Fit Score", "band_good": "Bon fit", "title_good": "Fit Score solide", "band_fair": "Fit correct", "title_fair": "Marge de progression", "band_low": "À surveiller", "title_low": "Construisons de meilleures bases", "age_18": "Dans la vingtaine et au début de la trentaine, la régularité et la récupération posent les bases pour les décennies suivantes.", "age_30": "Dans la trentaine et au début de la quarantaine, l’équilibre entre énergie, stress et récupération devient particulièrement important.", "age_45": "Entre 45 et 60 ans, soutenir une énergie stable, les os et la résilience à long terme est payant.", "age_60": "Après 60 ans, des habitudes simples autour de la nutrition, du mouvement et du sommeil font une vraie différence.", "ins_energy_h": "Soutien de l’énergie", "ins_energy_p": "Vos réponses suggèrent une énergie quotidienne plus irrégulière. Certaines vitamines et minéraux contribuent au métabolisme énergétique normal et à la réduction de la fatigue.", "ins_plant_h": "Diversité végétale", "ins_plant_p": "Augmenter les légumes et fruits colorés est l’un des changements les plus utiles pour l’apport en nutriments.", "ins_move_h": "Mouvement", "ins_move_p": "Bouger régulièrement soutient de nombreux systèmes. Même 30 minutes la plupart des jours font une différence.", "ins_sleep_h": "Régularité du sommeil", "ins_sleep_p": "Un rythme de sommeil plus régulier améliore souvent l’énergie, la récupération et la forme diurne.", "ins_stress_h": "Charge de stress", "ins_stress_p": "Un stress élevé et durable peut influencer le sommeil, l’énergie et les besoins nutritionnels. De petits rituels de récupération aident.", "ins_base_h": "Bonne base", "ins_base_p": "Vous avez déjà de solides habitudes. Affiner la régularité et combler d’éventuels manques peut encore améliorer le score.", "ins_pers_h": "Atout de la personnalisation", "ins_pers_p": "Une formule quotidienne adaptée au mode de vie est souvent plus pertinente que d’empiler plusieurs produits génériques.", "email_h3": "Débloquez votre guide nutritionnel personnalisé gratuit", "email_p": "Saisissez votre e-mail pour télécharger le guide de 7 pages et recevoir des conseils liés à votre Fit Score.", "email_ph": "Votre adresse e-mail", "consent": "J’accepte la <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">politique de confidentialité</a> et que Dose-IQ utilise mon e-mail pour envoyer le guide nutritionnel personnalisé gratuit. Je peux demander la suppression à tout moment via <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Recevoir mon guide gratuit", "sending": "Envoi...", "error": "Une erreur s’est produite. Veuillez réessayer.", "download": "Télécharger votre guide gratuit de 7 pages", "pdf_note": "PDF · Téléchargement immédiat", "handoff_p": "Envie d’une formule quotidienne entièrement personnalisée ?", "handoff_a": "Continuer vers l’évaluation Wellness officielle Bioniq →", "disclaimer": "Ce Fit Score est uniquement éducatif et motivationnel. Ce n’est pas un diagnostic médical ni un substitut à un avis professionnel. Il est totalement distinct de l’évaluation Wellness détaillée utilisée pour une formule Bioniq GO. Les compléments alimentaires ne remplacent pas une alimentation variée et équilibrée ni un mode de vie sain.", "footer_brand": "Dose-IQ — Distributeur officiel Bioniq", "contact": "Contact", "privacy": "Politique de confidentialité", "terms": "Conditions d’utilisation", "footer_disc": "Ce site est informatif. Les compléments alimentaires ne se substituent pas à une alimentation variée et équilibrée ni à un mode de vie sain.", "questions": [["Quelle est votre tranche d’âge ?", ["18 – 30 ans", "30 – 45 ans", "45 – 60 ans", "60 – 90 ans"]], ["Comment décririez-vous votre énergie sur une journée typique ?", ["Stable et bonne du matin au soir", "Bons matins, creux notable l’après-midi", "Souvent basse même après le sommeil", "Très variable"]], ["Combien de portions de légumes ou fruits colorés mangez-vous généralement par jour ?", ["5 ou plus", "3–4", "1–2", "Moins de 1"]], ["Combien de jours par semaine bougez-vous au moins 30 minutes ?", ["6–7 jours", "4–5 jours", "2–3 jours", "0–1 jour"]], ["Votre sommeil est-il régulier (mêmes heures le plus souvent) ?", ["Très régulier, même le week-end", "Surtout régulier en semaine", "Assez irrégulier", "Très variable"]], ["Comment évaluez-vous votre niveau de stress typique ce dernier mois ?", ["Faible et gérable", "Modéré mais sous contrôle", "Souvent élevé", "Très élevé la plupart des jours"]], ["À quelle fréquence mangez-vous des aliments ultra-transformés (snacks, fast-food, boissons sucrées) ?", ["Rarement ou jamais", "Quelques fois par semaine", "La plupart des jours", "Plusieurs fois par jour"]], ["Quelle est votre habitude d’hydratation quotidienne ?", ["Je bois de l’eau régulièrement dans la journée", "J’essaie mais j’oublie souvent", "Je bois surtout quand j’ai soif", "Je sais que je ne bois pas assez"]], ["Prenez-vous actuellement des compléments ou multivitamines au quotidien ?", ["Oui, chaque jour de façon régulière", "Parfois / par intermittence", "Seulement quand je me sens à plat", "Non"]], ["Si vous pouviez améliorer un domaine dans les 90 prochains jours, lequel serait-ce ?", ["Énergie quotidienne et moins de fatigue", "Qualité de la peau, des cheveux ou des ongles", "Clarté mentale et concentration", "Récupération et résilience physique", "Bien-être global à long terme"]]]}, "it": {"title": "Il tuo Fit Score | Dose-IQ", "topbar": "Distributore ufficiale Bioniq · Guida educativa · Nessuna diagnosi", "q_of": "Domanda {n} di 10", "back": "Indietro", "next": "Avanti", "reveal": "Mostra il Fit Score", "fit_score": "Fit Score", "score_title": "Il tuo Fit Score", "band_optimal": "Fit ottimale", "title_optimal": "Fit Score eccellente", "band_good": "Buon fit", "title_good": "Fit Score solido", "band_fair": "Fit discreto", "title_fair": "Margine di miglioramento", "band_low": "Da curare", "title_low": "Costruiamo basi migliori", "age_18": "Tra i 20 e i primi 30 anni, costanza e recupero pongono le basi per i decenni successivi.", "age_30": "Tra i 30 e i primi 40 anni, bilanciare energia, stress e recupero diventa particolarmente importante.", "age_45": "Dai 45 ai 60 anni, sostenere energia costante, ossa e resilienza a lungo termine ripaga.", "age_60": "Dopo i 60 anni, abitudini semplici su nutrizione, movimento e sonno fanno una differenza concreta.", "ins_energy_h": "Supporto all’energia", "ins_energy_p": "Le risposte suggeriscono un’energia quotidiana poco costante. Alcune vitamine e minerali contribuiscono al normale metabolismo energetico e alla riduzione di stanchezza e affaticamento.", "ins_plant_h": "Varietà vegetale", "ins_plant_p": "Aumentare verdura e frutta colorate è uno dei cambiamenti più efficaci per l’apporto di nutrienti.", "ins_move_h": "Movimento", "ins_move_p": "Muovere il corpo con regolarità sostiene molti sistemi. Anche 30 minuti nella maggior parte dei giorni fanno differenza.", "ins_sleep_h": "Regolarità del sonno", "ins_sleep_p": "Un orario più regolare migliora spesso energia, recupero e come ti senti di giorno.", "ins_stress_h": "Carico di stress", "ins_stress_p": "Uno stress elevato e continuo può influire su sonno, energia e fabbisogno di nutrienti. Piccole abitudini di recupero aiutano.", "ins_base_h": "Buona base", "ins_base_p": "Hai già diverse abitudini solide. Affinare la costanza e coprire eventuali lacune può alzare ancora il punteggio.", "ins_pers_h": "Vantaggio della personalizzazione", "ins_pers_p": "Una formula quotidiana allineata allo stile di vita spesso funziona meglio di tanti prodotti generici insieme.", "email_h3": "Sblocca la Guida nutrizionale personalizzata gratuita", "email_p": "Inserisci l’e-mail per scaricare la guida di 7 pagine e ricevere consigli legati al Fit Score.", "email_ph": "Il tuo indirizzo e-mail", "consent": "Accetto la <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a> e che Dose-IQ usi la mia e-mail per inviare la Guida nutrizionale personalizzata gratuita. Posso chiedere la cancellazione in qualsiasi momento a <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Ottieni la guida gratuita", "sending": "Invio...", "error": "Qualcosa non ha funzionato. Riprova.", "download": "Scarica la guida gratuita di 7 pagine", "pdf_note": "PDF · Download immediato", "handoff_p": "Vuoi una formula quotidiana completamente personalizzata?", "handoff_a": "Continua alla Wellness Assessment ufficiale Bioniq →", "disclaimer": "Questo Fit Score ha solo scopo educativo e motivazionale. Non è una diagnosi medica né un sostituto del parere professionale. È completamente distinto dalla Wellness Assessment dettagliata usata per una formula Bioniq GO. Gli integratori alimentari non sostituiscono una dieta variata ed equilibrata e uno stile di vita sano.", "footer_brand": "Dose-IQ — Distributore ufficiale Bioniq", "contact": "Contatto", "privacy": "Privacy policy", "terms": "Termini di utilizzo", "footer_disc": "Questo sito è informativo. Gli integratori alimentari non sostituiscono una dieta variata ed equilibrata e uno stile di vita sano.", "questions": [["In quale fascia d’età sei?", ["18 – 30 anni", "30 – 45 anni", "45 – 60 anni", "60 – 90 anni"]], ["Come descriveresti la tua energia in una giornata tipica?", ["Stabile e buona dal mattino alla sera", "Buone mattine, calo evidente nel pomeriggio", "Spesso bassa anche dopo il sonno", "Molto altalenante"]], ["Quante porzioni di verdura o frutta colorata mangi di solito al giorno?", ["5 o più", "3–4", "1–2", "Meno di 1"]], ["Quanti giorni a settimana muovi il corpo per almeno 30 minuti?", ["6–7 giorni", "4–5 giorni", "2–3 giorni", "0–1 giorno"]], ["Quanto è regolare il sonno (stessi orari nella maggior parte dei giorni)?", ["Molto regolare, anche nel weekend", "Soprattutto regolare nei giorni feriali", "Abbastanza irregolare", "Varia molto"]], ["Come valuteresti il livello di stress tipico dell’ultimo mese?", ["Basso e gestibile", "Moderato ma sotto controllo", "Spesso alto", "Molto alto quasi ogni giorno"]], ["Quanto spesso mangi alimenti ultra-processati (snack confezionati, fast food, bevande zuccherate)?", ["Raramente o mai", "Qualche volta a settimana", "La maggior parte dei giorni", "Più volte al giorno"]], ["Com’è la tua abitudine quotidiana all’idratazione?", ["Bevo acqua con costanza durante il giorno", "Provo ma spesso dimentico", "Bevo soprattutto quando ho sete", "So di non bere abbastanza"]], ["Assumi attualmente integratori o multivitaminici ogni giorno?", ["Sì, ogni giorno con costanza", "A volte / a intermittenza", "Solo quando mi sento giù", "No"]], ["Se potessi migliorare un’area nei prossimi 90 giorni, quale sarebbe?", ["Energia quotidiana e meno stanchezza", "Qualità di pelle, capelli o unghie", "Lucidità mentale e focus", "Recupero e resilienza fisica", "Benessere complessivo a lungo termine"]]]}, "es": {"title": "Tu Fit Score | Dose-IQ", "topbar": "Distribuidor oficial de Bioniq · Guía educativa · Sin diagnóstico", "q_of": "Pregunta {n} de 10", "back": "Atrás", "next": "Siguiente", "reveal": "Ver mi Fit Score", "fit_score": "Fit Score", "score_title": "Tu Fit Score", "band_optimal": "Encaje óptimo", "title_optimal": "Fit Score excelente", "band_good": "Buen encaje", "title_good": "Fit Score sólido", "band_fair": "Encaje aceptable", "title_fair": "Hay margen de mejora", "band_low": "Requiere atención", "title_low": "Construyamos una base mejor", "age_18": "En los 20 y primeros 30, la constancia y la recuperación sientan las bases para las décadas siguientes.", "age_30": "En los 30 y primeros 40, equilibrar energía, estrés y recuperación es especialmente importante.", "age_45": "Entre los 45 y 60, apoyar una energía estable, los huesos y la resiliencia a largo plazo merece la pena.", "age_60": "Después de los 60, hábitos diarios simples de nutrición, movimiento y sueño marcan una diferencia real.", "ins_energy_h": "Apoyo a la energía", "ins_energy_p": "Tus respuestas sugieren una energía diaria poco constante. Ciertas vitaminas y minerales contribuyen al metabolismo energético normal y a la disminución del cansancio y la fatiga.", "ins_plant_h": "Diversidad vegetal", "ins_plant_p": "Aumentar verduras y frutas de color es uno de los cambios de mayor impacto para el aporte de nutrientes.", "ins_move_h": "Movimiento", "ins_move_p": "Moverse con regularidad apoya muchos sistemas del cuerpo. Incluso 30 minutos la mayoría de los días marcan diferencia.", "ins_sleep_h": "Regularidad del sueño", "ins_sleep_p": "Un horario de sueño más regular suele mejorar la energía, la recuperación y cómo te sientes de día.", "ins_stress_h": "Carga de estrés", "ins_stress_p": "Un estrés alto y continuado puede influir en el sueño, la energía y las necesidades de nutrientes. Pequeños hábitos de recuperación ayudan.", "ins_base_h": "Buena base", "ins_base_p": "Ya tienes varios hábitos sólidos. Ajustar la constancia y cubrir posibles lagunas puede subir aún más la puntuación.", "ins_pers_h": "Ventaja de la personalización", "ins_pers_p": "Una fórmula diaria adaptada a tu estilo de vida suele funcionar mejor que acumular varios productos genéricos.", "email_h3": "Desbloquea tu Guía nutricional personalizada gratuita", "email_p": "Introduce tu correo para descargar la guía de 7 páginas y recibir consejos prácticos según tu Fit Score.", "email_ph": "Tu dirección de correo", "consent": "Acepto la <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Política de privacidad</a> y que Dose-IQ use mi correo para enviar la Guía nutricional personalizada gratuita. Puedo pedir la eliminación en cualquier momento en <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Obtener mi guía gratuita", "sending": "Enviando...", "error": "Algo ha fallado. Inténtalo de nuevo.", "download": "Descarga tu guía gratuita de 7 páginas", "pdf_note": "PDF · Descarga inmediata", "handoff_p": "¿Quieres una fórmula diaria totalmente personalizada?", "handoff_a": "Continuar a la Wellness Assessment oficial de Bioniq →", "disclaimer": "Este Fit Score es solo educativo y motivacional. No es un diagnóstico médico ni sustituye el consejo profesional. Está completamente separado de la Wellness Assessment detallada usada para una fórmula Bioniq GO. Los complementos alimenticios no sustituyen una dieta variada y equilibrada ni un estilo de vida saludable.", "footer_brand": "Dose-IQ — Distribuidor oficial de Bioniq", "contact": "Contacto", "privacy": "Política de privacidad", "terms": "Términos de uso", "footer_disc": "Este sitio es informativo. Los complementos alimenticios no sustituyen una dieta variada y equilibrada ni un estilo de vida saludable.", "questions": [["¿En qué grupo de edad estás?", ["18 – 30 años", "30 – 45 años", "45 – 60 años", "60 – 90 años"]], ["¿Cómo describirías tu energía en un día típico?", ["Estable y buena de la mañana a la noche", "Buenas mañanas, bajón notable por la tarde", "A menudo baja incluso después de dormir", "Muy irregular"]], ["¿Cuántas raciones de verdura o fruta de color sueles comer al día?", ["5 o más", "3–4", "1–2", "Menos de 1"]], ["¿Cuántos días a la semana mueves el cuerpo al menos 30 minutos?", ["6–7 días", "4–5 días", "2–3 días", "0–1 día"]], ["¿Qué tan constante es tu sueño (misma hora la mayoría de los días)?", ["Muy constante, incluso el fin de semana", "Bastante constante entre semana", "Bastante irregular", "Varía mucho"]], ["¿Cómo valorarías tu nivel de estrés típico del último mes?", ["Bajo y manejable", "Moderado pero bajo control", "A menudo alto", "Muy alto la mayoría de los días"]], ["¿Con qué frecuencia comes ultraprocesados (snacks, comida rápida, bebidas azucaradas)?", ["Rara vez o nunca", "Unas cuantas veces por semana", "La mayoría de los días", "Varias veces al día"]], ["¿Cómo es tu hábito diario de hidratación?", ["Bebo agua de forma constante a lo largo del día", "Lo intento pero a menudo se me olvida", "Bebo sobre todo cuando tengo sed", "Sé que no bebo lo suficiente"]], ["¿Tomas actualmente suplementos o multivitamínicos a diario?", ["Sí, todos los días de forma constante", "A veces / de forma intermitente", "Solo cuando me siento agotado/a", "No"]], ["Si pudieras mejorar un área en los próximos 90 días, ¿cuál sería?", ["Energía diaria y menos cansancio", "Calidad de piel, cabello o uñas", "Agudeza mental y concentración", "Recuperación y resiliencia física", "Bienestar general a largo plazo"]]]}, "pt": {"title": "O seu Fit Score | Dose-IQ", "topbar": "Distribuidor oficial Bioniq · Guia educativo · Sem diagnóstico", "q_of": "Pergunta {n} de 10", "back": "Voltar", "next": "Seguinte", "reveal": "Ver o meu Fit Score", "fit_score": "Fit Score", "score_title": "O seu Fit Score", "band_optimal": "Encaixe ótimo", "title_optimal": "Fit Score excelente", "band_good": "Bom encaixe", "title_good": "Fit Score sólido", "band_fair": "Encaixe razoável", "title_fair": "Há margem para melhorar", "band_low": "Precisa de atenção", "title_low": "Vamos construir uma base melhor", "age_18": "Nos 20 e início dos 30, a consistência e a recuperação definem a base para as décadas seguintes.", "age_30": "Nos 30 e início dos 40, equilibrar energia, stress e recuperação torna-se especialmente importante.", "age_45": "Dos 45 aos 60, apoiar energia estável, ossos e resiliência a longo prazo vale a pena.", "age_60": "Depois dos 60, hábitos diários simples de nutrição, movimento e sono fazem uma diferença clara.", "ins_energy_h": "Apoio à energia", "ins_energy_p": "As respostas sugerem uma energia diária pouco consistente. Certas vitaminas e minerais contribuem para o metabolismo energético normal e para a redução do cansaço e da fadiga.", "ins_plant_h": "Diversidade vegetal", "ins_plant_p": "Aumentar hortícolas e fruta colorida é uma das mudanças de maior impacto para a ingestão de nutrientes.", "ins_move_h": "Movimento", "ins_move_p": "Mover o corpo com regularidade apoia muitos sistemas. Mesmo 30 minutos na maioria dos dias fazem diferença.", "ins_sleep_h": "Regularidade do sono", "ins_sleep_p": "Um horário de sono mais regular costuma melhorar energia, recuperação e como se sente durante o dia.", "ins_stress_h": "Carga de stress", "ins_stress_p": "Stress elevado e contínuo pode influenciar o sono, a energia e as necessidades de nutrientes. Pequenos hábitos de recuperação ajudam.", "ins_base_h": "Boa base", "ins_base_p": "Já tem vários hábitos sólidos. Ajustar a consistência e cobrir possíveis lacunas pode ainda subir a pontuação.", "ins_pers_h": "Vantagem da personalização", "ins_pers_p": "Uma fórmula diária alinhada com o estilo de vida costuma resultar melhor do que juntar vários produtos genéricos.", "email_h3": "Desbloqueie o Guia nutricional personalizado gratuito", "email_p": "Introduza o e-mail para descarregar o guia de 7 páginas e receber dicas práticas ligadas ao Fit Score.", "email_ph": "O seu endereço de e-mail", "consent": "Concordo com a <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Política de privacidade</a> e com o uso do meu e-mail pela Dose-IQ para enviar o Guia nutricional personalizado gratuito. Posso pedir a eliminação a qualquer momento via <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Obter o meu guia gratuito", "sending": "A enviar...", "error": "Algo correu mal. Tente novamente.", "download": "Descarregar o guia gratuito de 7 páginas", "pdf_note": "PDF · Transferência imediata", "handoff_p": "Quer uma fórmula diária totalmente personalizada?", "handoff_a": "Continuar para a Wellness Assessment oficial Bioniq →", "disclaimer": "Este Fit Score é apenas educativo e motivacional. Não é um diagnóstico médico nem substitui aconselhamento profissional. É completamente separado da Wellness Assessment detalhada usada para uma fórmula Bioniq GO. Os suplementos alimentares não substituem uma dieta variada e equilibrada nem um estilo de vida saudável.", "footer_brand": "Dose-IQ — Distribuidor oficial Bioniq", "contact": "Contacto", "privacy": "Política de privacidade", "terms": "Termos de utilização", "footer_disc": "Este site é informativo. Os suplementos alimentares não substituem uma dieta variada e equilibrada nem um estilo de vida saudável.", "questions": [["Em que grupo etário está?", ["18 – 30 anos", "30 – 45 anos", "45 – 60 anos", "60 – 90 anos"]], ["Como descreveria a sua energia num dia típico?", ["Estável e boa de manhã à noite", "Manhãs boas, quebra visível à tarde", "Muitas vezes baixa mesmo após dormir", "Muito irregular"]], ["Quantas porções de hortícolas ou fruta colorida come habitualmente por dia?", ["5 ou mais", "3–4", "1–2", "Menos de 1"]], ["Quantos dias por semana move o corpo pelo menos 30 minutos?", ["6–7 dias", "4–5 dias", "2–3 dias", "0–1 dia"]], ["Quão consistente é o seu sono (mesmas horas na maioria dos dias)?", ["Muito consistente, inclusive ao fim de semana", "Maioritariamente consistente durante a semana", "Bastante irregular", "Varia muito"]], ["Como classificaria o seu nível de stress típico no último mês?", ["Baixo e gerível", "Moderado mas controlado", "Muitas vezes alto", "Muito alto na maioria dos dias"]], ["Com que frequência come alimentos ultraprocessados (snacks, fast food, bebidas açucaradas)?", ["Raramente ou nunca", "Algumas vezes por semana", "Na maioria dos dias", "Várias vezes por dia"]], ["Como é o hábito diário de hidratação?", ["Bebo água de forma consistente ao longo do dia", "Tento mas esqueço-me muitas vezes", "Bebo sobretudo quando tenho sede", "Sei que não bebo o suficiente"]], ["Toma atualmente suplementos ou multivitamínicos todos os dias?", ["Sim, todos os dias de forma consistente", "Às vezes / de forma intermitente", "Só quando me sinto em baixo", "Não"]], ["Se pudesse melhorar uma área nos próximos 90 dias, qual seria?", ["Energia diária e menos cansaço", "Qualidade da pele, cabelo ou unhas", "Clareza mental e foco", "Recuperação e resiliência física", "Bem-estar geral a longo prazo"]]]}, "nl": {"title": "Jouw Fit Score | Dose-IQ", "topbar": "Officiële Bioniq-distributeur · Educatieve gids · Geen diagnose", "q_of": "Vraag {n} van 10", "back": "Terug", "next": "Volgende", "reveal": "Toon mijn Fit Score", "fit_score": "Fit Score", "score_title": "Jouw Fit Score", "band_optimal": "Optimale fit", "title_optimal": "Uitstekende Fit Score", "band_good": "Goede fit", "title_good": "Solide Fit Score", "band_fair": "Redelijke fit", "title_fair": "Ruimte voor verbetering", "band_low": "Aandacht nodig", "title_low": "Laten we een beter fundament bouwen", "age_18": "In je twintiger en vroege dertiger jaren leggen consistentie en herstel de basis voor de komende decennia.", "age_30": "In je dertiger en vroege veertiger jaren wordt de balans tussen energie, stress en herstel extra belangrijk.", "age_45": "Tussen 45 en 60 loont het om stabiele energie, botten en veerkracht op lange termijn te ondersteunen.", "age_60": "Na 60 maken eenvoudige dagelijkse gewoontes rond voeding, beweging en slaap een merkbare verschil.", "ins_energy_h": "Ondersteuning van energie", "ins_energy_p": "Je antwoorden wijzen op wisselende dagelijkse energie. Bepaalde vitaminen en mineralen dragen bij tot een normale energiestofwisseling en tot de vermindering van moeheid en vermoeidheid.", "ins_plant_h": "Plantaardige variatie", "ins_plant_p": "Meer kleurrijke groenten en fruit is een van de meest impactvolle veranderingen voor je nutriënteninname.", "ins_move_h": "Beweging", "ins_move_p": "Regelmatig bewegen ondersteunt veel systemen in het lichaam. Al 30 minuten op de meeste dagen maakt verschil.", "ins_sleep_h": "Slaapconsistentie", "ins_sleep_p": "Een regelmatiger slaapritme verbetert vaak energie, herstel en hoe je je overdag voelt.", "ins_stress_h": "Stressbelasting", "ins_stress_p": "Aanhoudend hoge stress kan slaap, energie en nutriëntenbehoefte beïnvloeden. Kleine dagelijkse herstelgewoontes helpen.", "ins_base_h": "Sterke basis", "ins_base_p": "Je hebt al meerdere stevige gewoontes. Consistentie verfijnen en mogelijke hiaten aanvullen kan de score nog verhogen.", "ins_pers_h": "Voordeel van personalisatie", "ins_pers_p": "Eén dagelijkse formule die bij je leefstijl past, presteert vaak beter dan meerdere generieke producten stapelen.", "email_h3": "Ontgrendel je gratis persoonlijke voedingsgids", "email_p": "Vul je e-mail in om de gids van 7 pagina’s te downloaden en tips te krijgen bij je Fit Score.", "email_ph": "Je e-mailadres", "consent": "Ik ga akkoord met het <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">privacybeleid</a> en dat Dose-IQ mijn e-mail gebruikt om de gratis persoonlijke voedingsgids te sturen. Ik kan op elk moment verwijdering vragen via <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Haal mijn gratis gids", "sending": "Verzenden...", "error": "Er ging iets mis. Probeer het opnieuw.", "download": "Download je gratis gids van 7 pagina’s", "pdf_note": "PDF · Directe download", "handoff_p": "Wil je een volledig persoonlijke dagelijkse formule?", "handoff_a": "Ga verder naar de officiële Bioniq Wellness Assessment →", "disclaimer": "Deze Fit Score is alleen educatief en motiverend. Het is geen medische diagnose en geen vervanging van professioneel advies. Hij is volledig gescheiden van de gedetailleerde Wellness Assessment voor een Bioniq GO-formule. Voedingssupplementen vervangen geen gevarieerde, evenwichtige voeding en een gezonde levensstijl.", "footer_brand": "Dose-IQ — Officiële Bioniq-distributeur", "contact": "Contact", "privacy": "Privacybeleid", "terms": "Gebruiksvoorwaarden", "footer_disc": "Deze site is informatief. Voedingssupplementen vervangen geen gevarieerde, evenwichtige voeding en een gezonde levensstijl.", "questions": [["In welke leeftijdsgroep val je?", ["18 – 30 jaar", "30 – 45 jaar", "45 – 60 jaar", "60 – 90 jaar"]], ["Hoe zou je je energie op een typische dag beschrijven?", ["Stabiel en goed van 's ochtends tot 's avonds", "Goede ochtenden, merkbare dip in de middag", "Vaak laag, ook na slaap", "Erg wisselend"]], ["Hoeveel porties kleurrijke groenten of fruit eet je meestal per dag?", ["5 of meer", "3–4", "1–2", "Minder dan 1"]], ["Op hoeveel dagen per week beweeg je minstens 30 minuten?", ["6–7 dagen", "4–5 dagen", "2–3 dagen", "0–1 dag"]], ["Hoe consistent is je slaap (meestal dezelfde bed- en opstaantijd)?", ["Zeer consistent, ook in het weekend", "Meestal consistent doordeweeks", "Tamelijk onregelmatig", "Varieert sterk"]], ["Hoe beoordeel je je typische stressniveau van de afgelopen maand?", ["Laag en hanteerbaar", "Matig maar onder controle", "Vaak hoog", "De meeste dagen zeer hoog"]], ["Hoe vaak eet je ultraprocessed voedsel (snacks, fastfood, suikerhoudende dranken)?", ["Zelden of nooit", "Een paar keer per week", "De meeste dagen", "Meerdere keren per dag"]], ["Hoe is je dagelijkse hydratatiegewoonte?", ["Ik drink de hele dag door consistent water", "Ik probeer het maar vergeet het vaak", "Ik drink vooral als ik dorst heb", "Ik weet dat ik te weinig drink"]], ["Neem je momenteel dagelijks supplementen of multivitaminen?", ["Ja, elke dag consistent", "Soms / met tussenpozen", "Alleen als ik me futloos voel", "Nee"]], ["Als je de komende 90 dagen één gebied zou verbeteren, welk dan?", ["Dagelijkse energie en minder moeheid", "Kwaliteit van huid, haar of nagels", "Mentale scherpte en focus", "Herstel en fysieke veerkracht", "Algeheel welzijn op lange termijn"]]]}, "pl": {"title": "Twój Fit Score | Dose-IQ", "topbar": "Oficjalny dystrybutor Bioniq · Przewodnik edukacyjny · Bez diagnozy", "q_of": "Pytanie {n} z 10", "back": "Wstecz", "next": "Dalej", "reveal": "Pokaż mój Fit Score", "fit_score": "Fit Score", "score_title": "Twój Fit Score", "band_optimal": "Optymalne dopasowanie", "title_optimal": "Doskonały Fit Score", "band_good": "Dobre dopasowanie", "title_good": "Solidny Fit Score", "band_fair": "Umiarkowane dopasowanie", "title_fair": "Jest przestrzeń na poprawę", "band_low": "Wymaga uwagi", "title_low": "Zbudujmy lepsze podstawy", "age_18": "Po dwudziestce i na początku trzydziestki regularność i regeneracja budują fundament na kolejne dekady.", "age_30": "Po trzydziestce i na początku czterdziestki równowaga energii, stresu i regeneracji staje się szczególnie ważna.", "age_45": "Między 45. a 60. rokiem życia wsparcie stałej energii, kości i długoterminowej odporności się opłaca.", "age_60": "Po 60. proste codzienne nawyki dotyczące odżywiania, ruchu i snu robią wyraźną różnicę.", "ins_energy_h": "Wsparcie energii", "ins_energy_p": "Odpowiedzi sugerują mniej stałą energię w ciągu dnia. Niektóre witaminy i składniki mineralne przyczyniają się do prawidłowego metabolizmu energetycznego oraz do zmniejszenia uczucia zmęczenia i znużenia.", "ins_plant_h": "Różnorodność roślinna", "ins_plant_p": "Więcej kolorowych warzyw i owoców to jedna z najskuteczniejszych zmian dla podaży składników odżywczych.", "ins_move_h": "Ruch", "ins_move_p": "Regularny ruch wspiera wiele układów organizmu. Nawet 30 minut przez większość dni robi różnicę.", "ins_sleep_h": "Regularność snu", "ins_sleep_p": "Bardziej regularny rytm snu często poprawia energię, regenerację i samopoczucie w ciągu dnia.", "ins_stress_h": "Obciążenie stresem", "ins_stress_p": "Wysoki, utrzymujący się stres może wpływać na sen, energię i zapotrzebowanie na składniki odżywcze. Pomagają małe codzienne rytuały regeneracji.", "ins_base_h": "Solidna baza", "ins_base_p": "Masz już kilka dobrych nawyków. Dopracowanie regularności i uzupełnienie możliwych braków może jeszcze podnieść wynik.", "ins_pers_h": "Przewaga personalizacji", "ins_pers_p": "Jedna dzienna formuła dopasowana do stylu życia często wypada lepiej niż łączenie wielu uniwersalnych produktów.", "email_h3": "Odblokuj darmowy spersonalizowany przewodnik żywieniowy", "email_p": "Podaj e-mail, pobierz 7-stronicowy przewodnik i otrzymaj praktyczne wskazówki powiązane z Fit Score.", "email_ph": "Twój adres e-mail", "consent": "Zgadzam się z <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">Polityką prywatności</a> i na to, by Dose-IQ używał mojego e-maila do wysłania darmowego spersonalizowanego przewodnika żywieniowego. Usunięcie danych mogę zgłosić w każdej chwili na <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Odbierz darmowy przewodnik", "sending": "Wysyłanie...", "error": "Coś poszło nie tak. Spróbuj ponownie.", "download": "Pobierz darmowy 7-stronicowy przewodnik", "pdf_note": "PDF · Natychmiastowe pobranie", "handoff_p": "Chcesz w pełni spersonalizowaną codzienną formułę?", "handoff_a": "Przejdź do oficjalnej Bioniq Wellness Assessment →", "disclaimer": "Ten Fit Score ma wyłącznie cel edukacyjny i motywacyjny. Nie jest diagnozą medyczną ani substytutem porady specjalistycznej. Jest całkowicie oddzielony od szczegółowej Wellness Assessment służącej do przygotowania formuły Bioniq GO. Suplementy diety nie zastępują zróżnicowanej, zrównoważonej diety i zdrowego stylu życia.", "footer_brand": "Dose-IQ — Oficjalny dystrybutor Bioniq", "contact": "Kontakt", "privacy": "Polityka prywatności", "terms": "Warunki korzystania", "footer_disc": "Ta strona ma charakter informacyjny. Suplementy diety nie zastępują zróżnicowanej, zrównoważonej diety i zdrowego stylu życia.", "questions": [["Do której grupy wiekowej należysz?", ["18 – 30 lat", "30 – 45 lat", "45 – 60 lat", "60 – 90 lat"]], ["Jak opiszesz swoją energię w typowym dniu?", ["Stabilna i dobra od rana do wieczora", "Dobre poranki, wyraźny spadek po południu", "Często niska nawet po śnie", "Bardzo zmienna"]], ["Ile porcji kolorowych warzyw lub owoców zwykle jesz dziennie?", ["5 lub więcej", "3–4", "1–2", "Mniej niż 1"]], ["Ile dni w tygodniu ruszasz ciałem przez co najmniej 30 minut?", ["6–7 dni", "4–5 dni", "2–3 dni", "0–1 dzień"]], ["Jak regularny jest Twój sen (ta sama pora większości dni)?", ["Bardzo regularny, także w weekendy", "Głównie regularny w dni robocze", "Dość nieregularny", "Bardzo zmienny"]], ["Jak ocenisz typowy poziom stresu w ostatnim miesiącu?", ["Niski i do opanowania", "Umiarkowany, ale pod kontrolą", "Często wysoki", "Bardzo wysoki przez większość dni"]], ["Jak często jesz żywność wysoko przetworzoną (przekąski, fast food, słodkie napoje)?", ["Rzadko albo nigdy", "Kilka razy w tygodniu", "Większość dni", "Kilka razy dziennie"]], ["Jak wygląda codzienny nawyk nawodnienia?", ["Piję wodę regularnie przez cały dzień", "Staram się, ale często zapominam", "Piję głównie, gdy jestem spragniony/a", "Wiem, że piję za mało"]], ["Czy obecnie codziennie przyjmujesz suplementy lub multiwitaminy?", ["Tak, codziennie regularnie", "Czasami / nieregularnie", "Tylko gdy czuję się wyczerpany/a", "Nie"]], ["Gdybyś w ciągu 90 dni mógł/mogła poprawić jeden obszar, który by to był?", ["Dzienna energia i mniejsze zmęczenie", "Jakość skóry, włosów lub paznokci", "Bystrość umysłu i skupienie", "Regeneracja i odporność fizyczna", "Ogólne długoterminowe samopoczucie"]]]}, "cs": {"title": "Váš Fit Score | Dose-IQ", "topbar": "Oficiální distributor Bioniq · Vzdělávací průvodce · Žádná diagnóza", "q_of": "Otázka {n} z 10", "back": "Zpět", "next": "Další", "reveal": "Zobrazit Fit Score", "fit_score": "Fit Score", "score_title": "Váš Fit Score", "band_optimal": "Optimální shoda", "title_optimal": "Výborný Fit Score", "band_good": "Dobrá shoda", "title_good": "Solidní Fit Score", "band_fair": "Přiměřená shoda", "title_fair": "Je prostor ke zlepšení", "band_low": "Vyžaduje pozornost", "title_low": "Pojďme postavit lepší základ", "age_18": "Ve dvaceti a na začátku třicítky tvoří pravidelnost a regenerace základ na další desetiletí.", "age_30": "Ve třiceti a na začátku čtyřicítky je vyvážení energie, stresu a regenerace zvlášť důležité.", "age_45": "Mezi 45 a 60 se vyplatí podporovat stálou energii, kosti a dlouhodobou odolnost.", "age_60": "Po 60. roce dělají jednoduché denní návyky kolem výživy, pohybu a spánku zřetelný rozdíl.", "ins_energy_h": "Podpora energie", "ins_energy_p": "Odpovědi naznačují méně stálou denní energii. Některé vitaminy a minerální látky přispívají k normálnímu energetickému metabolismu a ke snížení míry únavy a vyčerpání.", "ins_plant_h": "Rostlinná rozmanitost", "ins_plant_p": "Více barevné zeleniny a ovoce je jednou z nejúčinnějších změn pro příjem živin.", "ins_move_h": "Pohyb", "ins_move_p": "Pravidelný pohyb podporuje mnoho tělesných systémů. I 30 minut většinu dní udělá rozdíl.", "ins_sleep_h": "Pravidelnost spánku", "ins_sleep_p": "Pravidelnější spánkový režim často zlepší energii, regeneraci a to, jak se cítíte přes den.", "ins_stress_h": "Zátěž stresem", "ins_stress_p": "Vysoký, přetrvávající stres může ovlivnit spánek, energii i potřebu živin. Pomáhají malé denní návyky regenerace.", "ins_base_h": "Silný základ", "ins_base_p": "Už máte několik pevných návyků. Doladění pravidelnosti a doplnění možných mezer může skóre ještě zvýšit.", "ins_pers_h": "Výhoda personalizace", "ins_pers_p": "Jedna denní formule přizpůsobená životnímu stylu často funguje lépe než skládání několika obecných produktů.", "email_h3": "Odemkněte bezplatného personalizovaného výživového průvodce", "email_p": "Zadejte e-mail, stáhněte 7stránkového průvodce a získejte praktické tipy k vašemu Fit Score.", "email_ph": "Vaše e-mailová adresa", "consent": "Souhlasím se <a href=\"/privacy.html\" target=\"_blank\" rel=\"noopener\">zásadami ochrany osobních údajů</a> a s tím, že Dose-IQ použije můj e-mail k odeslání bezplatného personalizovaného výživového průvodce. Výmaz mohu kdykoli požádat na <a href=\"mailto:info@dose-iq.com\">info@dose-iq.com</a>.", "submit": "Získat bezplatného průvodce", "sending": "Odesílání...", "error": "Něco se pokazilo. Zkuste to znovu.", "download": "Stáhnout bezplatného 7stránkového průvodce", "pdf_note": "PDF · Okamžité stažení", "handoff_p": "Chcete plně personalizovanou denní formuli?", "handoff_a": "Pokračovat na oficiální Bioniq Wellness Assessment →", "disclaimer": "Tento Fit Score slouží pouze ke vzdělávání a motivaci. Není lékařskou diagnózou ani náhradou odborné rady. Je zcela oddělený od podrobného Wellness Assessment používaného k přípravě formule Bioniq GO. Doplňky stravy nenahrazují pestrou a vyváženou stravu a zdravý životní styl.", "footer_brand": "Dose-IQ — Oficiální distributor Bioniq", "contact": "Kontakt", "privacy": "Zásady ochrany osobních údajů", "terms": "Podmínky použití", "footer_disc": "Tyto stránky jsou informativní. Doplňky stravy nenahrazují pestrou a vyváženou stravu a zdravý životní styl.", "questions": [["Do které věkové skupiny patříte?", ["18 – 30 let", "30 – 45 let", "45 – 60 let", "60 – 90 let"]], ["Jak byste popsali energii během typického dne?", ["Stabilní a dobrá od rána do večera", "Dobrá rána, zřetelný odpolední pokles", "Často nízká i po spánku", "Velmi kolísavá"]], ["Kolik porcí barevné zeleniny nebo ovoce obvykle sníte za den?", ["5 nebo více", "3–4", "1–2", "Méně než 1"]], ["Kolik dní v týdnu se hýbete alespoň 30 minut?", ["6–7 dní", "4–5 dní", "2–3 dny", "0–1 den"]], ["Jak pravidelný je váš spánek (stejný čas většinu dní)?", ["Velmi pravidelný, i o víkendu", "Většinou pravidelný ve všední dny", "Docela nepravidelný", "Hodně se mění"]], ["Jak byste ohodnotili typickou úroveň stresu za poslední měsíc?", ["Nízká a zvládnutelná", "Střední, ale pod kontrolou", "Často vysoká", "Většinu dní velmi vysoká"]], ["Jak často jíte ultra zpracované potraviny (balené svačiny, fast food, sladké nápoje)?", ["Zřídka nebo nikdy", "Několikrát týdně", "Většinu dní", "Několikrát denně"]], ["Jaký je váš denní návyk hydratace?", ["Piji vodu průběžně během dne", "Snažím se, ale často zapomenu", "Piji hlavně, když mám žízeň", "Vím, že nepiji dost"]], ["Berete v současnosti denně doplňky stravy nebo multivitamíny?", ["Ano, každý den pravidelně", "Občas / nepravidelně", "Jen když se cítím vyčerpaně", "Ne"]], ["Kdybyste v příštích 90 dnech mohli zlepšit jednu oblast, která by to byla?", ["Denní energie a méně únavy", "Kvalita pleti, vlasů nebo nehtů", "Mentální ostrost a soustředění", "Regenerace a fyzická odolnost", "Celková dlouhodobá pohoda"]]]}};
+    const POINTS = [[0, 0, 0, 0], [10, 6, 3, 2], [10, 7, 4, 1], [10, 8, 5, 1], [10, 7, 3, 1], [10, 7, 3, 1], [10, 6, 3, 0], [10, 6, 4, 1], [8, 5, 3, 2], [7, 7, 7, 7, 8]];
+    const AGES = ["18-30", "30-45", "45-60", "60-90"];
 
+    let currentLang = 'en';
     let current = 0;
-    const answers = []; // stores { points, age? }
+    const answers = [];
 
     const quizCard = document.getElementById('quizCard');
     const progressFill = document.getElementById('progressFill');
@@ -557,13 +520,86 @@
     const emailInput = document.getElementById('emailInput');
     const downloadArea = document.getElementById('downloadArea');
     const emailGate = document.getElementById('emailGate');
+    const consentCheck = document.getElementById('consentCheck');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function t() { return T[currentLang] || T.en; }
+    function questionsFor(lang) {
+      const pack = (T[lang] || T.en).questions;
+      return pack.map((item, qi) => ({
+        q: item[0],
+        options: item[1].map((text, oi) => {
+          const o = { text, points: POINTS[qi][oi] };
+          if (qi === 0) o.age = AGES[oi];
+          return o;
+        })
+      }));
+    }
+    function guideUrl(lang) { return '/guides/' + lang + '.pdf'; }
+    function setDownloadHref(lang) {
+      const a = document.getElementById('downloadBtn');
+      if (a) { a.setAttribute('href', guideUrl(lang)); a.setAttribute('download', ''); }
+    }
+    function applyStatic(lang) {
+      const tt = T[lang] || T.en;
+      document.title = tt.title;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (tt[key] != null) el.innerHTML = tt[key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (tt[key] != null) el.setAttribute('placeholder', tt[key]);
+      });
+      document.querySelectorAll('a.home-link').forEach(a => a.setAttribute('href', '/' + lang));
+      const langField = document.getElementById('langField');
+      if (langField) langField.value = lang;
+      setDownloadHref(lang);
+      const btn = document.getElementById('langBtn');
+      if (btn) btn.textContent = LANG_LABELS[lang] + ' ▾';
+      document.querySelectorAll('#langMenu button').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+      });
+    }
+    function toggleLangMenu() {
+      document.getElementById('langMenu').classList.toggle('open');
+    }
+    document.addEventListener('click', (e) => {
+      const wrap = document.querySelector('.lang-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('langMenu')?.classList.remove('open');
+      }
+    });
+    function pathLang() {
+      const first = (location.pathname.split('/').filter(Boolean)[0] || '').toLowerCase();
+      return LANG_PATHS.includes(first) ? first : null;
+    }
+    function setLang(lang, opts) {
+      if (!T[lang]) lang = 'en';
+      currentLang = lang;
+      localStorage.setItem('bonq_lang', lang);
+      document.getElementById('langMenu')?.classList.remove('open');
+      applyStatic(lang);
+      if (results.style.display === 'block') {
+        showResults(true);
+      } else {
+        renderQuestion();
+      }
+      if (opts && opts.skipUrl) return;
+      const want = '/' + lang + '/quiz';
+      const cur = location.pathname.replace(/\/+$/, '') || '/';
+      if (cur !== want) history.pushState({ lang }, '', want + location.search);
+    }
 
     function renderQuestion() {
+      const questions = questionsFor(currentLang);
       const q = questions[current];
       const selected = answers[current];
+      const tt = t();
 
       quizCard.innerHTML = `
-        <div class="q-label">Question ${current + 1} of 10</div>
+        <div class="q-label">${tt.q_of.replace('{n}', String(current + 1))}</div>
         <h2 class="q-text">${q.q}</h2>
         <div class="options">
           ${q.options.map((opt, i) => `
@@ -575,16 +611,16 @@
           `).join('')}
         </div>
         <div class="nav">
-          ${current > 0 ? '<button type="button" class="btn btn-back" id="backBtn">Back</button>' : '<span></span>'}
+          ${current > 0 ? `<button type="button" class="btn btn-back" id="backBtn">${tt.back}</button>` : '<span></span>'}
           <button type="button" class="btn btn-next" id="nextBtn" ${!selected ? 'disabled' : ''}>
-            ${current === 9 ? 'Reveal my Fit Score' : 'Next'}
+            ${current === 9 ? tt.reveal : tt.next}
           </button>
         </div>
       `;
 
       const pct = ((current + 1) / 10) * 100;
       progressFill.style.width = pct + '%';
-      progressText.textContent = `Question ${current + 1} of 10`;
+      progressText.textContent = tt.q_of.replace('{n}', String(current + 1));
 
       document.querySelectorAll('.option').forEach(el => {
         el.addEventListener('click', () => {
@@ -617,109 +653,52 @@
       }
     }
 
-    function showResults() {
-      // Calculate score (questions 1-9 have points, question 0 is age)
-      let total = 0;
-      let maxPossible = 0;
-      for (let i = 1; i < answers.length; i++) {
-        total += answers[i].points;
-        maxPossible += 10;
-      }
-      // Question 9 (index 9) max is 8, adjust
-      maxPossible = 10*8 + 8; // 88 → we normalise to 100
-      // Simpler: treat as out of 90 then scale
+    function showResults(keepScroll) {
+      const tt = t();
       const raw = answers.slice(1).reduce((s, a) => s + a.points, 0);
-      const score = Math.round((raw / 93) * 100); // max possible ~93
+      const score = Math.round((raw / 93) * 100);
       const finalScore = Math.min(100, Math.max(0, score));
+      const ageGroup = answers[0] && answers[0].age;
 
-      const ageGroup = answers[0].age;
-
-      // Band
       let band, bandClass, title;
-      if (finalScore >= 80) {
-        band = "Optimal Fit";
-        bandClass = "band-optimal";
-        title = "Excellent Fit Score";
-      } else if (finalScore >= 60) {
-        band = "Good Fit";
-        bandClass = "band-good";
-        title = "Solid Fit Score";
-      } else if (finalScore >= 40) {
-        band = "Fair Fit";
-        bandClass = "band-fair";
-        title = "Room to Improve";
-      } else {
-        band = "Needs Attention";
-        bandClass = "band-low";
-        title = "Let's Build a Better Foundation";
-      }
+      if (finalScore >= 80) { band = tt.band_optimal; bandClass = "band-optimal"; title = tt.title_optimal; }
+      else if (finalScore >= 60) { band = tt.band_good; bandClass = "band-good"; title = tt.title_good; }
+      else if (finalScore >= 40) { band = tt.band_fair; bandClass = "band-fair"; title = tt.title_fair; }
+      else { band = tt.band_low; bandClass = "band-low"; title = tt.title_low; }
 
-      // Age-specific messaging
-      const ageMessages = {
-        "18-30": "In your 20s and early 30s, consistency and recovery habits set the foundation for decades ahead.",
-        "30-45": "In your 30s and early 40s, balancing energy, stress and recovery becomes especially important.",
-        "45-60": "In your mid-40s to 60s, supporting steady energy, bones and long-term resilience pays off.",
-        "60-90": "After 60, simple daily habits around nutrition, movement and sleep make a meaningful difference."
-      };
-
-      // Insights based on low-scoring answers
+      const ageMessages = { "18-30": tt.age_18, "30-45": tt.age_30, "45-60": tt.age_45, "60-90": tt.age_60 };
       const insights = [];
-      if (answers[1] && answers[1].points <= 4) {
-        insights.push({ title: "Energy support", text: "Your answers suggest daily energy could be more consistent. Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue." });
-      }
-      if (answers[2] && answers[2].points <= 5) {
-        insights.push({ title: "Plant diversity", text: "Increasing colourful vegetables and fruit is one of the highest-impact changes for overall nutrient intake." });
-      }
-      if (answers[3] && answers[3].points <= 5) {
-        insights.push({ title: "Movement", text: "Regular movement supports many systems in the body. Even 30 minutes most days makes a difference." });
-      }
-      if (answers[4] && answers[4].points <= 4) {
-        insights.push({ title: "Sleep consistency", text: "A more regular sleep schedule often improves energy, recovery and how you feel during the day." });
-      }
-      if (answers[5] && answers[5].points <= 4) {
-        insights.push({ title: "Stress load", text: "High ongoing stress can affect sleep, energy and nutrient needs. Small daily recovery habits help." });
-      }
-      if (insights.length === 0) {
-        insights.push({ title: "Strong base", text: "You already have several solid habits. Fine-tuning consistency and covering potential nutrient gaps can push your score even higher." });
-      }
-      if (insights.length < 2) {
-        insights.push({ title: "Personalisation advantage", text: "A single daily formula matched to your lifestyle often outperforms stacking multiple generic products." });
-      }
+      if (answers[1] && answers[1].points <= 4) insights.push({ title: tt.ins_energy_h, text: tt.ins_energy_p });
+      if (answers[2] && answers[2].points <= 5) insights.push({ title: tt.ins_plant_h, text: tt.ins_plant_p });
+      if (answers[3] && answers[3].points <= 5) insights.push({ title: tt.ins_move_h, text: tt.ins_move_p });
+      if (answers[4] && answers[4].points <= 4) insights.push({ title: tt.ins_sleep_h, text: tt.ins_sleep_p });
+      if (answers[5] && answers[5].points <= 4) insights.push({ title: tt.ins_stress_h, text: tt.ins_stress_p });
+      if (insights.length === 0) insights.push({ title: tt.ins_base_h, text: tt.ins_base_p });
+      if (insights.length < 2) insights.push({ title: tt.ins_pers_h, text: tt.ins_pers_p });
 
-      // Animate score
-      scoreNumber.textContent = "0";
+      if (!keepScroll) scoreNumber.textContent = "0";
       scoreBand.textContent = band;
       scoreBand.className = "score-band " + bandClass;
       scoreTitle.textContent = title;
       ageTag.textContent = ageMessages[ageGroup] || "";
-      insightsList.innerHTML = insights.map(i => `
-        <div class="insight">
-          <h3>${i.title}</h3>
-          <p>${i.text}</p>
-        </div>
-      `).join('');
+      insightsList.innerHTML = insights.map(i => `<div class="insight"><h3>${i.title}</h3><p>${i.text}</p></div>`).join('');
 
       quizCard.style.display = 'none';
       progressWrap.style.display = 'none';
       results.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (!keepScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Animate the number and circle
-      let current = 0;
-      const step = finalScore / 40;
-      const timer = setInterval(() => {
-        current += step;
-        if (current >= finalScore) {
-          current = finalScore;
-          clearInterval(timer);
-        }
-        scoreNumber.textContent = Math.round(current);
-        scoreCircle.style.background = `conic-gradient(var(--accent) ${current}%, var(--border) ${current}%)`;
-      }, 25);
+      if (!keepScroll) {
+        let n = 0;
+        const step = finalScore / 40;
+        const timer = setInterval(() => {
+          n += step;
+          if (n >= finalScore) { n = finalScore; clearInterval(timer); }
+          scoreNumber.textContent = Math.round(n);
+          scoreCircle.style.background = `conic-gradient(var(--accent) ${n}%, var(--border) ${n}%)`;
+        }, 25);
+      }
     }
-
-    const consentCheck = document.getElementById('consentCheck');
-    const submitBtn = document.getElementById('submitBtn');
 
     function syncConsentButton() {
       submitBtn.disabled = !consentCheck.checked;
@@ -730,21 +709,16 @@
     emailForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = emailInput.value.trim();
-      if (!email || !email.includes('@')) {
-        emailInput.focus();
-        return;
-      }
-      if (!consentCheck.checked) {
-        consentCheck.focus();
-        return;
-      }
+      const tt = t();
+      if (!email || !email.includes('@')) { emailInput.focus(); return; }
+      if (!consentCheck.checked) { consentCheck.focus(); return; }
 
       document.getElementById('fitScoreField').value = scoreNumber.textContent;
+      document.getElementById('langField').value = currentLang;
 
-      const btn = document.getElementById('submitBtn');
       const status = document.getElementById('formStatus');
-      btn.disabled = true;
-      btn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      submitBtn.textContent = tt.sending;
 
       try {
         const res = await fetch('/api/subscribe', {
@@ -753,7 +727,8 @@
           body: JSON.stringify({
             email: email,
             privacy_consent: 'yes',
-            fit_score: scoreNumber.textContent
+            fit_score: scoreNumber.textContent,
+            lang: currentLang
           })
         });
 
@@ -762,30 +737,45 @@
           localStorage.setItem('doseiq_fit_score', scoreNumber.textContent);
           emailGate.style.display = 'none';
           downloadArea.style.display = 'block';
+          setDownloadHref(currentLang);
+          const a = document.getElementById('downloadBtn');
+          if (a) a.click();
         } else {
           status.style.display = 'block';
-          status.textContent = 'Something went wrong. Please try again.';
-          btn.textContent = 'Get my free guide';
+          status.textContent = tt.error;
+          submitBtn.textContent = tt.submit;
           syncConsentButton();
         }
       } catch (err) {
         status.style.display = 'block';
-        status.textContent = 'Something went wrong. Please try again.';
-        btn.textContent = 'Get my free guide';
+        status.textContent = tt.error;
+        submitBtn.textContent = tt.submit;
         syncConsentButton();
       }
     });
 
-    renderQuestion();
+    (function(){
+      const fromPath = pathLang();
+      if (fromPath) { setLang(fromPath, { skipUrl: true }); return; }
+      const saved = localStorage.getItem('bonq_lang');
+      const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+      const initial = (saved && T[saved]) ? saved : (T[browser] ? browser : 'en');
+      setLang(initial);
+    })();
+    window.addEventListener('popstate', () => {
+      const lang = pathLang() || localStorage.getItem('bonq_lang') || 'en';
+      setLang(lang, { skipUrl: true });
+    });
   </script>
+
   <footer>
     <div class="container footer-inner" style="text-align:center;flex-direction:column;align-items:center;">
-      <a href="index.html" style="text-decoration:none">
-        <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
+      <a href="/en" class="home-link" style="text-decoration:none">
+        <img src="/dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
       </a>
-      <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
+      <div class="footer-brand" data-i18n="footer_brand">Dose-IQ — Official Bioniq distributor</div>
       <details class="footer-contact-panel">
-        <summary>Contact</summary>
+        <summary data-i18n="contact">Contact</summary>
         <div class="footer-contact-details">
           <a href="mailto:info@dose-iq.com">info@dose-iq.com</a><br>
           BK International EOOD<br>
@@ -794,12 +784,12 @@
         </div>
       </details>
       <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="/privacy.html" data-i18n="privacy">Privacy Policy</a>
         <span aria-hidden="true">·</span>
-        <a href="terms.html">Terms of Use</a>
+        <a href="/terms.html" data-i18n="terms">Terms of Use</a>
       </div>
       <div class="footer-disclaimer">
-        This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
+        <span data-i18n="footer_disc">This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.</span>
       </div>
     </div>
   </footer>

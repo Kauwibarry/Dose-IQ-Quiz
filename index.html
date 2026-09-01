@@ -2,6 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+<script>
+(function(){
+  var LANGS=["en","de","fr","it","es","pt","nl","pl","cs"];
+  var path=location.pathname.replace(/\/+$/,"")||"/";
+  var seg=(path.split("/").filter(Boolean)[0]||"").toLowerCase();
+  if(LANGS.indexOf(seg)!==-1) return;
+  if(path!=="/" && path!=="/index.html") return;
+  var saved=null; try{saved=localStorage.getItem("bonq_lang")}catch(e){}
+  var nav=(navigator.language||navigator.userLanguage||"en").slice(0,2).toLowerCase();
+  var lang=(saved&&LANGS.indexOf(saved)!==-1)?saved:(LANGS.indexOf(nav)!==-1?nav:"en");
+  location.replace("/"+lang+location.search+location.hash);
+})();
+</script>
+<link rel="alternate" hreflang="en" href="https://www.dose-iq.fit/en" />
+<link rel="alternate" hreflang="de" href="https://www.dose-iq.fit/de" />
+<link rel="alternate" hreflang="fr" href="https://www.dose-iq.fit/fr" />
+<link rel="alternate" hreflang="it" href="https://www.dose-iq.fit/it" />
+<link rel="alternate" hreflang="es" href="https://www.dose-iq.fit/es" />
+<link rel="alternate" hreflang="pt" href="https://www.dose-iq.fit/pt" />
+<link rel="alternate" hreflang="nl" href="https://www.dose-iq.fit/nl" />
+<link rel="alternate" hreflang="pl" href="https://www.dose-iq.fit/pl" />
+<link rel="alternate" hreflang="cs" href="https://www.dose-iq.fit/cs" />
+<link rel="alternate" hreflang="x-default" href="https://www.dose-iq.fit/en" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Personalised Nutrition Guide | Dose-IQ</title>
   <meta name="description" content="Take our free 10-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.">
@@ -306,37 +329,62 @@
     }
 
     .topbar{background:#5BA3D9;color:#fff;text-align:center;font-size:.85rem;font-weight:500;padding:10px 16px}
+
+    .header-actions{display:flex;align-items:center;gap:10px}
+    .lang-wrap{position:relative}
+    .lang-btn{background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .lang-btn:hover{border-color:#CBD5E1}
+    .lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border);border-radius:12px;min-width:160px;box-shadow:0 12px 30px rgba(0,0,0,.12);z-index:60;padding:6px;max-height:280px;overflow-y:auto}
+    .lang-menu.open{display:block}
+    .lang-menu button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 12px;font-size:.88rem;cursor:pointer;border-radius:8px;font-family:inherit;color:var(--text)}
+    .lang-menu button:hover,.lang-menu button.active{background:#F0F7FA;color:var(--blue)}
   </style>
 
 
 
 </head>
 <body>
-  <div class="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
+  <div class="topbar" data-i18n="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
 
   <header>
     <div class="container header-inner">
-      <a href="index.html" class="logo-link"><img src="dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
-      <a href="quiz.html" class="nav-cta">Get your Fit Score</a>
+      <a href="/en" class="logo-link home-link"><img src="/dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
+      <div class="header-actions">
+        <div class="lang-wrap">
+          <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" aria-label="Language">EN ▾</button>
+          <div class="lang-menu" id="langMenu">
+            <button data-lang="en" onclick="setLang('en')">English</button>
+<button data-lang="de" onclick="setLang('de')">Deutsch</button>
+<button data-lang="fr" onclick="setLang('fr')">Français</button>
+<button data-lang="it" onclick="setLang('it')">Italiano</button>
+<button data-lang="es" onclick="setLang('es')">Español</button>
+<button data-lang="pt" onclick="setLang('pt')">Português</button>
+<button data-lang="nl" onclick="setLang('nl')">Nederlands</button>
+<button data-lang="pl" onclick="setLang('pl')">Polski</button>
+<button data-lang="cs" onclick="setLang('cs')">Čeština</button>
+          </div>
+        </div>
+        <a href="/en/quiz" class="nav-cta quiz-link" data-i18n="nav_cta">Get your Fit Score</a>
+      </div>
     </div>
   </header>
 
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="badge">Free · 10 questions · Fit Score</div>
-        <h1>See how your daily habits <span>line up with nutrition</span></h1>
-        <p class="hero-lead">
+        <div class="badge" data-i18n="badge">Free · 10 questions · Fit Score</div>
+        <h1 data-i18n="hero_title">See how your daily habits <span>line up with nutrition</span></h1>
+        <p class="hero-lead" data-i18n="hero_lead">
           One-size-fits-all multivitamins are built for an average person. Answer 10 simple lifestyle questions and receive a free personalised nutrition guide based on your habits and goals.
         </p>
-        <a href="quiz.html" class="btn-main">
-          Discover your Fit Score
+        <a href="/en/quiz" class="btn-main quiz-link">
+          <span data-i18n="cta">Discover your Fit Score</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <p class="hero-note">No purchase required · Instant results · Free 7-page guide</p>
+        <p class="hero-note" data-i18n="hero_note">No purchase required · Instant results · Free 7-page guide</p>
       </div>
       <div class="hero-visual">
-        <img src="hero-fruits.jpg" alt="Fresh fruit smoothie bowl with kiwi, berries and dragon fruit" width="520" height="650">
+        <img src="/hero-fruits.jpg" alt="Fresh fruit smoothie bowl with kiwi, berries and dragon fruit" width="520" height="650">
       </div>
     </div>
   </section>
@@ -344,10 +392,10 @@
   <div class="trust">
     <div class="container">
       <div class="trust-list">
-        <span>Swiss granule technology</span>
-        <span>Authorised EU claims only</span>
-        <span>Science-backed approach</span>
-        <span>No medical claims</span>
+        <span data-i18n="trust1">Swiss granule technology</span>
+        <span data-i18n="trust2">Authorised EU claims only</span>
+        <span data-i18n="trust3">Science-backed approach</span>
+        <span data-i18n="trust4">No medical claims</span>
       </div>
     </div>
   </div>
@@ -355,24 +403,24 @@
   <section>
     <div class="container">
       <div class="section-head">
-        <h2>Why a personalised approach works better</h2>
-        <p>One formula cannot serve every lifestyle. A short assessment surfaces the areas that actually matter for you.</p>
+        <h2 data-i18n="why_h2">Why a personalised approach works better</h2>
+        <p data-i18n="why_p">One formula cannot serve every lifestyle. A short assessment surfaces the areas that actually matter for you.</p>
       </div>
       <div class="benefits">
         <div class="benefit">
           <div class="benefit-icon">⚡</div>
-          <h3>Energy that lasts</h3>
-          <p>Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue.</p>
+          <h3 data-i18n="b1_h">Energy that lasts</h3>
+          <p data-i18n="b1_p">Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue.</p>
         </div>
         <div class="benefit">
           <div class="benefit-icon">✨</div>
-          <h3>Visible wellbeing</h3>
-          <p>Selected nutrients contribute to the maintenance of normal skin, hair and nails — support that starts from the inside.</p>
+          <h3 data-i18n="b2_h">Visible wellbeing</h3>
+          <p data-i18n="b2_p">Selected nutrients contribute to the maintenance of normal skin, hair and nails — support that starts from the inside.</p>
         </div>
         <div class="benefit">
           <div class="benefit-icon">🧠</div>
-          <h3>Clearer thinking</h3>
-          <p>Key micronutrients contribute to normal psychological function and the normal functioning of the nervous system.</p>
+          <h3 data-i18n="b3_h">Clearer thinking</h3>
+          <p data-i18n="b3_p">Key micronutrients contribute to normal psychological function and the normal functioning of the nervous system.</p>
         </div>
       </div>
     </div>
@@ -381,24 +429,24 @@
   <section style="background: var(--surface);">
     <div class="container">
       <div class="section-head">
-        <h2>How the free assessment works</h2>
-        <p>Designed purely for insight and education — completely separate from any purchase path.</p>
+        <h2 data-i18n="how_h2">How the free assessment works</h2>
+        <p data-i18n="how_p">Designed purely for insight and education — completely separate from any purchase path.</p>
       </div>
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
-          <h3>Answer 10 questions</h3>
-          <p>Lifestyle, habits, sleep, stress and the areas you care about most. Takes around two minutes.</p>
+          <h3 data-i18n="s1_h">Answer 10 questions</h3>
+          <p data-i18n="s1_p">Lifestyle, habits, sleep, stress and the areas you care about most. Takes around two minutes.</p>
         </div>
         <div class="step">
           <div class="step-num">2</div>
-          <h3>See your Fit Score</h3>
-          <p>Get a score between 0–100% plus personalised insights for your age group.</p>
+          <h3 data-i18n="s2_h">See your Fit Score</h3>
+          <p data-i18n="s2_p">Get a score between 0–100% plus personalised insights for your age group.</p>
         </div>
         <div class="step">
           <div class="step-num">3</div>
-          <h3>Unlock the free guide</h3>
-          <p>Enter your email to download the 7-page Personalised Nutrition Guide instantly.</p>
+          <h3 data-i18n="s3_h">Unlock the free guide</h3>
+          <p data-i18n="s3_p">Enter your email to download the 7-page Personalised Nutrition Guide instantly.</p>
         </div>
       </div>
     </div>
@@ -408,18 +456,18 @@
     <div class="container">
       <div class="ebook-block">
         <div class="ebook-text">
-          <h2>Your free 7-page guide</h2>
-          <p>A practical, beautifully designed guide that shows why personalised nutrition makes sense and how it can save you money compared with stacking separate products.</p>
+          <h2 data-i18n="ebook_h2">Your free 7-page guide</h2>
+          <p data-i18n="ebook_p">A practical, beautifully designed guide that shows why personalised nutrition makes sense and how it can save you money compared with stacking separate products.</p>
           <ul class="ebook-list">
-            <li>Why one-size-fits-all often costs more</li>
-            <li>How Swiss granules support daily consistency</li>
-            <li>What modern food systems miss</li>
-            <li>Simple next steps you can take today</li>
+            <li data-i18n="el1">Why one-size-fits-all often costs more</li>
+            <li data-i18n="el2">How Swiss granules support daily consistency</li>
+            <li data-i18n="el3">What modern food systems miss</li>
+            <li data-i18n="el4">Simple next steps you can take today</li>
           </ul>
-          <a href="quiz.html" class="btn-main">Get your Fit Score</a>
+          <a href="/en/quiz" class="btn-main quiz-link" data-i18n="nav_cta">Get your Fit Score</a>
         </div>
         <div class="ebook-img">
-          <img src="woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
+          <img src="/woman-pouch-new.jpg" alt="Woman with personalised nutrition pouch" width="520" height="650">
         </div>
       </div>
     </div>
@@ -428,21 +476,21 @@
   <section>
     <div class="container">
       <div class="final">
-        <h2>Ready for your personalised insights?</h2>
-        <p>Start the free 10-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
-        <a href="quiz.html" class="btn-main">Get your Fit Score</a>
+        <h2 data-i18n="final_h2">Ready for your personalised insights?</h2>
+        <p data-i18n="final_p">Start the free 10-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.</p>
+        <a href="/en/quiz" class="btn-main quiz-link" data-i18n="nav_cta">Get your Fit Score</a>
       </div>
     </div>
   </section>
 
   <footer>
     <div class="container footer-inner" style="text-align:center;flex-direction:column;align-items:center;">
-      <a href="index.html" style="text-decoration:none">
-        <img src="dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
+      <a href="/en" class="home-link" style="text-decoration:none">
+        <img src="/dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" />
       </a>
-      <div class="footer-brand">Dose-IQ — Official Bioniq distributor</div>
+      <div class="footer-brand" data-i18n="footer_brand">Dose-IQ — Official Bioniq distributor</div>
       <details class="footer-contact-panel">
-        <summary>Contact</summary>
+        <summary data-i18n="contact">Contact</summary>
         <div class="footer-contact-details">
           <a href="mailto:info@dose-iq.com">info@dose-iq.com</a><br>
           BK International EOOD<br>
@@ -451,14 +499,74 @@
         </div>
       </details>
       <div class="footer-links">
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="/privacy.html" data-i18n="privacy">Privacy Policy</a>
         <span aria-hidden="true">·</span>
-        <a href="terms.html">Terms of Use</a>
+        <a href="/terms.html" data-i18n="terms">Terms of Use</a>
       </div>
       <div class="footer-disclaimer">
-        This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.
+        <span data-i18n="disclaimer">This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.</span>
       </div>
     </div>
   </footer>
+
+<script>
+const LANG_PATHS = ["en", "de", "fr", "it", "es", "pt", "nl", "pl", "cs"];
+const LANG_LABELS = {"en": "EN", "de": "DE", "fr": "FR", "it": "IT", "es": "ES", "pt": "PT", "nl": "NL", "pl": "PL", "cs": "CS"};
+const T = {"en": {"title": "Free Personalised Nutrition Guide | Dose-IQ", "description": "Take our free 10-question lifestyle assessment and unlock your Personalised Nutrition Guide. Completely free, no purchase required.", "topbar": "Official Bioniq distributor · Educational guide · No diagnosis", "nav_cta": "Get your Fit Score", "badge": "Free · 10 questions · Fit Score", "hero_title": "See how your daily habits <span>line up with nutrition</span>", "hero_lead": "One-size-fits-all multivitamins are built for an average person. Answer 10 simple lifestyle questions and receive a free personalised nutrition guide based on your habits and goals.", "cta": "Discover your Fit Score", "hero_note": "No purchase required · Instant results · Free 7-page guide", "trust1": "Swiss granule technology", "trust2": "Authorised EU claims only", "trust3": "Science-backed approach", "trust4": "No medical claims", "why_h2": "Why a personalised approach works better", "why_p": "One formula cannot serve every lifestyle. A short assessment surfaces the areas that actually matter for you.", "b1_h": "Energy that lasts", "b1_p": "Certain vitamins and minerals contribute to normal energy-yielding metabolism and the reduction of tiredness and fatigue.", "b2_h": "Visible wellbeing", "b2_p": "Selected nutrients contribute to the maintenance of normal skin, hair and nails — support that starts from the inside.", "b3_h": "Clearer thinking", "b3_p": "Key micronutrients contribute to normal psychological function and the normal functioning of the nervous system.", "how_h2": "How the free assessment works", "how_p": "Designed purely for insight and education — completely separate from any purchase path.", "s1_h": "Answer 10 questions", "s1_p": "Lifestyle, habits, sleep, stress and the areas you care about most. Takes around two minutes.", "s2_h": "See your Fit Score", "s2_p": "Get a score between 0–100% plus personalised insights for your age group.", "s3_h": "Unlock the free guide", "s3_p": "Enter your email to download the 7-page Personalised Nutrition Guide instantly.", "ebook_h2": "Your free 7-page guide", "ebook_p": "A practical, beautifully designed guide that shows why personalised nutrition makes sense and how it can save you money compared with stacking separate products.", "el1": "Why one-size-fits-all often costs more", "el2": "How Swiss granules support daily consistency", "el3": "What modern food systems miss", "el4": "Simple next steps you can take today", "final_h2": "Ready for your personalised insights?", "final_p": "Start the free 10-question assessment. Get clear focus areas and unlock the full guide — no credit card, no obligation.", "footer_brand": "Dose-IQ — Official Bioniq distributor", "contact": "Contact", "privacy": "Privacy Policy", "terms": "Terms of Use", "disclaimer": "This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle."}, "de": {"title": "Kostenloser personalisierter Ernährungsratgeber | Dose-IQ", "description": "Machen Sie den kostenlosen 10-Fragen-Lifestyle-Check und schalten Sie Ihren personalisierten Ernährungsratgeber frei. Komplett kostenlos, kein Kauf nötig.", "topbar": "Offizieller Bioniq-Vertriebspartner · Bildungsratgeber · Keine Diagnose", "nav_cta": "Fit Score erhalten", "badge": "Kostenlos · 10 Fragen · Fit Score", "hero_title": "Sehen Sie, wie Ihre Alltagsgewohnheiten <span>zur Ernährung passen</span>", "hero_lead": "Einheits-Multivitamine sind für den Durchschnitt gemacht. Beantworten Sie 10 einfache Fragen zu Ihrem Lebensstil und erhalten Sie einen kostenlosen, personalisierten Ernährungsratgeber.", "cta": "Fit Score entdecken", "hero_note": "Kein Kauf nötig · Sofortiges Ergebnis · Kostenloser 7-Seiten-Ratgeber", "trust1": "Schweizer Granulat-Technologie", "trust2": "Nur zugelassene EU-Angaben", "trust3": "Wissenschaftlich fundiert", "trust4": "Keine medizinischen Claims", "why_h2": "Warum ein personalisierter Ansatz besser wirkt", "why_p": "Eine Formel kann nicht jeden Lebensstil abdecken. Ein kurzer Check zeigt, was für Sie wirklich zählt.", "b1_h": "Energie, die anhält", "b1_p": "Bestimmte Vitamine und Mineralstoffe tragen zu einem normalen Energiestoffwechsel und zur Verringerung von Müdigkeit und Ermüdung bei.", "b2_h": "Sichtbares Wohlbefinden", "b2_p": "Ausgewählte Nährstoffe tragen zur Erhaltung normaler Haut, Haare und Nägel bei — Unterstützung von innen.", "b3_h": "Klareres Denken", "b3_p": "Wichtige Mikronährstoffe tragen zu einer normalen psychischen Funktion und einer normalen Funktion des Nervensystems bei.", "how_h2": "So funktioniert der kostenlose Check", "how_p": "Rein zur Information und Bildung — vollständig getrennt von jedem Kaufprozess.", "s1_h": "10 Fragen beantworten", "s1_p": "Lebensstil, Gewohnheiten, Schlaf, Stress und Ihre Prioritäten. Dauert etwa zwei Minuten.", "s2_h": "Fit Score sehen", "s2_p": "Eine Punktzahl zwischen 0–100 % plus Hinweise für Ihre Altersgruppe.", "s3_h": "Kostenlosen Ratgeber freischalten", "s3_p": "E-Mail eingeben und den 7-seitigen personalisierten Ernährungsratgeber sofort herunterladen.", "ebook_h2": "Ihr kostenloser 7-Seiten-Ratgeber", "ebook_p": "Ein praktischer, klar gestalteter Ratgeber, der zeigt, warum personalisierte Ernährung sinnvoll ist und wie Sie im Vergleich zu vielen Einzelprodukten sparen können.", "el1": "Warum Einheitslösungen oft teurer sind", "el2": "Wie Schweizer Granulat den Alltag erleichtert", "el3": "Was moderne Ernährung oft nicht liefert", "el4": "Einfache nächste Schritte für heute", "final_h2": "Bereit für Ihre persönlichen Hinweise?", "final_p": "Starten Sie den kostenlosen 10-Fragen-Check. Klare Schwerpunkte und der volle Ratgeber — ohne Kreditkarte, ohne Verpflichtung.", "footer_brand": "Dose-IQ — Offizieller Bioniq-Vertriebspartner", "contact": "Kontakt", "privacy": "Datenschutz", "terms": "Nutzungsbedingungen", "disclaimer": "Diese Website dient der Information. Nahrungsergänzungsmittel ersetzen keine abwechslungsreiche, ausgewogene Ernährung und eine gesunde Lebensweise."}, "fr": {"title": "Guide nutritionnel personnalisé gratuit | Dose-IQ", "description": "Répondez à 10 questions sur votre mode de vie et débloquez votre guide nutritionnel personnalisé. Gratuit, sans achat.", "topbar": "Distributeur officiel Bioniq · Guide éducatif · Pas de diagnostic", "nav_cta": "Obtenir votre Fit Score", "badge": "Gratuit · 10 questions · Fit Score", "hero_title": "Voyez comment vos habitudes <span>s’alignent avec la nutrition</span>", "hero_lead": "Les multivitamines universelles visent une personne moyenne. Répondez à 10 questions simples et recevez un guide nutritionnel personnalisé gratuit, selon vos habitudes et vos objectifs.", "cta": "Découvrir votre Fit Score", "hero_note": "Aucun achat · Résultats immédiats · Guide gratuit de 7 pages", "trust1": "Technologie suisse en granulés", "trust2": "Allégations UE autorisées uniquement", "trust3": "Approche fondée sur la science", "trust4": "Aucune allégation médicale", "why_h2": "Pourquoi une approche personnalisée est plus pertinente", "why_p": "Une formule unique ne convient pas à tous les modes de vie. Un court questionnaire met en lumière ce qui compte vraiment pour vous.", "b1_h": "Une énergie durable", "b1_p": "Certaines vitamines et minéraux contribuent au métabolisme énergétique normal et à la réduction de la fatigue.", "b2_h": "Bien-être visible", "b2_p": "Certains nutriments contribuent au maintien d’une peau, de cheveux et d’ongles normaux — un soutien qui commence de l’intérieur.", "b3_h": "Esprit plus clair", "b3_p": "Des micronutriments clés contribuent à une fonction psychologique normale et au fonctionnement normal du système nerveux.", "how_h2": "Comment fonctionne l’évaluation gratuite", "how_p": "Conçue uniquement pour l’information et l’éducation — totalement séparée de tout achat.", "s1_h": "Répondez à 10 questions", "s1_p": "Mode de vie, habitudes, sommeil, stress et vos priorités. Environ deux minutes.", "s2_h": "Voyez votre Fit Score", "s2_p": "Un score de 0 à 100 % et des pistes adaptées à votre tranche d’âge.", "s3_h": "Débloquez le guide gratuit", "s3_p": "Saisissez votre e-mail pour télécharger immédiatement le guide nutritionnel personnalisé de 7 pages.", "ebook_h2": "Votre guide gratuit de 7 pages", "ebook_p": "Un guide pratique et clairement présenté, qui explique pourquoi la nutrition personnalisée a du sens et comment elle peut coûter moins cher que d’empiler plusieurs produits.", "el1": "Pourquoi le « taille unique » coûte souvent plus cher", "el2": "Comment les granulés suisses soutiennent la régularité", "el3": "Ce que l’alimentation moderne laisse de côté", "el4": "Des prochaines étapes simples dès aujourd’hui", "final_h2": "Prêt pour vos pistes personnalisées ?", "final_p": "Lancez l’évaluation gratuite en 10 questions. Des axes clairs et le guide complet — sans carte, sans engagement.", "footer_brand": "Dose-IQ — Distributeur officiel Bioniq", "contact": "Contact", "privacy": "Politique de confidentialité", "terms": "Conditions d’utilisation", "disclaimer": "Ce site est informatif. Les compléments alimentaires ne se substituent pas à une alimentation variée et équilibrée ni à un mode de vie sain."}, "it": {"title": "Guida nutrizionale personalizzata gratuita | Dose-IQ", "description": "Rispondi a 10 domande sul tuo stile di vita e sblocca la Guida nutrizionale personalizzata. Completamente gratis, nessun acquisto.", "topbar": "Distributore ufficiale Bioniq · Guida educativa · Nessuna diagnosi", "nav_cta": "Ottieni il Fit Score", "badge": "Gratis · 10 domande · Fit Score", "hero_title": "Scopri come le tue abitudini <span>si allineano con la nutrizione</span>", "hero_lead": "I multivitaminici uguali per tutti sono pensati per una persona media. Rispondi a 10 semplici domande e ricevi una guida nutrizionale personalizzata gratuita, in base a abitudini e obiettivi.", "cta": "Scopri il tuo Fit Score", "hero_note": "Nessun acquisto · Risultati immediati · Guida gratuita di 7 pagine", "trust1": "Tecnologia svizzera in granuli", "trust2": "Solo claim UE autorizzati", "trust3": "Approccio basato sulla scienza", "trust4": "Nessun claim medico", "why_h2": "Perché un approccio personalizzato funziona meglio", "why_p": "Una formula non può coprire ogni stile di vita. Una breve valutazione evidenzia ciò che conta davvero per te.", "b1_h": "Energia che dura", "b1_p": "Alcune vitamine e minerali contribuiscono al normale metabolismo energetico e alla riduzione di stanchezza e affaticamento.", "b2_h": "Benessere visibile", "b2_p": "Nutrienti selezionati contribuiscono al mantenimento di pelle, capelli e unghie normali — un supporto che parte dall’interno.", "b3_h": "Pensiero più lucido", "b3_p": "Micronutrienti chiave contribuiscono alla normale funzione psicologica e al normale funzionamento del sistema nervoso.", "how_h2": "Come funziona la valutazione gratuita", "how_p": "Pensata solo per informazione e formazione — completamente separata da qualsiasi acquisto.", "s1_h": "Rispondi a 10 domande", "s1_p": "Stile di vita, abitudini, sonno, stress e le aree che ti stanno a cuore. Circa due minuti.", "s2_h": "Vedi il Fit Score", "s2_p": "Un punteggio da 0 a 100% e spunti personalizzati per la tua fascia d’età.", "s3_h": "Sblocca la guida gratuita", "s3_p": "Inserisci l’e-mail per scaricare subito la Guida nutrizionale personalizzata di 7 pagine.", "ebook_h2": "La tua guida gratuita di 7 pagine", "ebook_p": "Una guida pratica e ben progettata che spiega perché la nutrizione personalizzata ha senso e come può farti risparmiare rispetto a tanti prodotti separati.", "el1": "Perché il “taglia unica” costa spesso di più", "el2": "Come i granuli svizzeri aiutano la costanza quotidiana", "el3": "Cosa manca spesso all’alimentazione moderna", "el4": "Semplici passi da fare oggi", "final_h2": "Pronto per i tuoi spunti personalizzati?", "final_p": "Inizia la valutazione gratuita in 10 domande. Aree di focus chiare e la guida completa — nessuna carta, nessun obbligo.", "footer_brand": "Dose-IQ — Distributore ufficiale Bioniq", "contact": "Contatto", "privacy": "Privacy policy", "terms": "Termini di utilizzo", "disclaimer": "Questo sito è informativo. Gli integratori alimentari non sostituiscono una dieta variata ed equilibrata e uno stile di vita sano."}, "es": {"title": "Guía nutricional personalizada gratuita | Dose-IQ", "description": "Responde 10 preguntas sobre tu estilo de vida y desbloquea tu Guía nutricional personalizada. Totalmente gratis, sin compra.", "topbar": "Distribuidor oficial de Bioniq · Guía educativa · Sin diagnóstico", "nav_cta": "Obtén tu Fit Score", "badge": "Gratis · 10 preguntas · Fit Score", "hero_title": "Comprueba cómo tus hábitos <span>encajan con la nutrición</span>", "hero_lead": "Los multivitamínicos genéricos están pensados para una persona media. Responde 10 preguntas sencillas y recibe una guía nutricional personalizada gratuita según tus hábitos y objetivos.", "cta": "Descubre tu Fit Score", "hero_note": "Sin compra · Resultados al instante · Guía gratuita de 7 páginas", "trust1": "Tecnología suiza en gránulos", "trust2": "Solo declaraciones UE autorizadas", "trust3": "Enfoque respaldado por la ciencia", "trust4": "Sin declaraciones médicas", "why_h2": "Por qué un enfoque personalizado funciona mejor", "why_p": "Una fórmula no sirve para todos los estilos de vida. Una breve evaluación muestra lo que de verdad te importa.", "b1_h": "Energía que dura", "b1_p": "Ciertas vitaminas y minerales contribuyen al metabolismo energético normal y a la disminución del cansancio y la fatiga.", "b2_h": "Bienestar visible", "b2_p": "Nutrientes seleccionados contribuyen al mantenimiento del cabello, la piel y las uñas normales: un apoyo que empieza desde dentro.", "b3_h": "Pensamiento más claro", "b3_p": "Micronutrientes clave contribuyen a la función psicológica normal y al funcionamiento normal del sistema nervioso.", "how_h2": "Cómo funciona la evaluación gratuita", "how_p": "Diseñada solo para información y educación — totalmente separada de cualquier compra.", "s1_h": "Responde 10 preguntas", "s1_p": "Estilo de vida, hábitos, sueño, estrés y lo que más te importa. Unos dos minutos.", "s2_h": "Ve tu Fit Score", "s2_p": "Una puntuación de 0 a 100 % e ideas personalizadas para tu grupo de edad.", "s3_h": "Desbloquea la guía gratuita", "s3_p": "Introduce tu correo para descargar al instante la Guía nutricional personalizada de 7 páginas.", "ebook_h2": "Tu guía gratuita de 7 páginas", "ebook_p": "Una guía práctica y bien diseñada que explica por qué tiene sentido la nutrición personalizada y cómo puede ahorrarte dinero frente a apilar productos sueltos.", "el1": "Por qué lo genérico suele costar más", "el2": "Cómo los gránulos suizos apoyan la constancia diaria", "el3": "Lo que a menudo falta en la alimentación moderna", "el4": "Pasos sencillos que puedes dar hoy", "final_h2": "¿Listo para tus ideas personalizadas?", "final_p": "Empieza la evaluación gratuita de 10 preguntas. Áreas claras y la guía completa — sin tarjeta, sin compromiso.", "footer_brand": "Dose-IQ — Distribuidor oficial de Bioniq", "contact": "Contacto", "privacy": "Política de privacidad", "terms": "Términos de uso", "disclaimer": "Este sitio es informativo. Los complementos alimenticios no sustituyen una dieta variada y equilibrada ni un estilo de vida saludable."}, "pt": {"title": "Guia nutricional personalizado gratuito | Dose-IQ", "description": "Responda a 10 perguntas sobre o seu estilo de vida e desbloqueie o Guia nutricional personalizado. Totalmente grátis, sem compra.", "topbar": "Distribuidor oficial Bioniq · Guia educativo · Sem diagnóstico", "nav_cta": "Obter o Fit Score", "badge": "Grátis · 10 perguntas · Fit Score", "hero_title": "Veja como os seus hábitos <span>se alinham com a nutrição</span>", "hero_lead": "Os multivitamínicos iguais para todos são feitos para uma pessoa média. Responda a 10 perguntas simples e receba um guia nutricional personalizado gratuito, com base nos seus hábitos e objetivos.", "cta": "Descobrir o Fit Score", "hero_note": "Sem compra · Resultados imediatos · Guia gratuito de 7 páginas", "trust1": "Tecnologia suíça em grânulos", "trust2": "Apenas alegações UE autorizadas", "trust3": "Abordagem baseada na ciência", "trust4": "Sem alegações médicas", "why_h2": "Porque uma abordagem personalizada funciona melhor", "why_p": "Uma fórmula não serve todos os estilos de vida. Uma avaliação breve mostra o que realmente importa para si.", "b1_h": "Energia que dura", "b1_p": "Certas vitaminas e minerais contribuem para o metabolismo energético normal e para a redução do cansaço e da fadiga.", "b2_h": "Bem-estar visível", "b2_p": "Nutrientes selecionados contribuem para a manutenção de pele, cabelo e unhas normais — um apoio que começa de dentro.", "b3_h": "Pensamento mais claro", "b3_p": "Micronutrientes-chave contribuem para o funcionamento psicológico normal e para o funcionamento normal do sistema nervoso.", "how_h2": "Como funciona a avaliação gratuita", "how_p": "Pensada só para informação e educação — totalmente separada de qualquer compra.", "s1_h": "Responda a 10 perguntas", "s1_p": "Estilo de vida, hábitos, sono, stress e as áreas que mais lhe importam. Cerca de dois minutos.", "s2_h": "Veja o Fit Score", "s2_p": "Uma pontuação de 0 a 100% e insights personalizados para a sua faixa etária.", "s3_h": "Desbloqueie o guia gratuito", "s3_p": "Introduza o e-mail para descarregar de imediato o Guia nutricional personalizado de 7 páginas.", "ebook_h2": "O seu guia gratuito de 7 páginas", "ebook_p": "Um guia prático e bem desenhado que mostra porque a nutrição personalizada faz sentido e como pode poupar em relação a vários produtos separados.", "el1": "Porque o tamanho único costuma custar mais", "el2": "Como os grânulos suíços apoiam a consistência diária", "el3": "O que os sistemas alimentares modernos deixam de lado", "el4": "Passos simples que pode dar hoje", "final_h2": "Pronto para insights personalizados?", "final_p": "Comece a avaliação gratuita de 10 perguntas. Áreas de foco claras e o guia completo — sem cartão, sem obrigação.", "footer_brand": "Dose-IQ — Distribuidor oficial Bioniq", "contact": "Contacto", "privacy": "Política de privacidade", "terms": "Termos de utilização", "disclaimer": "Este site é informativo. Os suplementos alimentares não substituem uma dieta variada e equilibrada nem um estilo de vida saudável."}, "nl": {"title": "Gratis persoonlijke voedingsgids | Dose-IQ", "description": "Beantwoord 10 vragen over je leefstijl en ontgrendel je persoonlijke voedingsgids. Helemaal gratis, geen aankoop nodig.", "topbar": "Officiële Bioniq-distributeur · Educatieve gids · Geen diagnose", "nav_cta": "Haal je Fit Score", "badge": "Gratis · 10 vragen · Fit Score", "hero_title": "Zie hoe je dagelijkse gewoontes <span>aansluiten bij voeding</span>", "hero_lead": "Standaard multivitaminen zijn gemaakt voor een gemiddeld persoon. Beantwoord 10 eenvoudige leefstijlvragen en ontvang een gratis persoonlijke voedingsgids op basis van jouw gewoontes en doelen.", "cta": "Ontdek je Fit Score", "hero_note": "Geen aankoop · Direct resultaat · Gratis gids van 7 pagina’s", "trust1": "Zwitserse granulaattechnologie", "trust2": "Alleen toegestane EU-claims", "trust3": "Wetenschappelijk onderbouwd", "trust4": "Geen medische claims", "why_h2": "Waarom een persoonlijke aanpak beter werkt", "why_p": "Eén formule past niet bij elke leefstijl. Een korte check laat zien wat voor jou écht telt.", "b1_h": "Energie die aanhoudt", "b1_p": "Bepaalde vitaminen en mineralen dragen bij tot een normale energiestofwisseling en tot de vermindering van moeheid en vermoeidheid.", "b2_h": "Zichtbaar welzijn", "b2_p": "Geselecteerde voedingsstoffen dragen bij tot het behoud van een normale huid, haar en nagels — ondersteuning van binnenuit.", "b3_h": "Helderder denken", "b3_p": "Belangrijke micronutriënten dragen bij tot een normale psychologische functie en tot de normale werking van het zenuwstelsel.", "how_h2": "Zo werkt de gratis check", "how_p": "Puur voor inzicht en educatie — volledig los van elk aankooptraject.", "s1_h": "Beantwoord 10 vragen", "s1_p": "Leefstijl, gewoontes, slaap, stress en wat jij belangrijk vindt. Ongeveer twee minuten.", "s2_h": "Bekijk je Fit Score", "s2_p": "Een score van 0–100% plus inzichten voor jouw leeftijdsgroep.", "s3_h": "Ontgrendel de gratis gids", "s3_p": "Vul je e-mail in en download meteen de 7 pagina’s tellende persoonlijke voedingsgids.", "ebook_h2": "Jouw gratis gids van 7 pagina’s", "ebook_p": "Een praktische, helder ontworpen gids die laat zien waarom persoonlijke voeding zinvol is en hoe je kunt besparen vergeleken met losse producten stapelen.", "el1": "Waarom one-size-fits-all vaak duurder uitpakt", "el2": "Hoe Zwitsers granulaat dagelijkse consistentie ondersteunt", "el3": "Wat moderne voeding vaak mist", "el4": "Eenvoudige volgende stappen voor vandaag", "final_h2": "Klaar voor jouw persoonlijke inzichten?", "final_p": "Start de gratis check van 10 vragen. Duidelijke focuspunten en de volledige gids — geen creditcard, geen verplichting.", "footer_brand": "Dose-IQ — Officiële Bioniq-distributeur", "contact": "Contact", "privacy": "Privacybeleid", "terms": "Gebruiksvoorwaarden", "disclaimer": "Deze site is informatief. Voedingssupplementen vervangen geen gevarieerde, evenwichtige voeding en een gezonde levensstijl."}, "pl": {"title": "Darmowy spersonalizowany przewodnik żywieniowy | Dose-IQ", "description": "Odpowiedz na 10 pytań o styl życia i odblokuj spersonalizowany przewodnik żywieniowy. Całkowicie za darmo, bez zakupu.", "topbar": "Oficjalny dystrybutor Bioniq · Przewodnik edukacyjny · Bez diagnozy", "nav_cta": "Uzyskaj Fit Score", "badge": "Za darmo · 10 pytań · Fit Score", "hero_title": "Zobacz, jak Twoje nawyki <span>układają się z odżywianiem</span>", "hero_lead": "Uniwersalne multiwitaminy są tworzone dla przeciętnej osoby. Odpowiedz na 10 prostych pytań i otrzymaj darmowy, spersonalizowany przewodnik żywieniowy oparty na Twoich nawykach i celach.", "cta": "Odkryj swój Fit Score", "hero_note": "Bez zakupu · Natychmiastowy wynik · Darmowy przewodnik 7-stronicowy", "trust1": "Szwajcarska technologia granulek", "trust2": "Tylko dozwolone oświadczenia UE", "trust3": "Podejście oparte na nauce", "trust4": "Bez oświadczeń medycznych", "why_h2": "Dlaczego spersonalizowane podejście działa lepiej", "why_p": "Jedna formuła nie pasuje do każdego stylu życia. Krótka ocena pokazuje obszary, które naprawdę mają znaczenie.", "b1_h": "Energia, która trwa", "b1_p": "Niektóre witaminy i składniki mineralne przyczyniają się do prawidłowego metabolizmu energetycznego oraz do zmniejszenia uczucia zmęczenia i znużenia.", "b2_h": "Widoczne samopoczucie", "b2_p": "Wybrane składniki odżywcze pomagają w utrzymaniu prawidłowego stanu skóry, włosów i paznokci — wsparcie od wewnątrz.", "b3_h": "Jaśniejsze myślenie", "b3_p": "Kluczowe mikroskładniki przyczyniają się do prawidłowych funkcji psychologicznych i prawidłowego funkcjonowania układu nerwowego.", "how_h2": "Jak działa darmowa ocena", "how_p": "Wyłącznie w celach informacyjnych i edukacyjnych — całkowicie oddzielona od zakupu.", "s1_h": "Odpowiedz na 10 pytań", "s1_p": "Styl życia, nawyki, sen, stres i to, na czym Ci zależy. Około dwóch minut.", "s2_h": "Zobacz Fit Score", "s2_p": "Wynik 0–100% oraz spersonalizowane wskazówki dla Twojej grupy wiekowej.", "s3_h": "Odblokuj darmowy przewodnik", "s3_p": "Podaj e-mail, aby od razu pobrać 7-stronicowy spersonalizowany przewodnik żywieniowy.", "ebook_h2": "Twój darmowy 7-stronicowy przewodnik", "ebook_p": "Praktyczny, starannie zaprojektowany przewodnik, który pokazuje, dlaczego spersonalizowane odżywianie ma sens i jak może oszczędzić pieniądze w porównaniu ze stosowaniem wielu osobnych produktów.", "el1": "Dlaczego uniwersalne rozwiązania często kosztują więcej", "el2": "Jak szwajcarskie granulki wspierają codzienną regularność", "el3": "Czego często brakuje we współczesnym jedzeniu", "el4": "Proste kolejne kroki na dziś", "final_h2": "Gotowy na spersonalizowane wskazówki?", "final_p": "Zacznij darmową ocenę 10 pytań. Jasne obszary uwagi i pełny przewodnik — bez karty, bez zobowiązań.", "footer_brand": "Dose-IQ — Oficjalny dystrybutor Bioniq", "contact": "Kontakt", "privacy": "Polityka prywatności", "terms": "Warunki korzystania", "disclaimer": "Ta strona ma charakter informacyjny. Suplementy diety nie zastępują zróżnicowanej, zrównoważonej diety i zdrowego stylu życia."}, "cs": {"title": "Bezplatný personalizovaný výživový průvodce | Dose-IQ", "description": "Odpovězte na 10 otázek o životním stylu a odemkněte personalizovaný výživový průvodce. Zcela zdarma, bez nákupu.", "topbar": "Oficiální distributor Bioniq · Vzdělávací průvodce · Žádná diagnóza", "nav_cta": "Získat Fit Score", "badge": "Zdarma · 10 otázek · Fit Score", "hero_title": "Podívejte se, jak vaše návyky <span>ladí s výživou</span>", "hero_lead": "Univerzální multivitamíny jsou určené průměrnému člověku. Odpovězte na 10 jednoduchých otázek a získejte zdarma personalizovaný výživový průvodce podle svých návyků a cílů.", "cta": "Objevit Fit Score", "hero_note": "Bez nákupu · Okamžité výsledky · Bezplatný 7stránkový průvodce", "trust1": "Švýcarská granulová technologie", "trust2": "Pouze povolená tvrzení EU", "trust3": "Přístup podložený vědou", "trust4": "Žádná lékařská tvrzení", "why_h2": "Proč personalizovaný přístup funguje lépe", "why_p": "Jedna formule nevyhoví každému životnímu stylu. Krátké hodnocení ukáže oblasti, které pro vás opravdu záleží.", "b1_h": "Energie, která vydrží", "b1_p": "Některé vitaminy a minerální látky přispívají k normálnímu energetickému metabolismu a ke snížení míry únavy a vyčerpání.", "b2_h": "Viditelná pohoda", "b2_p": "Vybrané živiny přispívají k udržení normálního stavu pokožky, vlasů a nehtů — podpora zevnitř.", "b3_h": "Jasnější myšlení", "b3_p": "Klíčové mikroživiny přispívají k normální psychické činnosti a k normální funkci nervové soustavy.", "how_h2": "Jak funguje bezplatné hodnocení", "how_p": "Pouze pro informace a vzdělávání — zcela oddělené od jakéhokoli nákupu.", "s1_h": "Odpovězte na 10 otázek", "s1_p": "Životní styl, návyky, spánek, stres a oblasti, na kterých vám záleží. Přibližně dvě minuty.", "s2_h": "Zobrazit Fit Score", "s2_p": "Skóre 0–100 % plus personalizované postřehy pro vaši věkovou skupinu.", "s3_h": "Odemknout bezplatného průvodce", "s3_p": "Zadejte e-mail a ihned si stáhněte 7stránkový personalizovaný výživový průvodce.", "ebook_h2": "Váš bezplatný 7stránkový průvodce", "ebook_p": "Praktický, přehledně navržený průvodce, který ukazuje, proč má personalizovaná výživa smysl a jak může ušetřit peníze ve srovnání se skládáním samostatných produktů.", "el1": "Proč univerzální řešení často stojí víc", "el2": "Jak švýcarské granule podporují denní pravidelnost", "el3": "Co moderní strava často postrádá", "el4": "Jednoduché další kroky, které můžete udělat dnes", "final_h2": "Připraveni na personalizované postřehy?", "final_p": "Začněte bezplatné 10otázkové hodnocení. Jasné oblasti zaměření a celý průvodce — bez karty, bez závazku.", "footer_brand": "Dose-IQ — Oficiální distributor Bioniq", "contact": "Kontakt", "privacy": "Zásady ochrany osobních údajů", "terms": "Podmínky použití", "disclaimer": "Tyto stránky jsou informativní. Doplňky stravy nenahrazují pestrou a vyváženou stravu a zdravý životní styl."}};
+function toggleLangMenu() {
+  document.getElementById('langMenu').classList.toggle('open');
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.querySelector('.lang-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('langMenu')?.classList.remove('open');
+  }
+});
+function pathLang() {
+  const first = (location.pathname.split('/').filter(Boolean)[0] || '').toLowerCase();
+  return LANG_PATHS.includes(first) ? first : null;
+}
+function setLang(lang, opts) {
+  if (!T[lang]) lang = 'en';
+  localStorage.setItem('bonq_lang', lang);
+  document.documentElement.lang = lang;
+  const btn = document.getElementById('langBtn');
+  if (btn) btn.textContent = LANG_LABELS[lang] + ' ▾';
+  document.querySelectorAll('#langMenu button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  document.getElementById('langMenu')?.classList.remove('open');
+  applyLang(lang);
+  if (opts && opts.skipUrl) return;
+  const want = '/' + lang;
+  const cur = location.pathname.replace(/\/+$/, '') || '/';
+  if (cur !== want) history.pushState({ lang }, '', want + location.search);
+}
+function applyLang(lang) {
+  const t = T[lang] || T.en;
+  document.title = t.title;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute('content', t.description);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] != null) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('a.quiz-link').forEach(a => a.setAttribute('href', '/' + lang + '/quiz'));
+  document.querySelectorAll('a.home-link').forEach(a => a.setAttribute('href', '/' + lang));
+}
+(function(){
+  const fromPath = pathLang();
+  if (fromPath) { setLang(fromPath, { skipUrl: true }); return; }
+  const saved = localStorage.getItem('bonq_lang');
+  const browser = (navigator.language || 'en').slice(0,2).toLowerCase();
+  const initial = (saved && T[saved]) ? saved : (T[browser] ? browser : 'en');
+  if (document.getElementById('langBtn')) setLang(initial);
+})();
+window.addEventListener('popstate', () => {
+  const lang = pathLang() || localStorage.getItem('bonq_lang') || 'en';
+  setLang(lang, { skipUrl: true });
+});
+</script>
+
 </body>
 </html>
