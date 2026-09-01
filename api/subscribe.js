@@ -1,16 +1,14 @@
 // GetResponse form campaign tokens (add_subscriber.html campaign_token).
-// TODO: replace per-language tokens when gr-lang-campaigns.json (campaignId) is available.
-// EN token is 7ifMP. JSON was missing at deploy time, so every language currently defaults to 7ifMP.
 const CAMPAIGN_TOKENS = {
   en: "7ifMP",
-  de: "7ifMP",
-  fr: "7ifMP",
-  it: "7ifMP",
-  es: "7ifMP",
-  pt: "7ifMP",
-  nl: "7ifMP",
-  pl: "7ifMP",
-  cs: "7ifMP",
+  de: "7iDoH",
+  fr: "7iDrX",
+  it: "7iDqa",
+  es: "7iDMJ",
+  pt: "7iDjZ",
+  nl: "7iDZR",
+  pl: "7iDL9",
+  cs: "7iDPK",
 };
 
 export default async function handler(req, res) {
