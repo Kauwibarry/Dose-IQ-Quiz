@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
+  <div class="sticky-bar" id="stickyBar">
+    <a class="cta cta-shop" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
+  </div>
   <script>
 (function(){
   var LANGS=["en","de","fr","it","es","pt","nl","pl","cs"];
@@ -154,6 +158,19 @@
     .footer-links { display:flex; gap:10px; align-items:center; justify-content:center; font-size:.85rem; margin:4px 0; flex-wrap:wrap; }
     .footer-links a { color:#64748B; text-decoration:underline; }
     .footer-disclaimer { max-width:640px; line-height:1.55; font-size:.88rem; color:#94A3B8; }
+
+    .cta-repeat { margin-top: 16px; }
+    .sticky-bar {
+      display:none;
+      position:fixed; left:0; right:0; bottom:0; z-index:80;
+      background:rgba(247,245,242,.96);
+      border-top:1px solid var(--border);
+      padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+      box-shadow:0 -8px 24px rgba(15,23,42,.08);
+    }
+    .sticky-bar.show { display:block; }
+    .sticky-bar .cta { max-width:720px; margin:0 auto; }
+    body { padding-bottom: 88px; }
   </style>
 </head>
 <body>
@@ -184,7 +201,7 @@
       <h2 id="ctH">Choose your country</h2>
       <p id="ctP">The Wellness Assessment is available in selected shop countries. If yours is not listed, join the waitlist.</p>
       <div class="country-grid" id="countryGrid"></div>
-      <a class="cta" id="shopCta" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
+      <a class="cta cta-shop" id="shopCta" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
       <p class="fine" id="ctaFine">You will continue on the official Bioniq shop for your country.</p>
       <form class="waitlist" id="waitForm">
         <input type="email" id="waitEmail" name="email" required autocomplete="email" placeholder="Your email address">
@@ -226,6 +243,7 @@
         </div>
       </div>
     </div>
+    <a class="cta cta-shop cta-repeat" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
     <div class="card">
       <div class="kicker" id="waKicker">Next step</div>
       <h2 id="waH">The Wellness Assessment</h2>
@@ -236,6 +254,7 @@
         <div class="step"><span class="n">3</span><p id="s3">No card required to start. Cancel anytime.</p></div>
       </div>
     </div>
+    <a class="cta cta-shop cta-repeat" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
     <div class="card" style="text-align:center;">
       <div class="chips">
         <span class="chip" id="chip1">★★★★★ 4.5 · 12,400+ Bioniq product reviews</span>
@@ -247,6 +266,7 @@
     <div class="card" style="text-align:center;">
       <p id="pdfP">Keep your free 9-page Personalised Supplementation Guide.</p>
       <a class="pdf-link" id="pdfLink" href="/guides/en.pdf">Download the PDF</a>
+    <a class="cta cta-shop cta-repeat" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
     </div>
   </div>
   <footer>
@@ -339,30 +359,37 @@ function renderCountries(){
   });
 }
 function syncCta(){
-  const shop=document.getElementById("shopCta");
+  const shops=document.querySelectorAll(".cta-shop");
   const wait=document.getElementById("waitForm");
   const fine=document.getElementById("ctaFine");
   const x=t();
-  shop.textContent=x.cta;
+  shops.forEach(function(shop){
+    shop.textContent=x.cta;
+  });
   if(!selectedCountry){
-    shop.setAttribute("aria-disabled","true");
-    shop.href="#";
+    shops.forEach(function(shop){
+      shop.setAttribute("aria-disabled","true");
+      shop.href="#";
+      shop.style.display="flex";
+    });
     wait.style.display="none";
     fine.style.display="block";
     return;
   }
   if(selectedCountry==="other"){
-    shop.style.display="none";
+    shops.forEach(function(shop){ shop.style.display="none"; });
     wait.style.display="block";
     fine.style.display="none";
     document.getElementById("waitCountry").value="other";
     return;
   }
-  shop.style.display="flex";
+  shops.forEach(function(shop){
+    shop.style.display="flex";
+    shop.removeAttribute("aria-disabled");
+    shop.href=SHOPS[selectedCountry];
+  });
   wait.style.display="none";
   fine.style.display="block";
-  shop.removeAttribute("aria-disabled");
-  shop.href=SHOPS[selectedCountry];
 }
 function applyLang(lang){
   currentLang=lang;
@@ -494,6 +521,17 @@ document.getElementById("waitForm").addEventListener("submit", async function(e)
     const cur=location.pathname.replace(/\/+$/,"")||"/";
     if(cur!==want) history.replaceState({lang}, "", want+location.search);
   }
+})();
+
+(function(){
+  const first=document.getElementById("shopCta");
+  const bar=document.getElementById("stickyBar");
+  if(!first||!bar||!window.IntersectionObserver) return;
+  const io=new IntersectionObserver(function(entries){
+    const e=entries[0];
+    bar.classList.toggle("show", e && !e.isIntersecting);
+  }, {threshold:0.15});
+  io.observe(first);
 })();
 window.addEventListener("popstate", ()=> setLang(pathLang()||detectLang(), {skipUrl:true}));
   </script>
