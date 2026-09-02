@@ -262,12 +262,28 @@
     }
     .download-btn:hover { background: var(--accent); }
     .handoff {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      margin-top: 28px;
+      padding: 22px 20px 24px;
+      background: #F7F5F2;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      text-align: center;
     }
-    .handoff p { color: var(--muted); font-size: 0.95rem; margin-bottom: 10px; }
-    .handoff a { color: var(--accent); font-weight: 600; text-decoration: underline; }
+    .handoff p { color: var(--text); font-size: 1.15rem; font-weight: 500; margin-bottom: 16px; line-height: 1.45; }
+    .handoff-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: #F28C38;
+      color: #fff !important;
+      padding: 17px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1.12rem;
+      text-decoration: none !important;
+    }
+    .handoff-cta:hover { background: #E07A28; }
     .disclaimer {
       font-size: 0.78rem;
       color: var(--muted);
@@ -464,7 +480,7 @@
         <p id="pdfNote" style="margin-top:12px;font-size:0.9rem;color:var(--muted);">PDF · Instant download</p>
         <div class="handoff">
           <p id="handoffP">Continue your protocol. Your Fit Score is a free lifestyle check — the Wellness Assessment matches a personalised formula.</p>
-          <a href="/en/protocol" id="handoffA">Continue your protocol — start the Wellness Assessment →</a>
+          <a href="/en/protocol" id="handoffA" class="handoff-cta">Start the Wellness Assessment</a>
         </div>
       </div>
       <p class="disclaimer" id="disclaimer">This Fit Score is for educational and motivational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to generate a Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle.</p>
@@ -548,7 +564,8 @@ function applyLang(lang){
   document.getElementById("downloadText").textContent = x.download;
   document.getElementById("pdfNote").textContent = x.pdf_note;
   document.getElementById("handoffP").textContent = x.handoff_p;
-  document.getElementById("handoffA").textContent = x.handoff_a;
+  const HANDOFF_CTA = {en:"Start the Wellness Assessment",de:"Wellness Assessment starten",fr:"Commencer la Wellness Assessment",it:"Inizia la Wellness Assessment",es:"Empezar la Wellness Assessment",pt:"Começar a Wellness Assessment",nl:"Start de Wellness Assessment",pl:"Rozpocznij Wellness Assessment",cs:"Spustit Wellness Assessment"};
+  document.getElementById("handoffA").textContent = HANDOFF_CTA[lang] || HANDOFF_CTA.en;
   document.getElementById("handoffA").setAttribute("href", "/"+lang+"/protocol");
   document.getElementById("disclaimer").textContent = x.disclaimer;
   document.getElementById("footerBrand").textContent = x.brand;
