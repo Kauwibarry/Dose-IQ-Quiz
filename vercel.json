@@ -35,6 +35,24 @@
     { "source": "/pt/quiz/", "destination": "/quiz.html" },
     { "source": "/nl/quiz/", "destination": "/quiz.html" },
     { "source": "/pl/quiz/", "destination": "/quiz.html" },
-    { "source": "/cs/quiz/", "destination": "/quiz.html" }
+    { "source": "/cs/quiz/", "destination": "/quiz.html" },
+    { "source": "/en/protocol", "destination": "/protocol.html" },
+    { "source": "/de/protocol", "destination": "/protocol.html" },
+    { "source": "/fr/protocol", "destination": "/protocol.html" },
+    { "source": "/it/protocol", "destination": "/protocol.html" },
+    { "source": "/es/protocol", "destination": "/protocol.html" },
+    { "source": "/pt/protocol", "destination": "/protocol.html" },
+    { "source": "/nl/protocol", "destination": "/protocol.html" },
+    { "source": "/pl/protocol", "destination": "/protocol.html" },
+    { "source": "/cs/protocol", "destination": "/protocol.html" },
+    { "source": "/en/protocol/", "destination": "/protocol.html" },
+    { "source": "/de/protocol/", "destination": "/protocol.html" },
+    { "source": "/fr/protocol/", "destination": "/protocol.html" },
+    { "source": "/it/protocol/", "destination": "/protocol.html" },
+    { "source": "/es/protocol/", "destination": "/protocol.html" },
+    { "source": "/pt/protocol/", "destination": "/protocol.html" },
+    { "source": "/nl/protocol/", "destination": "/protocol.html" },
+    { "source": "/pl/protocol/", "destination": "/protocol.html" },
+    { "source": "/cs/protocol/", "destination": "/protocol.html" }
   ]
 }

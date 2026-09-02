@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+(function(){
+  var LANGS=["en","de","fr","it","es","pt","nl","pl","cs"];
+  var path=location.pathname.replace(/\/+$/,"")||"/";
+  var parts=path.split("/").filter(Boolean).map(function(s){return s.toLowerCase();});
+  if(LANGS.indexOf(parts[0]||"")!==-1 && parts[1]==="protocol") return;
+  if(parts[0]!=="protocol.html" && parts[0]!=="protocol" && path!=="/protocol.html") return;
+  var saved=null; try{saved=localStorage.getItem("doseiq_lang")}catch(e){}
+  var nav=(navigator.language||navigator.userLanguage||"en").slice(0,2).toLowerCase();
+  var lang=(saved&&LANGS.indexOf(saved)!==-1)?saved:(LANGS.indexOf(nav)!==-1?nav:"en");
+  location.replace("/"+lang+"/protocol"+location.search+location.hash);
+})();
+  </script>
+  <link rel="alternate" hreflang="en" href="https://www.dose-iq.fit/en/protocol" />
+  <link rel="alternate" hreflang="de" href="https://www.dose-iq.fit/de/protocol" />
+  <link rel="alternate" hreflang="fr" href="https://www.dose-iq.fit/fr/protocol" />
+  <link rel="alternate" hreflang="it" href="https://www.dose-iq.fit/it/protocol" />
+  <link rel="alternate" hreflang="es" href="https://www.dose-iq.fit/es/protocol" />
+  <link rel="alternate" hreflang="pt" href="https://www.dose-iq.fit/pt/protocol" />
+  <link rel="alternate" hreflang="nl" href="https://www.dose-iq.fit/nl/protocol" />
+  <link rel="alternate" hreflang="pl" href="https://www.dose-iq.fit/pl/protocol" />
+  <link rel="alternate" hreflang="cs" href="https://www.dose-iq.fit/cs/protocol" />
+  <link rel="alternate" hreflang="x-default" href="https://www.dose-iq.fit/en/protocol" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your protocol | Dose-IQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F5F2;
+      --surface: #FFFFFF;
+      --text: #0F172A;
+      --muted: #64748B;
+      --blue: #2B8CFF;
+      --sky: #5BA3D9;
+      --orange: #F28C38;
+      --accent: #F28C38;
+      --accent-soft: #E8F1FF;
+      --border: #E5E7EB;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+      --good: #2E7D4F;
+      --mid: #F28C38;
+      --low: #B33A2B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    h1, h2 { font-family: Inter, system-ui, sans-serif; font-weight: 800; letter-spacing: -.03em; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+    .topbar{background:#5BA3D9;color:#fff;text-align:center;font-size:.85rem;font-weight:500;padding:10px 16px}
+    header {
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(247, 245, 242, 0.95);
+    }
+    .logo-img { height: 44px; width: auto; }
+    .header-actions{display:flex;align-items:center;gap:12px}
+    .lang-wrap{position:relative}
+    .lang-btn{background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:8px 14px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+    .lang-btn:hover{border-color:#CBD5E1}
+    .lang-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border);border-radius:12px;min-width:160px;box-shadow:0 12px 30px rgba(0,0,0,.12);z-index:60;padding:6px;max-height:280px;overflow-y:auto}
+    .lang-menu.open{display:block}
+    .lang-menu button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 12px;font-size:.88rem;cursor:pointer;border-radius:8px;font-family:inherit;color:var(--text)}
+    .lang-menu button:hover,.lang-menu button.active{background:#F0F7FA;color:var(--blue)}
+    .hero {
+      padding: 36px 0 8px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 1.85rem; margin-bottom: 10px; line-height: 1.2; }
+    .hero p { color: var(--muted); font-size: 1.02rem; max-width: 560px; margin: 0 auto; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      margin: 18px 0;
+      box-shadow: var(--shadow);
+    }
+    .score-recap { display:none; text-align:center; }
+    .score-pill {
+      display:inline-flex; align-items:center; gap:10px;
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 10px 18px;
+      margin-bottom: 12px;
+    }
+    .score-num { font-size: 1.8rem; font-weight: 800; color: var(--blue); line-height:1; }
+    .score-lab { font-size: .85rem; color: var(--muted); font-weight: 600; }
+    .band { display:inline-block; padding:6px 14px; border-radius:999px; font-weight:600; font-size:.88rem; margin-top:6px; }
+    .band-optimal { background: #E6F4EA; color: var(--good); }
+    .band-good { background: #FFF3E0; color: var(--mid); }
+    .band-fair { background: #FFEBEE; color: var(--low); }
+    .band-low { background: #FFEBEE; color: var(--low); }
+    .kicker { font-size: 0.75rem; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .card h2 { font-size: 1.25rem; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: .98rem; }
+    .vs { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+    @media (max-width: 560px){ .vs { grid-template-columns:1fr; } }
+    .vs-col { background: var(--bg); border-radius:14px; padding:16px; border:1px solid var(--border); }
+    .vs-col h3 { font-size:.95rem; margin-bottom:6px; }
+    .vs-col p { font-size:.88rem; }
+    .steps { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+    .step { display:flex; gap:12px; align-items:flex-start; }
+    .n { width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff; font-weight:700; font-size:.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:8px; }
+    .chip { background:#fff; border:1px solid var(--border); border-radius:999px; padding:8px 14px; font-size:.85rem; font-weight:600; color:var(--text); }
+    .country-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:14px 0 18px; }
+    @media (max-width: 560px){ .country-grid { grid-template-columns:1fr; } }
+    .country-opt {
+      display:flex; align-items:center; gap:10px;
+      padding:12px 14px; border:1.5px solid var(--border); border-radius:12px;
+      cursor:pointer; font-weight:500; font-size:.95rem; background:#fff;
+    }
+    .country-opt:hover { border-color: var(--blue); background: var(--accent-soft); }
+    .country-opt.selected { border-color: var(--blue); background: var(--accent-soft); }
+    .country-opt input { display:none; }
+    .cta {
+      display:flex; align-items:center; justify-content:center;
+      width:100%; background: var(--orange); color:#fff;
+      padding:16px 22px; border-radius:999px; font-weight:700; font-size:1rem;
+      border:none; cursor:pointer; font-family:inherit;
+    }
+    .cta:hover { background:#E07A28; }
+    .cta[aria-disabled="true"] { opacity:.4; cursor:not-allowed; pointer-events:none; }
+    .fine { font-size:.82rem; color:var(--muted); text-align:center; margin-top:10px; }
+    .pdf-link { display:inline-block; color:var(--accent); font-weight:600; text-decoration:underline; margin-top:8px; }
+    .waitlist { display:none; margin-top:8px; }
+    .waitlist input[type="email"] {
+      width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:12px;
+      font-size:1rem; font-family:inherit; margin-bottom:10px;
+    }
+    .consent-row { display:flex; align-items:flex-start; gap:10px; text-align:left; font-size:.85rem; color:var(--muted); line-height:1.45; margin-bottom:12px; }
+    .consent-row a { color:var(--accent); text-decoration:underline; }
+    .wait-status { font-size:.88rem; margin-top:8px; color:var(--muted); }
+    footer { background:#F7F5F2; border-top:1px solid #E8E4DE; padding:36px 20px 40px; margin-top:24px; }
+    .footer-inner { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; font-size:.9rem; color:#94A3B8; }
+    .footer-logo { display:block; margin:0 auto 6px; height:44px; width:auto; opacity:.5; }
+    .footer-brand { font-size:.95rem; font-weight:600; color:#64748B; margin:0 0 4px; }
+    .footer-contact-btn{display:inline-block;font-size:0.85rem;font-weight:600;color:#64748B;border:1px solid #E8E4DE;background:#fff;padding:7px 18px;border-radius:999px;text-decoration:none;margin:6px 0 2px}
+    .footer-contact-btn:hover{border-color:#2B8CFF;color:#2B8CFF}
+    .footer-links { display:flex; gap:10px; align-items:center; justify-content:center; font-size:.85rem; margin:4px 0; flex-wrap:wrap; }
+    .footer-links a { color:#64748B; text-decoration:underline; }
+    .footer-disclaimer { max-width:640px; line-height:1.55; font-size:.88rem; color:#94A3B8; }
+  </style>
+</head>
+<body>
+  <div class="topbar" id="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <a href="/en" class="logo-link" id="logoHome"><img src="/dose-iq-logo.png" alt="Dose-IQ" class="logo-img"></a>
+      <div class="lang-wrap"><button type="button" class="lang-btn" id="langBtn" onclick="toggleLangMenu()" aria-label="Language">EN ▾</button><div class="lang-menu" id="langMenu">
+        <button type="button" data-lang="en" onclick="setLang('en')">English</button>
+        <button type="button" data-lang="de" onclick="setLang('de')">Deutsch</button>
+        <button type="button" data-lang="fr" onclick="setLang('fr')">Français</button>
+        <button type="button" data-lang="it" onclick="setLang('it')">Italiano</button>
+        <button type="button" data-lang="es" onclick="setLang('es')">Español</button>
+        <button type="button" data-lang="pt" onclick="setLang('pt')">Português</button>
+        <button type="button" data-lang="nl" onclick="setLang('nl')">Nederlands</button>
+        <button type="button" data-lang="pl" onclick="setLang('pl')">Polski</button>
+        <button type="button" data-lang="cs" onclick="setLang('cs')">Čeština</button>
+      </div></div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="hero">
+      <h1 id="heroH">Continue your protocol</h1>
+      <p id="heroP">Your Fit Score is a free lifestyle check. A personalised Bioniq formula is matched only after the Wellness Assessment.</p>
+    </div>
+    <div class="card score-recap" id="scoreRecap">
+      <div class="kicker" id="recapKicker">Your Fit Score</div>
+      <div class="score-pill">
+        <span class="score-num" id="recapScore">—</span>
+        <span class="score-lab" id="scoreLabel">Fit Score</span>
+      </div>
+      <div class="band" id="recapBand"></div>
+      <p id="recapP" style="margin-top:12px;"></p>
+    </div>
+    <div class="card" id="genericCard" style="display:none;">
+      <div class="kicker" id="genericKicker">Your protocol</div>
+      <h2 id="genericH">Continue your protocol</h2>
+      <p id="genericP">Take the Wellness Assessment to match a personalised formula. The Fit Score does not create a formula.</p>
+    </div>
+    <div class="card">
+      <div class="kicker" id="vsKicker">Two different steps</div>
+      <h2 id="vsH">Fit Score ≠ a personalised formula</h2>
+      <p id="vsIntro">The Fit Score on Dose-IQ.fit is a free lifestyle check with a PDF. It does not create a Bioniq formula.</p>
+      <div class="vs">
+        <div class="vs-col">
+          <h3 id="vsFitH">Fit Score</h3>
+          <p id="vsFitP">Free lifestyle check + PDF. Educational. Not a formula. Not a purchase.</p>
+        </div>
+        <div class="vs-col">
+          <h3 id="vsWaH">Wellness Assessment</h3>
+          <p id="vsWaP">Required to match a personalised formula. See your formula before you buy.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="kicker" id="waKicker">Next step</div>
+      <h2 id="waH">The Wellness Assessment</h2>
+      <p id="waP">This is how a personalised formula is matched. It is not another Fit Score.</p>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><p id="s1">Answer questions about goals, diet and lifestyle.</p></div>
+        <div class="step"><span class="n">2</span><p id="s2">See your formula before you buy.</p></div>
+        <div class="step"><span class="n">3</span><p id="s3">No card required to start. Cancel anytime.</p></div>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="chips">
+        <span class="chip" id="chip1">★★★★★ 4.5 · 12,400+ Bioniq product reviews</span>
+        <span class="chip" id="chip2">Patented Swiss granule technology</span>
+        <span class="chip" id="chip3">Up to 23 nutrients</span>
+      </div>
+      <p class="fine" id="proofNote">Ratings refer to Bioniq product reviews, not Dose-IQ sales.</p>
+    </div>
+    <div class="card">
+      <div class="kicker" id="ctKicker">Your country</div>
+      <h2 id="ctH">Choose your country</h2>
+      <p id="ctP">The Wellness Assessment is available in selected shop countries. If yours is not listed, join the waitlist.</p>
+      <div class="country-grid" id="countryGrid"></div>
+      <a class="cta" id="shopCta" href="#" target="_blank" rel="noopener">Start the Wellness Assessment</a>
+      <p class="fine" id="ctaFine">You will continue on the official Bioniq shop for your country.</p>
+      <form class="waitlist" id="waitForm">
+        <input type="email" id="waitEmail" name="email" required autocomplete="email" placeholder="Your email address">
+        <input type="hidden" name="country" id="waitCountry" value="">
+        <div class="consent-row">
+          <input type="checkbox" id="waitConsent" required>
+          <label for="waitConsent" id="waitConsentLabel">I agree to the Privacy Policy and to being contacted about Dose-IQ availability in my country.</label>
+        </div>
+        <button type="submit" class="cta" id="waitBtn">Join the waitlist</button>
+        <p class="wait-status" id="waitStatus"></p>
+      </form>
+    </div>
+    <div class="card" style="text-align:center;">
+      <p id="pdfP">Keep your free 9-page Personalised Supplementation Guide.</p>
+      <a class="pdf-link" id="pdfLink" href="/guides/en.pdf">Download the PDF</a>
+    </div>
+  </div>
+  <footer>
+    <div class="container footer-inner">
+      <a href="/en" id="footerLogo" style="text-decoration:none"><img src="/dose-iq-logo.png" alt="Dose-IQ" class="footer-logo" /></a>
+      <div class="footer-brand" id="footerBrand">Dose-IQ — Official Bioniq distributor</div>
+      <a class="footer-contact-btn" href="/contact.html" id="footerContact">Contact</a>
+      <div class="footer-links">
+        <a href="/privacy.html" id="footerPrivacy">Privacy Policy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms.html" id="footerTerms">Terms of Use</a>
+      </div>
+      <div class="footer-disclaimer" id="footerDisc">This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.</div>
+    </div>
+  </footer>
+  <script>
+const SHOPS = {
+  gb: "https://shopbioniq.com/en-GB/Dose-IQ-GB",
+  us: "https://shopbioniq.com/en-US/Dose-IQ-US",
+  de: "https://shopbioniq.com/de-DE/Dose-IQ-DE",
+  at: "https://shopbioniq.com/de-AT/Dose-IQ-AT",
+  nl: "https://shopbioniq.com/nl-NL/Dose-IQ-NL",
+  pl: "https://shopbioniq.com/pl-PL/Dose-IQ-PL",
+  pt: "https://shopbioniq.com/pt-PT/Dose-IQ-PT",
+  cz: "https://shopbioniq.com/cs-CZ/Dose-IQ-CZ"
+};
+const COUNTRY_KEYS = ["gb","us","de","at","nl","pl","pt","cz","other"];
+const LANG_DEFAULT_COUNTRY = {en:"gb",de:"de",nl:"nl",pl:"pl",pt:"pt",cs:"cz",fr:"",it:"",es:""};
+const T = {
+en:{title:"Your protocol | Dose-IQ",topbar:"Official Bioniq distributor · Educational guide · No diagnosis",hero_h:"Continue your protocol",hero_p:"Your Fit Score is a free lifestyle check. A personalised Bioniq formula is matched only after the Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Your Fit Score",recap_p:"This score is a lifestyle snapshot. It does not create a Bioniq formula.",generic_kicker:"Your protocol",generic_h:"Continue your protocol",generic_p:"Take the Wellness Assessment to match a personalised formula. The Fit Score does not create a formula.",vs_kicker:"Two different steps",vs_h:"Fit Score ≠ a personalised formula",vs_intro:"The Fit Score on Dose-IQ.fit is a free lifestyle check with a PDF. It does not create a Bioniq formula.",vs_fit_h:"Fit Score",vs_fit_p:"Free lifestyle check + PDF. Educational. Not a formula. Not a purchase.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Required to match a personalised formula. See your formula before you buy.",wa_kicker:"Next step",wa_h:"The Wellness Assessment",wa_p:"This is how a personalised formula is matched. It is not another Fit Score.",s1:"Answer questions about goals, diet and lifestyle.",s2:"See your formula before you buy.",s3:"No card required to start. Cancel anytime.",chip1:"★★★★★ 4.5 · 12,400+ Bioniq product reviews",chip2:"Patented Swiss granule technology",chip3:"Up to 23 nutrients",proof:"Ratings refer to Bioniq product reviews, not Dose-IQ sales.",ct_kicker:"Your country",ct_h:"Choose your country",ct_p:"The Wellness Assessment is available in selected shop countries. If yours is not listed, join the waitlist.",cta:"Start the Wellness Assessment",cta_fine:"You will continue on the official Bioniq shop for your country.",wait_ph:"Your email address",wait_consent:'I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to being contacted about Dose-IQ availability in my country.',wait_btn:"Join the waitlist",wait_ok:"Thank you. We will email you when the Wellness Assessment is available in your country.",wait_err:"Something went wrong. Please try again.",pdf_p:"Keep your free 9-page Personalised Supplementation Guide.",pdf_a:"Download the PDF",brand:"Dose-IQ — Official Bioniq distributor",contact:"Contact",privacy:"Privacy Policy",terms:"Terms of Use",footer_disc:"This site is for informational purposes. Food supplements should not replace a varied and balanced diet and a healthy lifestyle.",band_optimal:"Optimal Fit",band_good:"Good Fit",band_fair:"Fair Fit",band_low:"Needs Attention",countries:{gb:"United Kingdom",us:"United States",de:"Germany",at:"Austria",nl:"Netherlands",pl:"Poland",pt:"Portugal",cz:"Czech Republic",other:"My country is not listed"}},
+de:{title:"Ihr Protokoll | Dose-IQ",topbar:"Offizieller Bioniq-Vertriebspartner · Bildungsleitfaden · Keine Diagnose",hero_h:"Setzen Sie Ihr Protokoll fort",hero_p:"Der Fit Score ist ein kostenloser Lifestyle-Check. Eine personalisierte Bioniq-Formel wird erst nach der Wellness Assessment zugeordnet.",score_label:"Fit Score",recap_kicker:"Ihr Fit Score",recap_p:"Dieser Score ist ein Lifestyle-Snapshot. Er erstellt keine Bioniq-Formel.",generic_kicker:"Ihr Protokoll",generic_h:"Setzen Sie Ihr Protokoll fort",generic_p:"Starten Sie die Wellness Assessment, um eine personalisierte Formel zuzuordnen. Der Fit Score erstellt keine Formel.",vs_kicker:"Zwei unterschiedliche Schritte",vs_h:"Fit Score ≠ personalisierte Formel",vs_intro:"Der Fit Score auf Dose-IQ.fit ist ein kostenloser Lifestyle-Check mit PDF. Er erstellt keine Bioniq-Formel.",vs_fit_h:"Fit Score",vs_fit_p:"Kostenloser Lifestyle-Check + PDF. Informativ. Keine Formel. Kein Kauf.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Erforderlich, um eine personalisierte Formel zuzuordnen. Formel vor dem Kauf sichtbar.",wa_kicker:"Nächster Schritt",wa_h:"Die Wellness Assessment",wa_p:"So wird eine personalisierte Formel zugeordnet. Das ist kein weiterer Fit Score.",s1:"Beantworten Sie Fragen zu Zielen, Ernährung und Lifestyle.",s2:"Sehen Sie Ihre Formel, bevor Sie kaufen.",s3:"Keine Karte zum Start. Jederzeit kündbar.",chip1:"★★★★★ 4,5 · 12.400+ Bioniq-Produktbewertungen",chip2:"Patentierte Schweizer Granulattechnologie",chip3:"Bis zu 23 Nährstoffe",proof:"Angaben beziehen sich auf Bioniq-Produktbewertungen, nicht auf Dose-IQ-Verkäufe.",ct_kicker:"Ihr Land",ct_h:"Wählen Sie Ihr Land",ct_p:"Die Wellness Assessment ist in ausgewählten Shop-Ländern verfügbar. Ist Ihres nicht gelistet, tragen Sie sich auf die Warteliste ein.",cta:"Wellness Assessment starten",cta_fine:"Sie fahren im offiziellen Bioniq-Shop für Ihr Land fort.",wait_ph:"Ihre E-Mail-Adresse",wait_consent:'Ich stimme der <a href="/privacy.html" target="_blank" rel="noopener">Datenschutzerklärung</a> zu und der Kontaktaufnahme zur Dose-IQ-Verfügbarkeit in meinem Land.',wait_btn:"Auf die Warteliste",wait_ok:"Danke. Wir benachrichtigen Sie, wenn die Wellness Assessment in Ihrem Land verfügbar ist.",wait_err:"Etwas ist schiefgelaufen. Bitte erneut versuchen.",pdf_p:"Behalten Sie Ihren kostenlosen 9-Seiten-Leitfaden.",pdf_a:"PDF herunterladen",brand:"Dose-IQ — Offizieller Bioniq-Vertriebspartner",contact:"Kontakt",privacy:"Datenschutz",terms:"Nutzungsbedingungen",footer_disc:"Diese Website dient der Information. Nahrungsergänzungsmittel ersetzen keine abwechslungsreiche, ausgewogene Ernährung und eine gesunde Lebensweise.",band_optimal:"Optimale Passung",band_good:"Gute Passung",band_fair:"Mittlere Passung",band_low:"Aufmerksamkeit nötig",countries:{gb:"Vereinigtes Königreich",us:"Vereinigte Staaten",de:"Deutschland",at:"Österreich",nl:"Niederlande",pl:"Polen",pt:"Portugal",cz:"Tschechien",other:"Mein Land ist nicht gelistet"}},
+fr:{title:"Votre protocole | Dose-IQ",topbar:"Distributeur officiel Bioniq · Guide éducatif · Pas de diagnostic",hero_h:"Poursuivez votre protocole",hero_p:"Le Fit Score est un bilan lifestyle gratuit. Une formule Bioniq personnalisée n’est associée qu’après la Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Votre Fit Score",recap_p:"Ce score est un aperçu lifestyle. Il ne crée pas de formule Bioniq.",generic_kicker:"Votre protocole",generic_h:"Poursuivez votre protocole",generic_p:"Faites la Wellness Assessment pour associer une formule personnalisée. Le Fit Score ne crée pas de formule.",vs_kicker:"Deux étapes distinctes",vs_h:"Fit Score ≠ formule personnalisée",vs_intro:"Le Fit Score sur Dose-IQ.fit est un bilan lifestyle gratuit avec PDF. Il ne crée pas de formule Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Bilan lifestyle gratuit + PDF. Informatif. Pas une formule. Pas un achat.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Nécessaire pour associer une formule personnalisée. Voyez la formule avant d’acheter.",wa_kicker:"Étape suivante",wa_h:"La Wellness Assessment",wa_p:"C’est ainsi qu’une formule personnalisée est associée. Ce n’est pas un autre Fit Score.",s1:"Répondez à des questions sur vos objectifs, votre alimentation et votre mode de vie.",s2:"Voyez votre formule avant d’acheter.",s3:"Aucune carte pour commencer. Résiliation à tout moment.",chip1:"★★★★★ 4,5 · 12 400+ avis produits Bioniq",chip2:"Technologie suisse de granules brevetée",chip3:"Jusqu’à 23 nutriments",proof:"Les notes concernent les avis produits Bioniq, pas les ventes Dose-IQ.",ct_kicker:"Votre pays",ct_h:"Choisissez votre pays",ct_p:"La Wellness Assessment est disponible dans certains pays. Si le vôtre n’est pas listé, rejoignez la liste d’attente.",cta:"Commencer la Wellness Assessment",cta_fine:"Vous continuez sur la boutique Bioniq officielle de votre pays.",wait_ph:"Votre adresse e-mail",wait_consent:'J’accepte la <a href="/privacy.html" target="_blank" rel="noopener">politique de confidentialité</a> et d’être contacté au sujet de la disponibilité Dose-IQ dans mon pays.',wait_btn:"Rejoindre la liste d’attente",wait_ok:"Merci. Nous vous écrirons lorsque la Wellness Assessment sera disponible dans votre pays.",wait_err:"Une erreur s’est produite. Veuillez réessayer.",pdf_p:"Conservez votre guide gratuit de 9 pages.",pdf_a:"Télécharger le PDF",brand:"Dose-IQ — Distributeur officiel Bioniq",contact:"Contact",privacy:"Politique de confidentialité",terms:"Conditions d’utilisation",footer_disc:"Ce site est fourni à titre informatif. Les compléments alimentaires ne se substituent pas à une alimentation variée et équilibrée ni à un mode de vie sain.",band_optimal:"Correspondance optimale",band_good:"Bonne correspondance",band_fair:"Correspondance moyenne",band_low:"À surveiller",countries:{gb:"Royaume-Uni",us:"États-Unis",de:"Allemagne",at:"Autriche",nl:"Pays-Bas",pl:"Pologne",pt:"Portugal",cz:"Tchéquie",other:"Mon pays n’est pas listé"}},
+it:{title:"Il tuo protocollo | Dose-IQ",topbar:"Distributore ufficiale Bioniq · Guida educativa · Nessuna diagnosi",hero_h:"Continua il tuo protocollo",hero_p:"Il Fit Score è un check lifestyle gratuito. Una formula Bioniq personalizzata viene abbinata solo dopo la Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Il tuo Fit Score",recap_p:"Questo punteggio è uno snapshot dello stile di vita. Non crea una formula Bioniq.",generic_kicker:"Il tuo protocollo",generic_h:"Continua il tuo protocollo",generic_p:"Fai la Wellness Assessment per abbinare una formula personalizzata. Il Fit Score non crea una formula.",vs_kicker:"Due passaggi diversi",vs_h:"Fit Score ≠ formula personalizzata",vs_intro:"Il Fit Score su Dose-IQ.fit è un check lifestyle gratuito con PDF. Non crea una formula Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Check lifestyle gratuito + PDF. Educativo. Non è una formula. Non è un acquisto.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Necessaria per abbinare una formula personalizzata. Vedi la formula prima di acquistare.",wa_kicker:"Passo successivo",wa_h:"La Wellness Assessment",wa_p:"Così si abbina una formula personalizzata. Non è un altro Fit Score.",s1:"Rispondi a domande su obiettivi, alimentazione e stile di vita.",s2:"Vedi la formula prima di acquistare.",s3:"Nessuna carta per iniziare. Disdici quando vuoi.",chip1:"★★★★★ 4,5 · 12.400+ recensioni prodotto Bioniq",chip2:"Tecnologia svizzera di granuli brevettata",chip3:"Fino a 23 nutrienti",proof:"I punteggi si riferiscono alle recensioni prodotto Bioniq, non alle vendite Dose-IQ.",ct_kicker:"Il tuo Paese",ct_h:"Scegli il tuo Paese",ct_p:"La Wellness Assessment è disponibile in Paesi selezionati. Se il tuo non è in elenco, iscriviti alla lista d’attesa.",cta:"Inizia la Wellness Assessment",cta_fine:"Continuerai nello shop ufficiale Bioniq del tuo Paese.",wait_ph:"Il tuo indirizzo e-mail",wait_consent:'Accetto l’<a href="/privacy.html" target="_blank" rel="noopener">Informativa sulla privacy</a> e di essere contattato sulla disponibilità Dose-IQ nel mio Paese.',wait_btn:"Iscriviti alla lista d’attesa",wait_ok:"Grazie. Ti scriveremo quando la Wellness Assessment sarà disponibile nel tuo Paese.",wait_err:"Qualcosa è andato storto. Riprova.",pdf_p:"Conserva la guida gratuita di 9 pagine.",pdf_a:"Scarica il PDF",brand:"Dose-IQ — Distributore ufficiale Bioniq",contact:"Contatto",privacy:"Informativa sulla privacy",terms:"Termini di utilizzo",footer_disc:"Questo sito ha scopo informativo. Gli integratori alimentari non sostituiscono una dieta variata ed equilibrata e uno stile di vita sano.",band_optimal:"Adattamento ottimale",band_good:"Buon adattamento",band_fair:"Adattamento discreto",band_low:"Da considerare",countries:{gb:"Regno Unito",us:"Stati Uniti",de:"Germania",at:"Austria",nl:"Paesi Bassi",pl:"Polonia",pt:"Portogallo",cz:"Cechia",other:"Il mio Paese non è in elenco"}},
+es:{title:"Tu protocolo | Dose-IQ",topbar:"Distribuidor oficial de Bioniq · Guía educativa · Sin diagnóstico",hero_h:"Continúa tu protocolo",hero_p:"El Fit Score es un chequeo de estilo de vida gratuito. Una fórmula Bioniq personalizada se empareja solo después de la Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Tu Fit Score",recap_p:"Esta puntuación es una instantánea de estilo de vida. No crea una fórmula Bioniq.",generic_kicker:"Tu protocolo",generic_h:"Continúa tu protocolo",generic_p:"Haz la Wellness Assessment para emparejar una fórmula personalizada. El Fit Score no crea una fórmula.",vs_kicker:"Dos pasos distintos",vs_h:"Fit Score ≠ fórmula personalizada",vs_intro:"El Fit Score en Dose-IQ.fit es un chequeo de estilo de vida gratuito con PDF. No crea una fórmula Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Chequeo gratuito + PDF. Educativo. No es una fórmula. No es una compra.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Necesaria para emparejar una fórmula personalizada. Ve la fórmula antes de comprar.",wa_kicker:"Siguiente paso",wa_h:"La Wellness Assessment",wa_p:"Así se empareja una fórmula personalizada. No es otro Fit Score.",s1:"Responde preguntas sobre objetivos, dieta y estilo de vida.",s2:"Ve tu fórmula antes de comprar.",s3:"Sin tarjeta para empezar. Cancela cuando quieras.",chip1:"★★★★★ 4,5 · 12.400+ reseñas de producto Bioniq",chip2:"Tecnología suiza de gránulos patentada",chip3:"Hasta 23 nutrientes",proof:"Las valoraciones se refieren a reseñas de producto Bioniq, no a ventas de Dose-IQ.",ct_kicker:"Tu país",ct_h:"Elige tu país",ct_p:"La Wellness Assessment está disponible en países seleccionados. Si el tuyo no aparece, únete a la lista de espera.",cta:"Empezar la Wellness Assessment",cta_fine:"Continuarás en la tienda oficial Bioniq de tu país.",wait_ph:"Tu correo electrónico",wait_consent:'Acepto la <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidad</a> y que me contacten sobre la disponibilidad de Dose-IQ en mi país.',wait_btn:"Unirme a la lista de espera",wait_ok:"Gracias. Te escribiremos cuando la Wellness Assessment esté disponible en tu país.",wait_err:"Algo salió mal. Inténtalo de nuevo.",pdf_p:"Conserva tu guía gratuita de 9 páginas.",pdf_a:"Descargar el PDF",brand:"Dose-IQ — Distribuidor oficial de Bioniq",contact:"Contacto",privacy:"Política de privacidad",terms:"Términos de uso",footer_disc:"Este sitio tiene fines informativos. Los complementos alimenticios no deben sustituir una dieta variada y equilibrada ni un estilo de vida saludable.",band_optimal:"Ajuste óptimo",band_good:"Buen ajuste",band_fair:"Ajuste razonable",band_low:"Requiere atención",countries:{gb:"Reino Unido",us:"Estados Unidos",de:"Alemania",at:"Austria",nl:"Países Bajos",pl:"Polonia",pt:"Portugal",cz:"Chequia",other:"Mi país no está en la lista"}},
+pt:{title:"O seu protocolo | Dose-IQ",topbar:"Distribuidor oficial Bioniq · Guia educativo · Sem diagnóstico",hero_h:"Continue o seu protocolo",hero_p:"O Fit Score é uma verificação de estilo de vida gratuita. Uma fórmula Bioniq personalizada só é associada após a Wellness Assessment.",score_label:"Fit Score",recap_kicker:"O seu Fit Score",recap_p:"Esta pontuação é um retrato de estilo de vida. Não cria uma fórmula Bioniq.",generic_kicker:"O seu protocolo",generic_h:"Continue o seu protocolo",generic_p:"Faça a Wellness Assessment para associar uma fórmula personalizada. O Fit Score não cria uma fórmula.",vs_kicker:"Dois passos diferentes",vs_h:"Fit Score ≠ fórmula personalizada",vs_intro:"O Fit Score em Dose-IQ.fit é uma verificação de estilo de vida gratuita com PDF. Não cria uma fórmula Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Verificação gratuita + PDF. Educativo. Não é uma fórmula. Não é uma compra.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Necessária para associar uma fórmula personalizada. Veja a fórmula antes de comprar.",wa_kicker:"Próximo passo",wa_h:"A Wellness Assessment",wa_p:"É assim que uma fórmula personalizada é associada. Não é outro Fit Score.",s1:"Responda a perguntas sobre objetivos, alimentação e estilo de vida.",s2:"Veja a fórmula antes de comprar.",s3:"Sem cartão para começar. Cancele a qualquer momento.",chip1:"★★★★★ 4,5 · 12.400+ avaliações de produto Bioniq",chip2:"Tecnologia suíça de grânulos patenteada",chip3:"Até 23 nutrientes",proof:"As classificações referem-se a avaliações de produto Bioniq, não a vendas Dose-IQ.",ct_kicker:"O seu país",ct_h:"Escolha o seu país",ct_p:"A Wellness Assessment está disponível em países selecionados. Se o seu não estiver listado, junte-se à lista de espera.",cta:"Começar a Wellness Assessment",cta_fine:"Continuará na loja oficial Bioniq do seu país.",wait_ph:"O seu endereço de e-mail",wait_consent:'Concordo com a <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidade</a> e em ser contactado sobre a disponibilidade Dose-IQ no meu país.',wait_btn:"Juntar-me à lista de espera",wait_ok:"Obrigado. Enviaremos um e-mail quando a Wellness Assessment estiver disponível no seu país.",wait_err:"Algo correu mal. Tente novamente.",pdf_p:"Guarde o seu guia gratuito de 9 páginas.",pdf_a:"Descarregar o PDF",brand:"Dose-IQ — Distribuidor oficial Bioniq",contact:"Contacto",privacy:"Política de privacidade",terms:"Termos de utilização",footer_disc:"Este site tem fins informativos. Os suplementos alimentares não devem substituir uma alimentação variada e equilibrada nem um estilo de vida saudável.",band_optimal:"Ajuste ótimo",band_good:"Bom ajuste",band_fair:"Ajuste razoável",band_low:"Precisa de atenção",countries:{gb:"Reino Unido",us:"Estados Unidos",de:"Alemanha",at:"Áustria",nl:"Países Baixos",pl:"Polónia",pt:"Portugal",cz:"Chéquia",other:"O meu país não está listado"}},
+nl:{title:"Jouw protocol | Dose-IQ",topbar:"Officiële Bioniq-distributeur · Educatieve gids · Geen diagnose",hero_h:"Ga verder met jouw protocol",hero_p:"De Fit Score is een gratis lifestyle-check. Een persoonlijke Bioniq-formule wordt pas na de Wellness Assessment gekoppeld.",score_label:"Fit Score",recap_kicker:"Jouw Fit Score",recap_p:"Deze score is een lifestyle-snapshot. Hij maakt geen Bioniq-formule.",generic_kicker:"Jouw protocol",generic_h:"Ga verder met jouw protocol",generic_p:"Doe de Wellness Assessment om een persoonlijke formule te koppelen. De Fit Score maakt geen formule.",vs_kicker:"Twee verschillende stappen",vs_h:"Fit Score ≠ persoonlijke formule",vs_intro:"De Fit Score op Dose-IQ.fit is een gratis lifestyle-check met PDF. Hij maakt geen Bioniq-formule.",vs_fit_h:"Fit Score",vs_fit_p:"Gratis lifestyle-check + PDF. Educatief. Geen formule. Geen aankoop.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Vereist om een persoonlijke formule te koppelen. Zie je formule vóór je koopt.",wa_kicker:"Volgende stap",wa_h:"De Wellness Assessment",wa_p:"Zo wordt een persoonlijke formule gekoppeld. Dit is geen extra Fit Score.",s1:"Beantwoord vragen over doelen, voeding en leefstijl.",s2:"Zie je formule voordat je koopt.",s3:"Geen kaart om te starten. Altijd opzegbaar.",chip1:"★★★★★ 4,5 · 12.400+ Bioniq-productbeoordelingen",chip2:"Gepatenteerde Zwitserse korreltechnologie",chip3:"Tot 23 voedingsstoffen",proof:"Cijfers verwijzen naar Bioniq-productbeoordelingen, niet naar Dose-IQ-verkopen.",ct_kicker:"Jouw land",ct_h:"Kies je land",ct_p:"De Wellness Assessment is beschikbaar in geselecteerde winkellanden. Staat jouw land er niet bij, schrijf je in op de wachtlijst.",cta:"Start de Wellness Assessment",cta_fine:"Je gaat verder in de officiële Bioniq-shop van jouw land.",wait_ph:"Je e-mailadres",wait_consent:'Ik ga akkoord met het <a href="/privacy.html" target="_blank" rel="noopener">privacybeleid</a> en om gecontacteerd te worden over Dose-IQ-beschikbaarheid in mijn land.',wait_btn:"Schrijf me in op de wachtlijst",wait_ok:"Dank je. We mailen je wanneer de Wellness Assessment in jouw land beschikbaar is.",wait_err:"Er ging iets mis. Probeer het opnieuw.",pdf_p:"Bewaar je gratis gids van 9 pagina’s.",pdf_a:"PDF downloaden",brand:"Dose-IQ — Officiële Bioniq-distributeur",contact:"Contact",privacy:"Privacybeleid",terms:"Gebruiksvoorwaarden",footer_disc:"Deze site is bedoeld ter informatie. Voedingssupplementen vervangen geen gevarieerde, evenwichtige voeding en een gezonde levensstijl.",band_optimal:"Optimale match",band_good:"Goede match",band_fair:"Redelijke match",band_low:"Aandacht nodig",countries:{gb:"Verenigd Koninkrijk",us:"Verenigde Staten",de:"Duitsland",at:"Oostenrijk",nl:"Nederland",pl:"Polen",pt:"Portugal",cz:"Tsjechië",other:"Mijn land staat niet in de lijst"}},
+pl:{title:"Twój protokół | Dose-IQ",topbar:"Oficjalny dystrybutor Bioniq · Przewodnik edukacyjny · Bez diagnozy",hero_h:"Kontynuuj swój protokół",hero_p:"Fit Score to bezpłatny check stylu życia. Spersonalizowana formuła Bioniq jest dopasowywana dopiero po Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Twój Fit Score",recap_p:"Ten wynik to snapshot stylu życia. Nie tworzy formuły Bioniq.",generic_kicker:"Twój protokół",generic_h:"Kontynuuj swój protokół",generic_p:"Wykonaj Wellness Assessment, aby dopasować spersonalizowaną formułę. Fit Score nie tworzy formuły.",vs_kicker:"Dwa różne kroki",vs_h:"Fit Score ≠ spersonalizowana formuła",vs_intro:"Fit Score na Dose-IQ.fit to bezpłatny check stylu życia z PDF. Nie tworzy formuły Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Bezpłatny check + PDF. Edukacyjny. To nie formuła. To nie zakup.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Wymagana, aby dopasować spersonalizowaną formułę. Zobacz formułę przed zakupem.",wa_kicker:"Następny krok",wa_h:"Wellness Assessment",wa_p:"Tak dopasowuje się spersonalizowaną formułę. To nie kolejny Fit Score.",s1:"Odpowiedz na pytania o cele, dietę i styl życia.",s2:"Zobacz formułę przed zakupem.",s3:"Bez karty na start. Anuluj w każdej chwili.",chip1:"★★★★★ 4,5 · 12 400+ recenzji produktu Bioniq",chip2:"Patentowana szwajcarska technologia granulek",chip3:"Do 23 składników odżywczych",proof:"Oceny dotyczą recenzji produktu Bioniq, nie sprzedaży Dose-IQ.",ct_kicker:"Twój kraj",ct_h:"Wybierz kraj",ct_p:"Wellness Assessment jest dostępna w wybranych krajach sklepu. Jeśli Twojego nie ma na liście, dołącz do listy oczekujących.",cta:"Rozpocznij Wellness Assessment",cta_fine:"Kontynuujesz w oficjalnym sklepie Bioniq dla swojego kraju.",wait_ph:"Twój adres e-mail",wait_consent:'Zgadzam się z <a href="/privacy.html" target="_blank" rel="noopener">Polityką prywatności</a> oraz na kontakt w sprawie dostępności Dose-IQ w moim kraju.',wait_btn:"Dołącz do listy oczekujących",wait_ok:"Dziękujemy. Napiszemy, gdy Wellness Assessment będzie dostępna w Twoim kraju.",wait_err:"Coś poszło nie tak. Spróbuj ponownie.",pdf_p:"Zachowaj bezpłatny 9-stronicowy przewodnik.",pdf_a:"Pobierz PDF",brand:"Dose-IQ — Oficjalny dystrybutor Bioniq",contact:"Kontakt",privacy:"Polityka prywatności",terms:"Warunki użytkowania",footer_disc:"Ta strona ma charakter informacyjny. Suplementy diety nie mogą zastępować zróżnicowanej i zrównoważonej diety oraz zdrowego stylu życia.",band_optimal:"Optymalne dopasowanie",band_good:"Dobre dopasowanie",band_fair:"Umiarkowane dopasowanie",band_low:"Wymaga uwagi",countries:{gb:"Wielka Brytania",us:"Stany Zjednoczone",de:"Niemcy",at:"Austria",nl:"Holandia",pl:"Polska",pt:"Portugalia",cz:"Czechy",other:"Mojego kraju nie ma na liście"}},
+cs:{title:"Váš protokol | Dose-IQ",topbar:"Oficiální distributor Bioniq · Vzdělávací průvodce · Žádná diagnóza",hero_h:"Pokračujte ve svém protokolu",hero_p:"Fit Score je bezplatná lifestyle kontrola. Personalizovaná formule Bioniq se přiřadí až po Wellness Assessment.",score_label:"Fit Score",recap_kicker:"Váš Fit Score",recap_p:"Toto skóre je snímek životního stylu. Nevytváří formuli Bioniq.",generic_kicker:"Váš protokol",generic_h:"Pokračujte ve svém protokolu",generic_p:"Absolvujte Wellness Assessment pro přiřazení personalizované formule. Fit Score formuli nevytváří.",vs_kicker:"Dva různé kroky",vs_h:"Fit Score ≠ personalizovaná formule",vs_intro:"Fit Score na Dose-IQ.fit je bezplatná lifestyle kontrola s PDF. Nevytváří formuli Bioniq.",vs_fit_h:"Fit Score",vs_fit_p:"Bezplatná lifestyle kontrola + PDF. Vzdělávací. Není to formule. Není to nákup.",vs_wa_h:"Wellness Assessment",vs_wa_p:"Nutná k přiřazení personalizované formule. Formuli uvidíte před nákupem.",wa_kicker:"Další krok",wa_h:"Wellness Assessment",wa_p:"Tak se přiřadí personalizovaná formule. Nejde o další Fit Score.",s1:"Odpovězte na otázky o cílech, stravě a životním stylu.",s2:"Uvidíte formuli před nákupem.",s3:"Na začátek není karta. Zrušení kdykoli.",chip1:"★★★★★ 4,5 · 12 400+ recenzí produktu Bioniq",chip2:"Patentovaná švýcarská granulátová technologie",chip3:"Až 23 živin",proof:"Hodnocení se vztahují k recenzím produktu Bioniq, ne k prodejům Dose-IQ.",ct_kicker:"Vaše země",ct_h:"Vyberte zemi",ct_p:"Wellness Assessment je dostupná ve vybraných zemích obchodu. Pokud vaše není v seznamu, přidejte se na čekací listinu.",cta:"Spustit Wellness Assessment",cta_fine:"Pokračujete v oficiálním Bioniq shopu pro vaši zemi.",wait_ph:"Váš e-mail",wait_consent:'Souhlasím se <a href="/privacy.html" target="_blank" rel="noopener">zásadami ochrany soukromí</a> a s kontaktováním ohledně dostupnosti Dose-IQ v mé zemi.',wait_btn:"Přidat se na čekací listinu",wait_ok:"Děkujeme. Napíšeme, až bude Wellness Assessment dostupná ve vaší zemi.",wait_err:"Něco se pokazilo. Zkuste to znovu.",pdf_p:"Uschovejte si bezplatného 9stránkového průvodce.",pdf_a:"Stáhnout PDF",brand:"Dose-IQ — Oficiální distributor Bioniq",contact:"Kontakt",privacy:"Zásady ochrany soukromí",terms:"Podmínky použití",footer_disc:"Tento web slouží k informacím. Doplňky stravy nenahrazují pestrou a vyváženou stravu a zdravý životní styl.",band_optimal:"Optimální soulad",band_good:"Dobrý soulad",band_fair:"Průměrný soulad",band_low:"Vyžaduje pozornost",countries:{gb:"Spojené království",us:"Spojené státy",de:"Německo",at:"Rakousko",nl:"Nizozemsko",pl:"Polsko",pt:"Portugalsko",cz:"Česko",other:"Moje země není v seznamu"}}
+};
+const LANGS=["en","de","fr","it","es","pt","nl","pl","cs"];
+const LANG_LABELS={en:"EN",de:"DE",fr:"FR",it:"IT",es:"ES",pt:"PT",nl:"NL",pl:"PL",cs:"CS"};
+const LANG_KEY="doseiq_lang";
+let currentLang="en";
+let selectedCountry="";
+function t(){ return T[currentLang] || T.en; }
+function pathParts(){return location.pathname.split("/").filter(Boolean).map(s=>s.toLowerCase());}
+function pathLang(){const first=pathParts()[0]||"";return LANGS.indexOf(first)!==-1?first:null;}
+function isProtocolPath(){
+  const p=pathParts();
+  if(p[0]==="protocol.html"||p[0]==="protocol") return true;
+  if(LANGS.indexOf(p[0])!==-1 && p[1]==="protocol") return true;
+  return false;
+}
+function toggleLangMenu(){const m=document.getElementById("langMenu"); if(m) m.classList.toggle("open");}
+document.addEventListener("click",(e)=>{
+  const wrap=document.querySelector(".lang-wrap");
+  if(wrap && !wrap.contains(e.target)){const m=document.getElementById("langMenu"); if(m) m.classList.remove("open");}
+});
+function detectLang(){
+  const fromPath=pathLang();
+  if(fromPath) return fromPath;
+  let saved=null; try{saved=localStorage.getItem(LANG_KEY);}catch(e){}
+  const nav=(navigator.language||navigator.userLanguage||"en").slice(0,2).toLowerCase();
+  if(saved && LANGS.indexOf(saved)!==-1) return saved;
+  if(LANGS.indexOf(nav)!==-1) return nav;
+  return "en";
+}
+function readFit(){
+  try{
+    const raw=localStorage.getItem("doseiq_fit");
+    if(!raw) return null;
+    const d=JSON.parse(raw);
+    if(!d || typeof d.score!=="number") return null;
+    return d;
+  }catch(e){ return null; }
+}
+function renderCountries(){
+  const x=t();
+  const grid=document.getElementById("countryGrid");
+  grid.innerHTML=COUNTRY_KEYS.map(k=>{
+    const sel=selectedCountry===k?" selected":"";
+    return '<label class="country-opt'+sel+'" data-c="'+k+'"><input type="radio" name="country" value="'+k+'"><span>'+x.countries[k]+'</span></label>';
+  }).join("");
+  grid.querySelectorAll(".country-opt").forEach(el=>{
+    el.addEventListener("click",()=>{
+      selectedCountry=el.getAttribute("data-c");
+      renderCountries();
+      syncCta();
+    });
+  });
+}
+function syncCta(){
+  const shop=document.getElementById("shopCta");
+  const wait=document.getElementById("waitForm");
+  const fine=document.getElementById("ctaFine");
+  const x=t();
+  shop.textContent=x.cta;
+  if(!selectedCountry){
+    shop.setAttribute("aria-disabled","true");
+    shop.href="#";
+    wait.style.display="none";
+    fine.style.display="block";
+    return;
+  }
+  if(selectedCountry==="other"){
+    shop.style.display="none";
+    wait.style.display="block";
+    fine.style.display="none";
+    document.getElementById("waitCountry").value="other";
+    return;
+  }
+  shop.style.display="flex";
+  wait.style.display="none";
+  fine.style.display="block";
+  shop.removeAttribute("aria-disabled");
+  shop.href=SHOPS[selectedCountry];
+}
+function applyLang(lang){
+  currentLang=lang;
+  const x=t();
+  document.title=x.title;
+  document.getElementById("topbar").textContent=x.topbar;
+  document.getElementById("heroH").textContent=x.hero_h;
+  document.getElementById("heroP").textContent=x.hero_p;
+  document.getElementById("scoreLabel").textContent=x.score_label;
+  document.getElementById("recapKicker").textContent=x.recap_kicker;
+  document.getElementById("recapP").textContent=x.recap_p;
+  document.getElementById("genericKicker").textContent=x.generic_kicker;
+  document.getElementById("genericH").textContent=x.generic_h;
+  document.getElementById("genericP").textContent=x.generic_p;
+  document.getElementById("vsKicker").textContent=x.vs_kicker;
+  document.getElementById("vsH").textContent=x.vs_h;
+  document.getElementById("vsIntro").textContent=x.vs_intro;
+  document.getElementById("vsFitH").textContent=x.vs_fit_h;
+  document.getElementById("vsFitP").textContent=x.vs_fit_p;
+  document.getElementById("vsWaH").textContent=x.vs_wa_h;
+  document.getElementById("vsWaP").textContent=x.vs_wa_p;
+  document.getElementById("waKicker").textContent=x.wa_kicker;
+  document.getElementById("waH").textContent=x.wa_h;
+  document.getElementById("waP").textContent=x.wa_p;
+  document.getElementById("s1").textContent=x.s1;
+  document.getElementById("s2").textContent=x.s2;
+  document.getElementById("s3").textContent=x.s3;
+  document.getElementById("chip1").textContent=x.chip1;
+  document.getElementById("chip2").textContent=x.chip2;
+  document.getElementById("chip3").textContent=x.chip3;
+  document.getElementById("proofNote").textContent=x.proof;
+  document.getElementById("ctKicker").textContent=x.ct_kicker;
+  document.getElementById("ctH").textContent=x.ct_h;
+  document.getElementById("ctP").textContent=x.ct_p;
+  document.getElementById("ctaFine").textContent=x.cta_fine;
+  document.getElementById("waitEmail").placeholder=x.wait_ph;
+  document.getElementById("waitConsentLabel").innerHTML=x.wait_consent;
+  document.getElementById("waitBtn").textContent=x.wait_btn;
+  document.getElementById("pdfP").textContent=x.pdf_p;
+  document.getElementById("pdfLink").textContent=x.pdf_a;
+  document.getElementById("pdfLink").setAttribute("href","/guides/"+lang+".pdf");
+  document.getElementById("footerBrand").textContent=x.brand;
+  document.getElementById("footerContact").textContent=x.contact;
+  document.getElementById("footerPrivacy").textContent=x.privacy;
+  document.getElementById("footerTerms").textContent=x.terms;
+  document.getElementById("footerDisc").textContent=x.footer_disc;
+  const home="/"+lang;
+  document.getElementById("logoHome").setAttribute("href", home);
+  document.getElementById("footerLogo").setAttribute("href", home);
+  const fit=readFit();
+  const recap=document.getElementById("scoreRecap");
+  const generic=document.getElementById("genericCard");
+  if(fit){
+    recap.style.display="block";
+    generic.style.display="none";
+    document.getElementById("recapScore").textContent=String(Math.round(fit.score));
+    const key=(fit.band==="optimal"||fit.band==="good"||fit.band==="fair"||fit.band==="low")?fit.band:"good";
+    const bandEl=document.getElementById("recapBand");
+    bandEl.textContent=x["band_"+key];
+    bandEl.className="band band-"+key;
+  } else {
+    recap.style.display="none";
+    generic.style.display="block";
+  }
+  if(!selectedCountry){
+    selectedCountry=LANG_DEFAULT_COUNTRY[lang]||"";
+  }
+  renderCountries();
+  syncCta();
+}
+function setLang(lang, opts){
+  if(LANGS.indexOf(lang)===-1) lang="en";
+  try{localStorage.setItem(LANG_KEY, lang);}catch(e){}
+  document.documentElement.lang=lang;
+  const btn=document.getElementById("langBtn");
+  if(btn) btn.textContent=LANG_LABELS[lang]+" ▾";
+  document.querySelectorAll("#langMenu button").forEach(b=>{
+    b.classList.toggle("active", b.getAttribute("data-lang")===lang);
+  });
+  const menu=document.getElementById("langMenu");
+  if(menu) menu.classList.remove("open");
+  if(typeof applyLang==="function") applyLang(lang);
+  const want = isProtocolPath() ? ("/"+lang+"/protocol") : ("/"+lang);
+  if(opts && opts.skipUrl) return;
+  const cur=location.pathname.replace(/\/+$/,"")||"/";
+  if(cur!==want){
+    if(opts && opts.replace) location.replace(want+location.search+location.hash);
+    else history.pushState({lang}, "", want+location.search);
+  }
+}
+document.getElementById("waitForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const x=t();
+  const email=document.getElementById("waitEmail").value.trim();
+  const consent=document.getElementById("waitConsent").checked;
+  const status=document.getElementById("waitStatus");
+  if(!email || !consent){ return; }
+  const btn=document.getElementById("waitBtn");
+  btn.disabled=true;
+  try{
+    const body=new URLSearchParams();
+    body.set("email", email);
+    body.set("country", selectedCountry||"other");
+    body.set("lang", currentLang);
+    body.set("consent", "yes");
+    body.set("source", "dose-iq.fit/protocol");
+    const res=await fetch("https://formspree.io/f/xnpajyyp", {
+      method:"POST",
+      headers:{"Accept":"application/json","Content-Type":"application/x-www-form-urlencoded"},
+      body: body.toString()
+    });
+    if(res.ok){
+      status.textContent=x.wait_ok;
+      btn.textContent=x.wait_ok;
+    } else {
+      status.textContent=x.wait_err;
+      btn.disabled=false;
+    }
+  }catch(err){
+    status.textContent=x.wait_err;
+    btn.disabled=false;
+  }
+});
+(function(){
+  const lang=detectLang();
+  setLang(lang, {skipUrl: !!pathLang()});
+  if(!pathLang()){
+    const want="/"+lang+"/protocol";
+    const cur=location.pathname.replace(/\/+$/,"")||"/";
+    if(cur!==want) history.replaceState({lang}, "", want+location.search);
+  }
+})();
+window.addEventListener("popstate", ()=> setLang(pathLang()||detectLang(), {skipUrl:true}));
+  </script>
+</body>
+</html>
