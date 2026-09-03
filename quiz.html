@@ -422,6 +422,8 @@
     .footer-contact-btn:hover{border-color:#2B8CFF;color:#2B8CFF}
 
   </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18427841111"></script>
+  <script src="/gtag-dose-iq.js"></script>
 </head>
 <body>
   <div class="topbar" id="topbar">Official Bioniq distributor · Educational guide · No diagnosis</div>
@@ -724,6 +726,7 @@ emailForm.addEventListener('submit', async function(e) {
     });
     if (res.ok) {
       try { localStorage.setItem('doseiq_lead_email', email); } catch (err) {}
+      if (window.doseIqLead) window.doseIqLead(email);
       emailGate.style.display = 'none';
       downloadArea.style.display = 'block';
       triggerGuideDownload(currentLang);
