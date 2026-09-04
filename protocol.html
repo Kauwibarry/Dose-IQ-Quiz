@@ -484,6 +484,18 @@ function setLang(lang, opts){
 document.querySelectorAll(".cta-open").forEach(function(btn){
   btn.addEventListener("click", openCountryModal);
 });
+(function(){
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get("choose") === "1" || q.get("start") === "1") {
+      openCountryModal();
+      if (history.replaceState) {
+        var u = location.pathname + location.hash;
+        history.replaceState(null, "", u);
+      }
+    }
+  } catch (e) {}
+})();
 document.getElementById("modalClose").addEventListener("click", closeCountryModal);
 document.getElementById("countryModal").addEventListener("click", function(e){
   if(e.target===this) closeCountryModal();
