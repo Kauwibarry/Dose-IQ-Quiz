@@ -136,7 +136,6 @@
     .cta:hover { background:#E07A28; }
     .cta[aria-disabled="true"] { opacity:.4; cursor:not-allowed; pointer-events:none; }
     .fine { font-size:.92rem; color:var(--muted); text-align:center; margin-top:10px; }
-    .pdf-link { display:inline-block; color:var(--accent); font-weight:600; text-decoration:underline; margin-top:8px; }
     .waitlist { display:none; margin-top:8px; }
     .waitlist input[type="email"] {
       width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:12px;
@@ -248,10 +247,6 @@
         <span class="chip" id="chip3">Up to 23 nutrients</span>
       </div>
       <p class="fine" id="proofNote">Ratings refer to Bioniq product reviews, not Dose-IQ sales.</p>
-    </div>
-    <div class="card" style="text-align:center;">
-      <p id="pdfP">Keep your free 9-page Personalised Supplementation Guide.</p>
-      <a class="pdf-link" id="pdfLink" href="/guides/en.pdf">Download the PDF</a>
     </div>
     <div class="cta-slot"><button type="button" class="cta cta-open" id="ctaBot">Start the Wellness Assessment</button></div>
   </div>
@@ -428,9 +423,6 @@ function applyLang(lang){
   document.getElementById("waitEmail").placeholder=x.wait_ph;
   document.getElementById("waitConsentLabel").innerHTML=x.wait_consent;
   document.getElementById("waitBtn").textContent=x.wait_btn;
-  document.getElementById("pdfP").textContent=x.pdf_p;
-  document.getElementById("pdfLink").textContent=x.pdf_a;
-  document.getElementById("pdfLink").setAttribute("href","/guides/"+lang+".pdf");
   document.getElementById("footerBrand").textContent=x.brand;
   document.getElementById("footerContact").textContent=x.contact;
   document.getElementById("footerPrivacy").textContent=x.privacy;
