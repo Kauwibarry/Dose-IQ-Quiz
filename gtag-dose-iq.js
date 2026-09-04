@@ -21,7 +21,7 @@ window.doseIqLead = function (email) {
   try {
     if (typeof gtag !== "function") return;
     if (email) gtag("set", "user_data", { email: String(email).trim() });
-    gtag("event", "conversion", { send_to: "AW-18427841111", value: 1.0, currency: "EUR" });
+    gtag("event", "conversion", { send_to: "AW-18427841111/7H7YCL3czu0cENeUitNE", value: 1.0, currency: "EUR" });
     gtag("event", "generate_lead", { value: 1.0, currency: "EUR" });
   } catch (e) {}
 };
