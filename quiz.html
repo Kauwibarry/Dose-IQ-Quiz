@@ -663,7 +663,16 @@ function showResults() {
   else if (finalScore >= 60) bandKey = "good";
   else if (finalScore >= 40) bandKey = "fair";
   try {
-    localStorage.setItem("doseiq_fit", JSON.stringify({ score: finalScore, band: bandKey, lang: currentLang, ts: Date.now() }));
+    localStorage.setItem("doseiq_fit", JSON.stringify({
+      score: finalScore,
+      band: bandKey,
+      bandLabel: band,
+      title: title,
+      ageNote: ageMessages[ageGroup] || "",
+      insights: insights.slice(0, 3),
+      lang: currentLang,
+      ts: Date.now()
+    }));
   } catch (e) {}
   quizCard.style.display = 'none';
   progressWrap.style.display = 'none';
@@ -698,7 +707,11 @@ emailForm.addEventListener('submit', async function(e) {
     const res = await fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email: email, privacy_consent: 'yes', lang: currentLang })
+      body: JSON.stringify((() => {
+        let fit = null;
+        try { fit = JSON.parse(localStorage.getItem('doseiq_fit') || 'null'); } catch (e) {}
+        return { email: email, privacy_consent: 'yes', lang: currentLang, fit: fit };
+      })())
     });
     if (res.ok) {
       try { localStorage.setItem('doseiq_lead_email', email); } catch (err) {}
