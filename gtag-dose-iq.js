@@ -4,6 +4,7 @@ window.gtag = gtag;
 gtag("js", new Date());
 
 var DOSEIQ_CONSENT_KEY = "doseiq_ads_consent";
+var DOSEIQ_META_PIXEL_ID = "715106197169192";
 var doseIqConsent = null;
 try { doseIqConsent = localStorage.getItem(DOSEIQ_CONSENT_KEY); } catch (e) {}
 var doseIqGranted = doseIqConsent === "granted";
@@ -17,19 +18,66 @@ gtag("consent", "default", {
 });
 gtag("config", "AW-18427841111");
 
+window.doseIqLoadMetaPixel = function () {
+  try {
+    if (window._doseIqMetaLoaded) return;
+    if (typeof localStorage !== "undefined") {
+      try {
+        if (localStorage.getItem(DOSEIQ_CONSENT_KEY) !== "granted") return;
+      } catch (e) { return; }
+    }
+    window._doseIqMetaLoaded = true;
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", DOSEIQ_META_PIXEL_ID);
+    fbq("track", "PageView");
+  } catch (e) {}
+};
+
+if (doseIqGranted) {
+  window.doseIqLoadMetaPixel();
+}
+
 window.doseIqLead = function (email) {
   try {
-    if (typeof gtag !== "function") return;
-    if (email) gtag("set", "user_data", { email: String(email).trim() });
-    gtag("event", "conversion", { send_to: "AW-18427841111/7H7YCL3czu0cENeUitNE", value: 1.0, currency: "EUR" });
-    gtag("event", "generate_lead", { value: 1.0, currency: "EUR" });
+    if (typeof gtag === "function") {
+      if (email) gtag("set", "user_data", { email: String(email).trim() });
+      gtag("event", "conversion", { send_to: "AW-18427841111/7H7YCL3czu0cENeUitNE", value: 1.0, currency: "EUR" });
+      gtag("event", "generate_lead", { value: 1.0, currency: "EUR" });
+    }
+    var consented = false;
+    try { consented = localStorage.getItem(DOSEIQ_CONSENT_KEY) === "granted"; } catch (e) {}
+    if (consented) {
+      window.doseIqLoadMetaPixel();
+      if (typeof fbq === "function") {
+        if (email) {
+          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, { em: String(email).trim().toLowerCase() });
+        } else {
+          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
+        }
+      }
+    }
   } catch (e) {}
 };
 
 (function () {
   if (doseIqConsent === "granted" || doseIqConsent === "denied") return;
 
-  var LANGS = {"en": {"msg": "We use Google Ads cookies to measure quiz signups from ads. You can reject and still use the site.", "accept": "Accept", "reject": "Reject", "privacy": "Privacy"}, "de": {"msg": "Wir verwenden Google-Ads-Cookies, um Quiz-Anmeldungen aus Anzeigen zu messen. Ablehnen ist möglich — die Seite bleibt nutzbar.", "accept": "Akzeptieren", "reject": "Ablehnen", "privacy": "Datenschutz"}, "fr": {"msg": "Nous utilisons des cookies Google Ads pour mesurer les inscriptions au quiz issues des publicités. Vous pouvez refuser et continuer.", "accept": "Accepter", "reject": "Refuser", "privacy": "Confidentialité"}, "it": {"msg": "Usiamo cookie di Google Ads per misurare le iscrizioni al quiz dalle inserzioni. Puoi rifiutare e usare comunque il sito.", "accept": "Accetta", "reject": "Rifiuta", "privacy": "Privacy"}, "es": {"msg": "Usamos cookies de Google Ads para medir altas al quiz desde anuncios. Puedes rechazar y seguir usando el sitio.", "accept": "Aceptar", "reject": "Rechazar", "privacy": "Privacidad"}, "pt": {"msg": "Usamos cookies do Google Ads para medir inscrições no quiz a partir de anúncios. Pode recusar e continuar a usar o site.", "accept": "Aceitar", "reject": "Recusar", "privacy": "Privacidade"}, "nl": {"msg": "We gebruiken Google Ads-cookies om quiz-aanmeldingen uit advertenties te meten. Je kunt weigeren en de site gewoon gebruiken.", "accept": "Accepteren", "reject": "Weigeren", "privacy": "Privacy"}, "pl": {"msg": "Używamy plików cookie Google Ads, aby mierzyć zapisy z quizu z reklam. Możesz odrzucić i nadal korzystać z witryny.", "accept": "Akceptuj", "reject": "Odrzuć", "privacy": "Prywatność"}, "cs": {"msg": "Používáme cookies Google Ads k měření registrací z kvízu z reklam. Můžete odmítnout a web dál používat.", "accept": "Přijmout", "reject": "Odmítnout", "privacy": "Soukromí"}};
+  var LANGS = {"en": {"msg": "We use Google Ads and Meta cookies to measure quiz signups from ads. You can reject and still use the site.", "accept": "Accept", "reject": "Reject", "privacy": "Privacy"}, "de": {"msg": "Wir verwenden Google-Ads- und Meta-Cookies, um Quiz-Anmeldungen aus Anzeigen zu messen. Ablehnen ist möglich — die Seite bleibt nutzbar.", "accept": "Akzeptieren", "reject": "Ablehnen", "privacy": "Datenschutz"}, "fr": {"msg": "Nous utilisons des cookies Google Ads et Meta pour mesurer les inscriptions au quiz issues des publicités. Vous pouvez refuser et continuer.", "accept": "Accepter", "reject": "Refuser", "privacy": "Confidentialité"}, "it": {"msg": "Usiamo cookie di Google Ads e Meta per misurare le iscrizioni al quiz dalle inserzioni. Puoi rifiutare e usare comunque il sito.", "accept": "Accetta", "reject": "Rifiuta", "privacy": "Privacy"}, "es": {"msg": "Usamos cookies de Google Ads y Meta para medir altas al quiz desde anuncios. Puedes rechazar y seguir usando el sitio.", "accept": "Aceptar", "reject": "Rechazar", "privacy": "Privacidad"}, "pt": {"msg": "Usamos cookies do Google Ads e da Meta para medir inscrições no quiz a partir de anúncios. Pode recusar e continuar a usar o site.", "accept": "Aceitar", "reject": "Recusar", "privacy": "Privacidade"}, "nl": {"msg": "We gebruiken Google Ads- en Meta-cookies om quiz-aanmeldingen uit advertenties te meten. Je kunt weigeren en de site gewoon gebruiken.", "accept": "Accepteren", "reject": "Weigeren", "privacy": "Privacy"}, "pl": {"msg": "Używamy plików cookie Google Ads i Meta, aby mierzyć zapisy z quizu z reklam. Możesz odrzucić i nadal korzystać z witryny.", "accept": "Akceptuj", "reject": "Odrzuć", "privacy": "Prywatność"}, "cs": {"msg": "Používáme cookies Google Ads a Meta k měření registrací z kvízu z reklam. Můžete odmítnout a web dál používat.", "accept": "Přijmout", "reject": "Odmítnout", "privacy": "Soukromí"}};
   var parts = (location.pathname.replace(/\/+$/, "") || "/").split("/").filter(Boolean);
   var lang = (parts[0] || "").toLowerCase();
   var copy = LANGS[lang] || LANGS.en;
@@ -43,6 +91,7 @@ window.doseIqLead = function (email) {
       ad_personalization: v,
       analytics_storage: v
     });
+    if (v === "granted") window.doseIqLoadMetaPixel();
     var bar = document.getElementById("doseiq-consent");
     if (bar) bar.remove();
   }
