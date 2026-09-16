@@ -4,7 +4,7 @@ window.gtag = gtag;
 gtag("js", new Date());
 
 var DOSEIQ_CONSENT_KEY = "doseiq_ads_consent";
-var DOSEIQ_META_PIXEL_ID = "715106197169192";
+var DOSEIQ_META_PIXEL_ID = "1341206988086014";
 var doseIqConsent = null;
 try { doseIqConsent = localStorage.getItem(DOSEIQ_CONSENT_KEY); } catch (e) {}
 var doseIqGranted = doseIqConsent === "granted";
@@ -66,8 +66,10 @@ window.doseIqLead = function (email) {
       if (typeof fbq === "function") {
         if (email) {
           fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, { em: String(email).trim().toLowerCase() });
+          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
         } else {
           fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
+          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
         }
       }
     }
