@@ -486,7 +486,7 @@
         <p id="pdfNote" class="email-pdf-note">Your free 9-page guide is on its way to your email.</p>
         <div class="handoff">
           <p id="handoffP">Next step: start the Wellness Assessment on the official Bioniq shop to get your personalised formula — that is where you can order.</p>
-          <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz" id="handoffA" class="handoff-cta" rel="noopener">Start the Wellness Assessment</a>
+          <a href="/en/protocol?choose=1" id="handoffA" class="handoff-cta">Start the Wellness Assessment</a>
           <p id="handoffFine" class="handoff-fine">You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.</p>
         </div>
       </div>
@@ -581,16 +581,7 @@ function applyLang(lang){
   document.getElementById("handoffA").textContent = HANDOFF_CTA[lang] || HANDOFF_CTA.en;
   var hp=document.getElementById("handoffP"); if(hp) hp.textContent = (HANDOFF_P[lang]||HANDOFF_P.en);
   var hf=document.getElementById("handoffFine"); if(hf) hf.textContent = (HANDOFF_FINE[lang]||HANDOFF_FINE.en);
-  (function(){
-    var a=document.getElementById("handoffA");
-    if(!a) return;
-    if(lang==="en"){
-      a.setAttribute("href","https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz");
-      a.setAttribute("rel","noopener");
-    } else {
-      a.setAttribute("href","/"+lang+"/protocol?choose=1");
-    }
-  })();
+  document.getElementById("handoffA").setAttribute("href", "/"+lang+"/protocol?choose=1");
   document.getElementById("disclaimer").textContent = x.disclaimer;
   document.getElementById("footerBrand").textContent = x.brand;
   document.getElementById("footerContact").textContent = x.contact;
