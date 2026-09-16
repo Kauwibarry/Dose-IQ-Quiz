@@ -367,11 +367,16 @@ function closeCountryModal(){
 function renderCountries(){
   const x=t();
   const grid=document.getElementById("countryGrid");
+  const pref=LANG_DEFAULT_COUNTRY[currentLang]||selectedCountry||"";
+  if(pref) selectedCountry=pref;
   grid.innerHTML=COUNTRY_KEYS.map(k=>{
-    return '<button type="button" class="country-opt" data-c="'+k+'"><span>'+x.countries[k]+'</span></button>';
+    var sel=(k===pref)?' selected':'';
+    return '<button type="button" class="country-opt'+sel+'" data-c="'+k+'"><span>'+x.countries[k]+'</span></button>';
   }).join("");
   grid.querySelectorAll(".country-opt").forEach(el=>{
     el.addEventListener("click",()=>{
+      grid.querySelectorAll(".country-opt").forEach(function(b){ b.classList.remove("selected"); });
+      el.classList.add("selected");
       selectedCountry=el.getAttribute("data-c");
       pickCountry(selectedCountry);
     });
