@@ -107,6 +107,11 @@ window.doseIqStartAssessment = function (contentName) {
         event_category: "engagement",
         event_label: name
       });
+      gtag("event", "conversion", {
+        send_to: "AW-18427841111/pezECNXcxfocENeUitNE",
+        value: 1.0,
+        currency: "EUR"
+      });
     }
     try {
       window.dataLayer = window.dataLayer || [];
