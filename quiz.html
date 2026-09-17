@@ -752,18 +752,28 @@ emailForm.addEventListener('submit', async function(e) {
   btn.disabled = true;
   btn.textContent = x.sending;
   try {
+    const eventId = (window.doseIqNewEventId && window.doseIqNewEventId()) || ('diq_' + Date.now());
+    const adsConsent = (window.doseIqAdsConsent && window.doseIqAdsConsent()) || 'denied';
     const res = await fetch('/api/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify((() => {
         let fit = null;
         try { fit = JSON.parse(localStorage.getItem('doseiq_fit') || 'null'); } catch (e) {}
-        return { email: email, privacy_consent: 'yes', lang: currentLang, fit: fit };
+        return {
+          email: email,
+          privacy_consent: 'yes',
+          lang: currentLang,
+          fit: fit,
+          ads_consent: adsConsent,
+          event_id: eventId,
+          event_source_url: location.href
+        };
       })())
     });
     if (res.ok) {
       try { localStorage.setItem('doseiq_lead_email', email); } catch (err) {}
-      if (window.doseIqLead) window.doseIqLead(email);
+      if (window.doseIqLead) window.doseIqLead(email, eventId);
       emailGate.style.display = 'none';
       downloadArea.style.display = 'block';
     } else {

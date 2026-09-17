@@ -52,7 +52,24 @@ if (doseIqGranted) {
   window.doseIqLoadMetaPixel();
 }
 
-window.doseIqLead = function (email) {
+window.doseIqNewEventId = function () {
+  try {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return window.crypto.randomUUID();
+    }
+  } catch (e) {}
+  return "diq_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 12);
+};
+
+window.doseIqAdsConsent = function () {
+  try {
+    return localStorage.getItem(DOSEIQ_CONSENT_KEY) === "granted" ? "granted" : "denied";
+  } catch (e) {
+    return "denied";
+  }
+};
+
+window.doseIqLead = function (email, eventId) {
   try {
     if (typeof gtag === "function") {
       if (email) gtag("set", "user_data", { email: String(email).trim() });
@@ -63,17 +80,21 @@ window.doseIqLead = function (email) {
     try { consented = localStorage.getItem(DOSEIQ_CONSENT_KEY) === "granted"; } catch (e) {}
     if (consented) {
       window.doseIqLoadMetaPixel();
+      var eid = eventId || window.doseIqNewEventId();
+      var opts = { eventID: eid };
       if (typeof fbq === "function") {
         if (email) {
-          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, { em: String(email).trim().toLowerCase() });
-          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
+          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, Object.assign({ em: String(email).trim().toLowerCase() }, opts));
+          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, opts);
         } else {
-          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
-          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 });
+          fbq("track", "Lead", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, opts);
+          fbq("track", "CompleteRegistration", { content_name: "Dose IQ Quiz", currency: "EUR", value: 1.0 }, opts);
         }
       }
+      return eid;
     }
   } catch (e) {}
+  return eventId || null;
 };
 
 
