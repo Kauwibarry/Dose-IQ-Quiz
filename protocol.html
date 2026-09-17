@@ -394,7 +394,10 @@ function pickCountry(k){
     return;
   }
   const url=SHOPS[k];
-  if(url) location.href=url;
+  if(url){
+    try{ if(typeof window.doseIqStartAssessment==="function") window.doseIqStartAssessment("Dose IQ Quiz"); }catch(e){}
+    location.href=url;
+  }
 }
 function syncCta(){
   const x=t();

@@ -76,6 +76,32 @@ window.doseIqLead = function (email) {
   } catch (e) {}
 };
 
+
+window.doseIqStartAssessment = function (contentName) {
+  try {
+    var name = contentName || "Dose IQ Quiz";
+    if (typeof gtag === "function") {
+      gtag("event", "start_assessment", {
+        content_name: name,
+        event_category: "engagement",
+        event_label: name
+      });
+    }
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "start_assessment", content_name: name });
+    } catch (eDl) {}
+    var consented = false;
+    try { consented = localStorage.getItem(DOSEIQ_CONSENT_KEY) === "granted"; } catch (eC) {}
+    if (consented) {
+      window.doseIqLoadMetaPixel();
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "StartAssessment", { content_name: name });
+      }
+    }
+  } catch (e) {}
+};
+
 (function () {
   if (doseIqConsent === "granted" || doseIqConsent === "denied") return;
 
