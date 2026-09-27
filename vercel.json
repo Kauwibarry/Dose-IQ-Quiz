@@ -227,6 +227,26 @@
       "source": "/shop/",
       "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
       "statusCode": 301
+    },
+    {
+      "source": "/Shop",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
+      "statusCode": 301
+    },
+    {
+      "source": "/Shop/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
+      "statusCode": 301
+    },
+    {
+      "source": "/SHOP",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
+      "statusCode": 301
+    },
+    {
+      "source": "/SHOP/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
+      "statusCode": 301
     }
   ]
 }
