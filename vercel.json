@@ -247,6 +247,46 @@
       "source": "/SHOP/",
       "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB",
       "statusCode": 301
+    },
+    {
+      "source": "/assessment",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/assessment/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/Assessment",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/Assessment/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/wellness-assessment",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/wellness-assessment/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/Wellness-Assessment",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
+    },
+    {
+      "source": "/Wellness-Assessment/",
+      "destination": "https://shopbioniq.com/en-GB/Dose-IQ-GB/quiz",
+      "statusCode": 301
     }
   ]
 }
