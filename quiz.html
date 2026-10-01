@@ -528,10 +528,9 @@
       <div class="insights" id="insightsList"></div>
       <div class="what-next" id="whatNextScore" style="margin-top:22px">
         <h4 id="whatNextScoreH">What happens next</h4>
-        <ol id="whatNextScoreOl">
-          <li>Dose-IQ email</li>
-          <li>Choose your country</li>
-          <li>Bioniq Wellness Assessment on shopbioniq</li>
+        <ol id="whatNextScoreOl">          <li>Enter your email</li>
+          <li>Choose your country or join the waiting list</li>
+          <li>Bioniq Wellness Assessment on shop Bioniq</li>
           <li>See your personalised formula + price, then buy</li>
         </ol>
         <p class="what-next-note" id="whatNextScoreNote">A second email confirmation on the Bioniq shop is normal.</p>
@@ -549,10 +548,9 @@
           <button type="submit" id="submitBtn" disabled>Claim my formula — get the guide</button>
         <div class="what-next" id="whatNextEmail">
           <h4 id="whatNextH">What happens next</h4>
-          <ol id="whatNextOl">
-            <li>Dose-IQ email</li>
-            <li>Choose your country</li>
-            <li>Bioniq Wellness Assessment on shopbioniq</li>
+          <ol id="whatNextOl">            <li>Enter your email</li>
+            <li>Choose your country or join the waiting list</li>
+            <li>Bioniq Wellness Assessment on shop Bioniq</li>
             <li>See your personalised formula + price, then buy</li>
           </ol>
           <p class="what-next-note" id="whatNextNote">A second email confirmation on the Bioniq shop is normal.</p>
@@ -565,10 +563,9 @@
         <div class="handoff">
           <div class="what-next" id="whatNextHandoff">
             <h4 id="whatNextHandoffH">What happens next</h4>
-            <ol id="whatNextHandoffOl">
-              <li>Dose-IQ email</li>
-              <li>Choose your country</li>
-              <li>Bioniq Wellness Assessment on shopbioniq</li>
+            <ol id="whatNextHandoffOl">              <li>Enter your email</li>
+              <li>Choose your country or join the waiting list</li>
+              <li>Bioniq Wellness Assessment on shop Bioniq</li>
               <li>See your personalised formula + price, then buy</li>
             </ol>
             <p class="what-next-note" id="whatNextHandoffNote">A second email confirmation on the Bioniq shop is normal.</p>
@@ -665,15 +662,15 @@ function applyLang(lang){
   const HANDOFF_P = {"en": "Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.", "de": "Nächster Schritt: Starten Sie die Wellness Assessment im offiziellen Bioniq-Shop für Ihre personalisierte Formel — dort können Sie bestellen.", "fr": "Prochaine étape : démarrez la Wellness Assessment sur la boutique Bioniq officielle pour votre formule personnalisée — c'est là que vous pouvez commander.", "it": "Prossimo passo: avvia la Wellness Assessment nello shop ufficiale Bioniq per la tua formula personalizzata — lì puoi ordinare.", "es": "Siguiente paso: empieza la Wellness Assessment en la tienda oficial Bioniq para tu fórmula personalizada — ahí puedes pedir.", "pt": "Próximo passo: comece a Wellness Assessment na loja oficial Bioniq para a sua fórmula personalizada — é aí que pode encomendar.", "nl": "Volgende stap: start de Wellness Assessment in de officiële Bioniq-shop voor je gepersonaliseerde formule — daar kun je bestellen.", "pl": "Następny krok: rozpocznij Wellness Assessment w oficjalnym sklepie Bioniq, aby otrzymać spersonalizowaną formułę — tam złożysz zamówienie.", "cs": "Další krok: spusťte Wellness Assessment v oficiálním Bioniq shopu pro personalizovanou formuli — tam můžete objednat."};
   const HANDOFF_FINE = {"en": "You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.", "de": "Sie fahren im offiziellen Bioniq-Shop fort. Dort kann erneut nach Ihrer E-Mail gefragt werden, um das Assessment zu starten — das ist normal.", "fr": "Vous continuez sur la boutique Bioniq officielle. Ils peuvent redemander votre e-mail pour démarrer l'évaluation — c'est normal.", "it": "Continui nello shop ufficiale Bioniq. Potrebbero chiedere di nuovo l'email per avviare l'assessment — è normale.", "es": "Continúas en la tienda oficial Bioniq. Pueden pedir tu email otra vez para empezar la evaluación — es normal.", "pt": "Continua na loja oficial Bioniq. Podem pedir o e-mail outra vez para iniciar a avaliação — é normal.", "nl": "Je gaat verder in de officiële Bioniq-shop. Ze kunnen opnieuw om je e-mail vragen om de assessment te starten — dat is normaal.", "pl": "Kontynuujesz w oficjalnym sklepie Bioniq. Mogą ponownie poprosić o e-mail, aby rozpocząć assessment — to normalne.", "cs": "Pokračujete v oficiálním Bioniq shopu. Mohou znovu požádat o e-mail ke spuštění assessmentu — to je normální."};
   const WHAT_NEXT = {
-    en:{h:"What happens next",steps:["Dose-IQ email","Choose your country","Bioniq Wellness Assessment on shopbioniq","See your personalised formula + price, then buy"],note:"A second email confirmation on the Bioniq shop is normal."},
-    de:{h:"Was als Nächstes passiert",steps:["Dose-IQ E-Mail","Land wählen","Bioniq Wellness Assessment auf shopbioniq","Personalisierte Formel + Preis sehen, dann kaufen"],note:"Eine zweite E-Mail-Bestätigung im Bioniq-Shop ist normal."},
-    fr:{h:"Et ensuite",steps:["E-mail Dose-IQ","Choisir votre pays","Wellness Assessment Bioniq sur shopbioniq","Voir votre formule personnalisée + le prix, puis acheter"],note:"Une deuxième confirmation e-mail sur la boutique Bioniq est normale."},
-    it:{h:"Cosa succede dopo",steps:["Email Dose-IQ","Scegli il Paese","Wellness Assessment Bioniq su shopbioniq","Vedi formula personalizzata + prezzo, poi acquista"],note:"Una seconda conferma email nello shop Bioniq è normale."},
-    es:{h:"Qué pasa después",steps:["Email Dose-IQ","Elige tu país","Wellness Assessment Bioniq en shopbioniq","Ve tu fórmula personalizada + precio y compra"],note:"Una segunda confirmación por email en la tienda Bioniq es normal."},
-    pt:{h:"O que acontece a seguir",steps:["E-mail Dose-IQ","Escolher o país","Wellness Assessment Bioniq em shopbioniq","Ver fórmula personalizada + preço e comprar"],note:"Uma segunda confirmação de e-mail na loja Bioniq é normal."},
-    nl:{h:"Wat er daarna gebeurt",steps:["Dose-IQ e-mail","Kies je land","Bioniq Wellness Assessment op shopbioniq","Bekijk je gepersonaliseerde formule + prijs, en koop"],note:"Een tweede e-mailbevestiging in de Bioniq-shop is normaal."},
-    pl:{h:"Co dalej",steps:["E-mail Dose-IQ","Wybierz kraj","Wellness Assessment Bioniq na shopbioniq","Zobacz spersonalizowaną formułę + cenę i kup"],note:"Druga potwierdzenie e-mail w sklepie Bioniq jest normalne."},
-    cs:{h:"Co bude dál",steps:["E-mail Dose-IQ","Vyberte zemi","Bioniq Wellness Assessment na shopbioniq","Zobrazte personalizovanou formuli + cenu a kupte"],note:"Druhé e-mailové potvrzení v Bioniq shopu je normální."}
+    en:{h:"What happens next",steps:["Enter your email","Choose your country or join the waiting list","Bioniq Wellness Assessment on shop Bioniq","See your personalised formula + price, then buy"],note:"A second email confirmation on the Bioniq shop is normal."},
+    de:{h:"Was als Nächstes passiert",steps:["E-Mail eingeben","Land wählen oder der Warteliste beitreten","Bioniq Wellness Assessment auf shop Bioniq","Personalisierte Formel + Preis sehen, dann kaufen"],note:"Eine zweite E-Mail-Bestätigung im Bioniq-Shop ist normal."},
+    fr:{h:"Et ensuite",steps:["Entrez votre e-mail","Choisissez votre pays ou rejoignez la liste d'attente","Wellness Assessment Bioniq sur shop Bioniq","Voir votre formule personnalisée + le prix, puis acheter"],note:"Une deuxième confirmation e-mail sur la boutique Bioniq est normale."},
+    it:{h:"Cosa succede dopo",steps:["Inserisci la tua email","Scegli il Paese o unisciti alla lista d'attesa","Wellness Assessment Bioniq su shop Bioniq","Vedi formula personalizzata + prezzo, poi acquista"],note:"Una seconda conferma email nello shop Bioniq è normale."},
+    es:{h:"Qué pasa después",steps:["Introduce tu email","Elige tu país o únete a la lista de espera","Wellness Assessment Bioniq en shop Bioniq","Ve tu fórmula personalizada + precio y compra"],note:"Una segunda confirmación por email en la tienda Bioniq es normal."},
+    pt:{h:"O que acontece a seguir",steps:["Introduza o seu e-mail","Escolha o país ou junte-se à lista de espera","Wellness Assessment Bioniq em shop Bioniq","Ver fórmula personalizada + preço e comprar"],note:"Uma segunda confirmação de e-mail na loja Bioniq é normal."},
+    nl:{h:"Wat er daarna gebeurt",steps:["Voer je e-mail in","Kies je land of schrijf je in op de wachtlijst","Bioniq Wellness Assessment op shop Bioniq","Bekijk je gepersonaliseerde formule + prijs, en koop"],note:"Een tweede e-mailbevestiging in de Bioniq-shop is normaal."},
+    pl:{h:"Co dalej",steps:["Wpisz swój e-mail","Wybierz kraj lub dołącz do listy oczekujących","Wellness Assessment Bioniq na shop Bioniq","Zobacz spersonalizowaną formułę + cenę i kup"],note:"Druga potwierdzenie e-mail w sklepie Bioniq jest normalne."},
+    cs:{h:"Co bude dál",steps:["Zadejte svůj e-mail","Vyberte zemi nebo se přidejte na waiting list","Bioniq Wellness Assessment na shop Bioniq","Zobrazte personalizovanou formuli + cenu a kupte"],note:"Druhé e-mailové potvrzení v Bioniq shopu je normální."}
   };
   function fillWhatNext(prefix, lang){
     const w = WHAT_NEXT[lang] || WHAT_NEXT.en;
