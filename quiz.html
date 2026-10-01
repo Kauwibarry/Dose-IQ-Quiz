@@ -687,6 +687,7 @@ function applyLang(lang){
   fillWhatNext("whatNext", lang);
   fillWhatNext("whatNextHandoff", lang);
   fillWhatNext("whatNextScore", lang);
+  const HANDOFF_CTA = {en:"Claim your formula — see price first →",de:"Wellness Assessment starten",fr:"Commencer la Wellness Assessment",it:"Inizia la Wellness Assessment",es:"Empezar la Wellness Assessment",pt:"Começar a Wellness Assessment",nl:"Start de Wellness Assessment",pl:"Rozpocznij Wellness Assessment",cs:"Spustit Wellness Assessment"};
   document.getElementById("handoffA").textContent = HANDOFF_CTA[lang] || HANDOFF_CTA.en;
   var hp=document.getElementById("handoffP"); if(hp) hp.textContent = (HANDOFF_P[lang]||HANDOFF_P.en);
   var hf=document.getElementById("handoffFine"); if(hf) hf.textContent = (HANDOFF_FINE[lang]||HANDOFF_FINE.en);
