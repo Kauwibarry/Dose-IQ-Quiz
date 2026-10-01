@@ -222,6 +222,39 @@
       font-weight: 600;
       margin-bottom: 8px;
     }
+
+    .what-next {
+      margin: 18px 0 8px;
+      padding: 16px 16px 14px;
+      background: #F7F5F2;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: left;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .what-next h4 {
+      font-family: Inter, sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin: 0 0 10px;
+      color: var(--ink);
+    }
+    .what-next ol {
+      margin: 0 0 10px;
+      padding-left: 1.25rem;
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+    .what-next ol li { margin-bottom: 4px; }
+    .what-next .what-next-note {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #64748B;
+      line-height: 1.4;
+    }
     .email-next-hint {
       margin-top: 12px;
       font-size: 0.95rem;
@@ -493,6 +526,16 @@
       <div class="score-band" id="scoreBand"></div>
       <p class="age-tag" id="ageTag"></p>
       <div class="insights" id="insightsList"></div>
+      <div class="what-next" id="whatNextScore" style="margin-top:22px">
+        <h4 id="whatNextScoreH">What happens next</h4>
+        <ol id="whatNextScoreOl">
+          <li>Dose-IQ email</li>
+          <li>Choose your country</li>
+          <li>Bioniq Wellness Assessment on shopbioniq</li>
+          <li>See your personalised formula + price, then buy</li>
+        </ol>
+        <p class="what-next-note" id="whatNextScoreNote">A second email confirmation on the Bioniq shop is normal.</p>
+      </div>
       <div class="email-gate" id="emailGate">
         <h3 id="emailH">Your Fit Score is ready — claim your formula in 72 hours</h3>
         <p id="emailP">Enter your email to get the guide and claim your personalised multivitamin formula — your pouch arrives with your name on it. Free assessment · see formula + price before buy · from £103.09/month for a personalised 30-day supply (exact total shown before you pay). Fit Score matched for 72 hours.</p>
@@ -504,13 +547,32 @@
             <label for="consentCheck" id="consentLabel">I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Supplementation Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
           </div>
           <button type="submit" id="submitBtn" disabled>Claim my formula — get the guide</button>
-        <p id="emailNextHint" class="email-next-hint">After this: Start the Wellness Assessment (where you can get your formula).</p>
+        <div class="what-next" id="whatNextEmail">
+          <h4 id="whatNextH">What happens next</h4>
+          <ol id="whatNextOl">
+            <li>Dose-IQ email</li>
+            <li>Choose your country</li>
+            <li>Bioniq Wellness Assessment on shopbioniq</li>
+            <li>See your personalised formula + price, then buy</li>
+          </ol>
+          <p class="what-next-note" id="whatNextNote">A second email confirmation on the Bioniq shop is normal.</p>
+        </div>
         </form>
         <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
       </div>
       <div id="downloadArea">
         <p id="pdfNote" class="email-pdf-note">Your free 9-page guide is on its way to your email.</p>
         <div class="handoff">
+          <div class="what-next" id="whatNextHandoff">
+            <h4 id="whatNextHandoffH">What happens next</h4>
+            <ol id="whatNextHandoffOl">
+              <li>Dose-IQ email</li>
+              <li>Choose your country</li>
+              <li>Bioniq Wellness Assessment on shopbioniq</li>
+              <li>See your personalised formula + price, then buy</li>
+            </ol>
+            <p class="what-next-note" id="whatNextHandoffNote">A second email confirmation on the Bioniq shop is normal.</p>
+          </div>
           <p id="handoffP">Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.</p>
           <a href="/en/protocol?choose=1" id="handoffA" class="handoff-cta">Claim your formula — see price first →</a>
           <p id="handoffFine" class="handoff-fine">You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.</p>
@@ -602,9 +664,29 @@ function applyLang(lang){
   document.getElementById("pdfNote").textContent = x.pdf_note;
   const HANDOFF_P = {"en": "Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.", "de": "Nächster Schritt: Starten Sie die Wellness Assessment im offiziellen Bioniq-Shop für Ihre personalisierte Formel — dort können Sie bestellen.", "fr": "Prochaine étape : démarrez la Wellness Assessment sur la boutique Bioniq officielle pour votre formule personnalisée — c'est là que vous pouvez commander.", "it": "Prossimo passo: avvia la Wellness Assessment nello shop ufficiale Bioniq per la tua formula personalizzata — lì puoi ordinare.", "es": "Siguiente paso: empieza la Wellness Assessment en la tienda oficial Bioniq para tu fórmula personalizada — ahí puedes pedir.", "pt": "Próximo passo: comece a Wellness Assessment na loja oficial Bioniq para a sua fórmula personalizada — é aí que pode encomendar.", "nl": "Volgende stap: start de Wellness Assessment in de officiële Bioniq-shop voor je gepersonaliseerde formule — daar kun je bestellen.", "pl": "Następny krok: rozpocznij Wellness Assessment w oficjalnym sklepie Bioniq, aby otrzymać spersonalizowaną formułę — tam złożysz zamówienie.", "cs": "Další krok: spusťte Wellness Assessment v oficiálním Bioniq shopu pro personalizovanou formuli — tam můžete objednat."};
   const HANDOFF_FINE = {"en": "You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.", "de": "Sie fahren im offiziellen Bioniq-Shop fort. Dort kann erneut nach Ihrer E-Mail gefragt werden, um das Assessment zu starten — das ist normal.", "fr": "Vous continuez sur la boutique Bioniq officielle. Ils peuvent redemander votre e-mail pour démarrer l'évaluation — c'est normal.", "it": "Continui nello shop ufficiale Bioniq. Potrebbero chiedere di nuovo l'email per avviare l'assessment — è normale.", "es": "Continúas en la tienda oficial Bioniq. Pueden pedir tu email otra vez para empezar la evaluación — es normal.", "pt": "Continua na loja oficial Bioniq. Podem pedir o e-mail outra vez para iniciar a avaliação — é normal.", "nl": "Je gaat verder in de officiële Bioniq-shop. Ze kunnen opnieuw om je e-mail vragen om de assessment te starten — dat is normaal.", "pl": "Kontynuujesz w oficjalnym sklepie Bioniq. Mogą ponownie poprosić o e-mail, aby rozpocząć assessment — to normalne.", "cs": "Pokračujete v oficiálním Bioniq shopu. Mohou znovu požádat o e-mail ke spuštění assessmentu — to je normální."};
-  const EMAIL_NEXT_HINT = {"en": "After this: Start the Wellness Assessment (where you can get your formula).", "de": "Danach: Wellness Assessment starten (dort erhalten Sie Ihre Formel).", "fr": "Ensuite : démarrez la Wellness Assessment (où vous obtenez votre formule).", "it": "Poi: avvia la Wellness Assessment (dove ottieni la formula).", "es": "Después: empieza la Wellness Assessment (donde obtienes tu fórmula).", "pt": "Depois: comece a Wellness Assessment (onde obtém a fórmula).", "nl": "Daarna: start de Wellness Assessment (waar je je formule krijgt).", "pl": "Następnie: rozpocznij Wellness Assessment (tam otrzymasz formułę).", "cs": "Poté: spusťte Wellness Assessment (tam získáte formuli)."};
-  const HANDOFF_CTA = {en:"Claim your formula — see price first →",de:"Wellness Assessment starten",fr:"Commencer la Wellness Assessment",it:"Inizia la Wellness Assessment",es:"Empezar la Wellness Assessment",pt:"Começar a Wellness Assessment",nl:"Start de Wellness Assessment",pl:"Rozpocznij Wellness Assessment",cs:"Spustit Wellness Assessment"};
-  var enh=document.getElementById("emailNextHint"); if(enh) enh.textContent = (EMAIL_NEXT_HINT[lang]||EMAIL_NEXT_HINT.en);
+  const WHAT_NEXT = {
+    en:{h:"What happens next",steps:["Dose-IQ email","Choose your country","Bioniq Wellness Assessment on shopbioniq","See your personalised formula + price, then buy"],note:"A second email confirmation on the Bioniq shop is normal."},
+    de:{h:"Was als Nächstes passiert",steps:["Dose-IQ E-Mail","Land wählen","Bioniq Wellness Assessment auf shopbioniq","Personalisierte Formel + Preis sehen, dann kaufen"],note:"Eine zweite E-Mail-Bestätigung im Bioniq-Shop ist normal."},
+    fr:{h:"Et ensuite",steps:["E-mail Dose-IQ","Choisir votre pays","Wellness Assessment Bioniq sur shopbioniq","Voir votre formule personnalisée + le prix, puis acheter"],note:"Une deuxième confirmation e-mail sur la boutique Bioniq est normale."},
+    it:{h:"Cosa succede dopo",steps:["Email Dose-IQ","Scegli il Paese","Wellness Assessment Bioniq su shopbioniq","Vedi formula personalizzata + prezzo, poi acquista"],note:"Una seconda conferma email nello shop Bioniq è normale."},
+    es:{h:"Qué pasa después",steps:["Email Dose-IQ","Elige tu país","Wellness Assessment Bioniq en shopbioniq","Ve tu fórmula personalizada + precio y compra"],note:"Una segunda confirmación por email en la tienda Bioniq es normal."},
+    pt:{h:"O que acontece a seguir",steps:["E-mail Dose-IQ","Escolher o país","Wellness Assessment Bioniq em shopbioniq","Ver fórmula personalizada + preço e comprar"],note:"Uma segunda confirmação de e-mail na loja Bioniq é normal."},
+    nl:{h:"Wat er daarna gebeurt",steps:["Dose-IQ e-mail","Kies je land","Bioniq Wellness Assessment op shopbioniq","Bekijk je gepersonaliseerde formule + prijs, en koop"],note:"Een tweede e-mailbevestiging in de Bioniq-shop is normaal."},
+    pl:{h:"Co dalej",steps:["E-mail Dose-IQ","Wybierz kraj","Wellness Assessment Bioniq na shopbioniq","Zobacz spersonalizowaną formułę + cenę i kup"],note:"Druga potwierdzenie e-mail w sklepie Bioniq jest normalne."},
+    cs:{h:"Co bude dál",steps:["E-mail Dose-IQ","Vyberte zemi","Bioniq Wellness Assessment na shopbioniq","Zobrazte personalizovanou formuli + cenu a kupte"],note:"Druhé e-mailové potvrzení v Bioniq shopu je normální."}
+  };
+  function fillWhatNext(prefix, lang){
+    const w = WHAT_NEXT[lang] || WHAT_NEXT.en;
+    const h = document.getElementById(prefix + "H");
+    const ol = document.getElementById(prefix + "Ol");
+    const note = document.getElementById(prefix + "Note");
+    if(h) h.textContent = w.h;
+    if(ol){ ol.innerHTML = w.steps.map(s => "<li>" + s + "</li>").join(""); }
+    if(note) note.textContent = w.note;
+  }
+  fillWhatNext("whatNext", lang);
+  fillWhatNext("whatNextHandoff", lang);
+  fillWhatNext("whatNextScore", lang);
   document.getElementById("handoffA").textContent = HANDOFF_CTA[lang] || HANDOFF_CTA.en;
   var hp=document.getElementById("handoffP"); if(hp) hp.textContent = (HANDOFF_P[lang]||HANDOFF_P.en);
   var hf=document.getElementById("handoffFine"); if(hf) hf.textContent = (HANDOFF_FINE[lang]||HANDOFF_FINE.en);
