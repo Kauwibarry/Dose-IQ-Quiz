@@ -137,6 +137,16 @@
     }
     .cta:hover { background:#E07A28; }
     .cta[aria-disabled="true"] { opacity:.4; cursor:not-allowed; pointer-events:none; }
+    .shop-secondary {
+      display: inline-block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .shop-secondary:hover { color: var(--text); }
     .fine { font-size:.92rem; color:var(--muted); text-align:center; margin-top:10px; }
 
     .what-next {
@@ -251,7 +261,7 @@
       <h1 id="heroH">Continue your protocol</h1>
       <p id="heroP">Your Fit Score is a free lifestyle check. A personalised Bioniq GO formula is matched only after the Wellness Assessment.</p>
     </div>
-    <div class="cta-slot"><button type="button" class="cta cta-open" id="ctaTop">Start the Wellness Assessment</button></div>
+    <div class="cta-slot"><button type="button" class="cta cta-open" id="ctaTop">Start the Wellness Assessment</button><a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">See Bioniq GO on the shop</a></div>
     <div class="card score-recap" id="scoreRecap">
       <div class="kicker" id="recapKicker">Your Fit Score</div>
       <div class="score-pill">
