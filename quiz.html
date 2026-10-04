@@ -330,15 +330,23 @@
     }
     .handoff-cta:hover { background: #E07A28; }
     .shop-secondary {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
       margin-top: 14px;
-      color: var(--muted);
-      font-size: 0.92rem;
-      font-weight: 600;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      padding: 14px 22px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1.08rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: border-color .15s, background .15s, transform .15s;
     }
-    .shop-secondary:hover { color: var(--text); }
+    .shop-secondary:hover { border-color: #94A3B8; background: #F8FAFC; transform: translateY(-1px); }
     .disclaimer {
       font-size: 0.88rem;
       color: var(--muted);
@@ -583,7 +591,7 @@
           <p class="what-next-note" id="whatNextNote">A second email confirmation on the Bioniq shop is normal.</p>
         </div>
         </form>
-        <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">See Bioniq GO on the shop</a>
+        <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
         <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
       </div>
       <div id="downloadArea">
@@ -600,7 +608,7 @@
           </div>
           <p id="handoffP">Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.</p>
           <a href="/en/protocol?choose=1" id="handoffA" class="handoff-cta">Claim your formula — see price first →</a>
-          <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">See Bioniq GO on the shop</a>
+          <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
           <p id="handoffFine" class="handoff-fine">You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.</p>
         </div>
       </div>
