@@ -333,29 +333,46 @@ export default async function handler(req, res) {
     });
   }
 
-  // Try full FT fields + tags; on field rejection retry without failing FT fields
+  // Try FT fields + tags. Starter plans often block tag assignment — drop tags
+  // first while keeping all FT fields. Then peel URL-type fields if needed.
   let fields = customFieldValues.slice();
   let tags = sourceTags.slice();
   let gr = await postContact(fields, tags);
   let errText = "";
 
+  async function readErr(resp) {
+    try { return await resp.text(); } catch (_) { return ""; }
+  }
+
   if (gr.status === 400) {
-    try { errText = await gr.text(); } catch (_) {}
+    errText = await readErr(gr);
     if (!/already exists|already added|duplicate/i.test(errText)) {
-      // Drop URL-type FT fields first (strictest), keep ref + tags
-      fields = withoutFieldIds(fields, [GR_FT.url, GR_FT.http_referer]);
-      gr = await postContact(fields, tags);
-      if (gr.status === 400) {
-        try { errText = await gr.text(); } catch (_) {}
-        if (!/already exists|already added|duplicate/i.test(errText)) {
-          // Drop all FT fields and tags; keep fit_* only
-          fields = withoutFieldIds(fields, [GR_FT.ref, GR_FT.url, GR_FT.http_referer]);
-          tags = [];
-          gr = await postContact(fields, tags);
-          try { errText = await gr.text(); } catch (_) { errText = ""; }
+      if (tags.length) {
+        tags = [];
+        gr = await postContact(fields, tags);
+        if (gr.status === 400) {
+          errText = await readErr(gr);
+        } else {
+          errText = "";
         }
-      } else {
-        errText = "";
+      }
+      if (gr.status === 400 && errText && !/already exists|already added|duplicate/i.test(errText)) {
+        fields = withoutFieldIds(fields, [GR_FT.url, GR_FT.http_referer]);
+        gr = await postContact(fields, tags);
+        if (gr.status === 400) {
+          errText = await readErr(gr);
+        } else {
+          errText = "";
+        }
+      }
+      if (gr.status === 400 && errText && !/already exists|already added|duplicate/i.test(errText)) {
+        fields = withoutFieldIds(fields, [GR_FT.ref, GR_FT.url, GR_FT.http_referer]);
+        gr = await postContact(fields, []);
+        if (gr.status === 400) {
+          errText = await readErr(gr);
+        } else {
+          errText = "";
+        }
       }
     }
   }
