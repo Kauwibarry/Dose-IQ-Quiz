@@ -885,7 +885,8 @@ emailForm.addEventListener('submit', async function(e) {
       body: JSON.stringify((() => {
         let fit = null;
         try { fit = JSON.parse(localStorage.getItem('doseiq_fit') || 'null'); } catch (e) {}
-        return {
+        const ft = (window.doseIqFirstTouchPayload && window.doseIqFirstTouchPayload()) || {};
+        return Object.assign({
           email: email,
           privacy_consent: 'yes',
           lang: currentLang,
@@ -893,7 +894,7 @@ emailForm.addEventListener('submit', async function(e) {
           ads_consent: adsConsent,
           event_id: eventId,
           event_source_url: location.href
-        };
+        }, ft);
       })())
     });
     if (res.ok) {

@@ -3,6 +3,163 @@ function gtag(){ dataLayer.push(arguments); }
 window.gtag = gtag;
 gtag("js", new Date());
 
+
+/* First-touch attribution (functional) — not gated behind ads cookie banner */
+(function () {
+  try {
+    var FT_KEY = "diq_ft";
+    var FT_DAYS = 90;
+
+    function ftReadCookie(name) {
+      var parts = String(document.cookie || "").split(";");
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        var idx = p.indexOf("=");
+        if (idx === -1) continue;
+        if (p.slice(0, idx).trim() === name) {
+          return p.slice(idx + 1).trim();
+        }
+      }
+      return "";
+    }
+
+    function ftWriteCookie(name, value, days) {
+      var maxAge = Math.floor(days * 24 * 60 * 60);
+      document.cookie =
+        name +
+        "=" +
+        value +
+        "; path=/; max-age=" +
+        maxAge +
+        "; SameSite=Lax";
+    }
+
+    function ftParse(raw) {
+      if (!raw) return null;
+      try {
+        var obj = typeof raw === "string" ? JSON.parse(raw) : raw;
+        if (!obj || typeof obj !== "object") return null;
+        return obj;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function ftLoad() {
+      try {
+        var ls = localStorage.getItem(FT_KEY);
+        var fromLs = ftParse(ls);
+        if (fromLs) return fromLs;
+      } catch (e) {}
+      try {
+        var c = ftReadCookie(FT_KEY);
+        if (c) {
+          var decoded = decodeURIComponent(c);
+          return ftParse(decoded);
+        }
+      } catch (e2) {}
+      return null;
+    }
+
+    function ftSave(obj) {
+      var json = JSON.stringify(obj);
+      try {
+        localStorage.setItem(FT_KEY, json);
+      } catch (e) {}
+      try {
+        // Keep cookie under ~3.5k to avoid browser rejection
+        var encoded = encodeURIComponent(json);
+        if (encoded.length > 3500) {
+          var slim = {
+            utm_source: obj.utm_source || "",
+            utm_medium: obj.utm_medium || "",
+            utm_campaign: obj.utm_campaign || "",
+            utm_content: obj.utm_content || "",
+            utm_term: obj.utm_term || "",
+            gclid: obj.gclid || "",
+            fbclid: obj.fbclid || "",
+            referrer: String(obj.referrer || "").slice(0, 500),
+            landing: String(obj.landing || "").slice(0, 1500)
+          };
+          encoded = encodeURIComponent(JSON.stringify(slim));
+        }
+        ftWriteCookie(FT_KEY, encoded, FT_DAYS);
+      } catch (e2) {}
+    }
+
+    function ftHasAttr(obj) {
+      if (!obj) return false;
+      return !!(
+        obj.utm_source ||
+        obj.utm_medium ||
+        obj.utm_campaign ||
+        obj.utm_content ||
+        obj.utm_term ||
+        obj.gclid ||
+        obj.fbclid
+      );
+    }
+
+    function ftCapture() {
+      var params = new URLSearchParams(location.search || "");
+      function q(k) {
+        var v = params.get(k);
+        return v ? String(v).trim() : "";
+      }
+      var incoming = {
+        utm_source: q("utm_source"),
+        utm_medium: q("utm_medium"),
+        utm_campaign: q("utm_campaign"),
+        utm_content: q("utm_content"),
+        utm_term: q("utm_term"),
+        gclid: q("gclid"),
+        fbclid: q("fbclid"),
+        referrer: String(document.referrer || "").slice(0, 2000),
+        landing: String(location.href || "").slice(0, 2000)
+      };
+      var existing = ftLoad();
+      var write = false;
+      if (!existing) {
+        write = true;
+      } else if (ftHasAttr(incoming) && !ftHasAttr(existing)) {
+        // Upgrade empty organic first-touch when a later visit carries paid/utm params
+        write = true;
+      }
+      if (write) ftSave(incoming);
+    }
+
+    ftCapture();
+
+    window.doseIqGetFirstTouch = function () {
+      try {
+        return ftLoad();
+      } catch (e) {
+        return null;
+      }
+    };
+
+    window.doseIqFirstTouchPayload = function () {
+      try {
+        var ft = ftLoad() || {};
+        return {
+          utm_source: ft.utm_source || "",
+          utm_medium: ft.utm_medium || "",
+          utm_campaign: ft.utm_campaign || "",
+          utm_content: ft.utm_content || "",
+          utm_term: ft.utm_term || "",
+          gclid: ft.gclid || "",
+          fbclid: ft.fbclid || "",
+          first_touch_url: ft.landing || "",
+          first_touch_referrer: ft.referrer || ""
+        };
+      } catch (e) {
+        return {};
+      }
+    };
+  } catch (e) {}
+})();
+
+
 var DOSEIQ_CONSENT_KEY = "doseiq_ads_consent";
 var DOSEIQ_META_PIXEL_ID = "1341206988086014";
 var doseIqConsent = null;
