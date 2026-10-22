@@ -608,7 +608,6 @@
         <div class="what-next" id="whatNextEmail">
           <h4 id="whatNextH">What happens next</h4>
           <ol id="whatNextOl">            <li>Enter your email</li>
-            <li>Choose your country or join the waiting list</li>
             <li>Bioniq Wellness Assessment on shop Bioniq</li>
             <li>See your personalised Bioniq GO formula + price, then buy</li>
           </ol>
@@ -625,7 +624,6 @@
           <div class="what-next" id="whatNextHandoff">
             <h4 id="whatNextHandoffH">What happens next</h4>
             <ol id="whatNextHandoffOl">              <li>Enter your email</li>
-              <li>Choose your country or join the waiting list</li>
               <li>Bioniq Wellness Assessment on shop Bioniq</li>
               <li>See your personalised Bioniq GO formula + price, then buy</li>
             </ol>
@@ -640,7 +638,6 @@
       <div class="what-next" id="whatNextScore" style="margin-top:22px">
         <h4 id="whatNextScoreH">What happens next</h4>
         <ol id="whatNextScoreOl">          <li>Enter your email</li>
-          <li>Choose your country or join the waiting list</li>
           <li>Bioniq Wellness Assessment on shop Bioniq</li>
           <li>See your personalised Bioniq GO formula + price, then buy</li>
         </ol>
@@ -735,7 +732,7 @@ function applyLang(lang){
   const HANDOFF_P = {"en": "Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.", "de": "Nächster Schritt: Starten Sie die Wellness Assessment im offiziellen Bioniq-Shop für Ihre personalisierte Bioniq GO-Formel — dort können Sie bestellen.", "fr": "Prochaine étape : démarrez la Wellness Assessment sur la boutique Bioniq officielle pour votre formule Bioniq GO personnalisée — c'est là que vous pouvez commander.", "it": "Prossimo passo: avvia la Wellness Assessment nello shop ufficiale Bioniq per la tua formula Bioniq GO personalizzata — lì puoi ordinare.", "es": "Siguiente paso: empieza la Wellness Assessment en la tienda oficial Bioniq para tu fórmula Bioniq GO personalizada — ahí puedes pedir.", "pt": "Próximo passo: comece a Wellness Assessment na loja oficial Bioniq para a sua fórmula Bioniq GO personalizada — é aí que pode encomendar.", "nl": "Volgende stap: start de Wellness Assessment in de officiële Bioniq-shop voor je gepersonaliseerde Bioniq GO-formule — daar kun je bestellen.", "pl": "Następny krok: rozpocznij Wellness Assessment w oficjalnym sklepie Bioniq, aby otrzymać spersonalizowaną formułę Bioniq GO — tam złożysz zamówienie.", "cs": "Další krok: spusťte Wellness Assessment v oficiálním Bioniq shopu pro personalizovanou formuli Bioniq GO — tam můžete objednat."};
   const HANDOFF_FINE = {"en": "You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.", "de": "Sie fahren im offiziellen Bioniq-Shop fort. Dort kann erneut nach Ihrer E-Mail gefragt werden, um das Assessment zu starten — das ist normal.", "fr": "Vous continuez sur la boutique Bioniq officielle. Ils peuvent redemander votre e-mail pour démarrer l'évaluation — c'est normal.", "it": "Continui nello shop ufficiale Bioniq. Potrebbero chiedere di nuovo l'email per avviare l'assessment — è normale.", "es": "Continúas en la tienda oficial Bioniq. Pueden pedir tu email otra vez para empezar la evaluación — es normal.", "pt": "Continua na loja oficial Bioniq. Podem pedir o e-mail outra vez para iniciar a avaliação — é normal.", "nl": "Je gaat verder in de officiële Bioniq-shop. Ze kunnen opnieuw om je e-mail vragen om de assessment te starten — dat is normaal.", "pl": "Kontynuujesz w oficjalnym sklepie Bioniq. Mogą ponownie poprosić o e-mail, aby rozpocząć assessment — to normalne.", "cs": "Pokračujete v oficiálním Bioniq shopu. Mohou znovu požádat o e-mail ke spuštění assessmentu — to je normální."};
   const WHAT_NEXT = {
-    en:{h:"What happens next",steps:["Choose your country or join the waiting list","Enter your email","Bioniq Wellness Assessment on shop Bioniq","See your personalised Bioniq GO formula + price, then buy"],note:"A second email confirmation on the Bioniq shop is normal."},
+    en:{h:"What happens next",steps:["Enter your email","Bioniq Wellness Assessment on shop Bioniq","See your personalised Bioniq GO formula + price, then buy"],note:"A second email confirmation on the Bioniq shop is normal."},
     de:{h:"Was als Nächstes passiert",steps:["Land wählen oder der Warteliste beitreten","E-Mail eingeben","Bioniq Wellness Assessment auf shop Bioniq","Personalisierte Bioniq GO-Formel + Preis sehen, dann kaufen"],note:"Eine zweite E-Mail-Bestätigung im Bioniq-Shop ist normal."},
     fr:{h:"Et ensuite",steps:["Choisissez votre pays ou rejoignez la liste d'attente","Entrez votre e-mail","Wellness Assessment Bioniq sur shop Bioniq","Voir votre formule Bioniq GO personnalisée + le prix, puis acheter"],note:"Une deuxième confirmation e-mail sur la boutique Bioniq est normale."},
     it:{h:"Cosa succede dopo",steps:["Scegli il Paese o unisciti alla lista d'attesa","Inserisci la tua email","Wellness Assessment Bioniq su shop Bioniq","Vedi formula Bioniq GO personalizzata + prezzo, poi acquista"],note:"Una seconda conferma email nello shop Bioniq è normale."},
@@ -768,6 +765,7 @@ function applyLang(lang){
   document.getElementById("handoffA").setAttribute("href", handoffDirect ? HANDOFF_DIRECT_UK : "/"+lang+"/protocol?choose=1");
   document.getElementById("handoffA").setAttribute("data-direct", handoffDirect ? "1" : "0");
   var hn=document.getElementById("handoffNote"); if(hn) hn.style.display = handoffDirect ? "" : "none";
+  if(hf) hf.style.display = handoffDirect ? "none" : "";
   document.getElementById("disclaimer").textContent = x.disclaimer;
   document.getElementById("footerBrand").textContent = x.brand;
   var fs=document.getElementById("footerSold"); if(fs && x.sold_line) fs.textContent = x.sold_line;
