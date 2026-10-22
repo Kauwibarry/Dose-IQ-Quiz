@@ -26,6 +26,9 @@
 <link rel="alternate" hreflang="cs" href="https://www.dose-iq.fit/cs/quiz" />
 <link rel="alternate" hreflang="x-default" href="https://www.dose-iq.fit/en/quiz" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <title>Your Fit Score | Dose-IQ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -497,7 +500,7 @@
     @media (max-width: 640px) {
       .nav {
         position: sticky;
-        bottom: 0;
+        bottom: var(--doseiq-consent-h, 0px);
         z-index: 40;
         background: linear-gradient(180deg, rgba(247,245,242,0) 0%, #F7F5F2 28%);
         padding: 14px 0 calc(12px + env(safe-area-inset-bottom, 0px));
@@ -521,6 +524,37 @@
     .modal .person-trust,.modal-back .person-trust{max-width:100%;margin:14px 0}
     @media (max-width:480px){.person-trust{gap:14px;padding:10px 12px}.person-trust img{width:88px;height:88px}}
 
+    /* Funnel fix 2026-10-22: email capture directly under score/band, primary button in first screen */
+    #results.card { padding-top: 26px; margin-top: 18px; }
+    #results .score-circle-wrap, #results .score-circle { width: 160px; height: 160px; }
+    #results .score-circle-wrap { margin: 0 auto 14px; }
+    #results .score-inner { width: 128px; height: 128px; }
+    #results .score-number { font-size: 2.7rem; }
+    #results .score-title { font-size: 1.5rem; margin-bottom: 4px; }
+    #results .score-band { margin-bottom: 4px; }
+    #results .email-gate { margin-top: 14px; padding-top: 16px; }
+    #results .email-gate h3 { font-size: 1.18rem; line-height: 1.3; margin-bottom: 12px; }
+    #results .email-form { gap: 10px; }
+    #results .email-form input { padding: 13px 16px; }
+    #results .consent-row { font-size: 0.84rem; line-height: 1.4; }
+    #results .email-form button { padding: 14px; }
+    #results .email-form button:disabled { opacity: 0.55; }
+    #emailP { margin: 14px 0 0; font-size: 0.98rem; }
+    #results .age-tag { margin-top: 24px; }
+    .handoff .handoff-note { margin: 10px 0 0; font-size: 0.92rem; font-weight: 500; line-height: 1.4; color: #475569; }
+    #downloadArea { margin-top: 14px; }
+    #downloadArea .handoff { margin-top: 14px; }
+    @media (max-width: 640px) {
+      #results.card { padding: 22px 18px 28px; margin-top: 16px; }
+      #results .score-circle-wrap, #results .score-circle { width: 148px; height: 148px; }
+      #results .score-circle-wrap { margin: 0 auto 12px; }
+      #results .score-inner { width: 116px; height: 116px; }
+      #results .score-number { font-size: 2.5rem; }
+      #results .score-title { font-size: 1.4rem; }
+      #results .email-gate { margin-top: 12px; padding-top: 14px; }
+      #results .email-gate h3 { font-size: 1.12rem; margin-bottom: 10px; }
+      #results .consent-row { font-size: 0.82rem; }
+    }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18427841111"></script>
   <script src="/gtag-dose-iq.js"></script>
@@ -558,6 +592,49 @@
       </div>
       <h2 class="score-title" id="scoreTitle">Your Fit Score</h2>
       <div class="score-band" id="scoreBand"></div>
+      <div class="email-gate" id="emailGate">
+        <h3 id="emailH">Your Fit Score is ready — claim your formula in 72 hours</h3>
+        <form class="email-form" id="emailForm" action="/api/subscribe" method="POST">
+          <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
+          <input type="hidden" name="lang" id="langField" value="en">
+          <div class="consent-row">
+            <input type="checkbox" id="consentCheck" name="privacy_consent" value="yes" required>
+            <label for="consentCheck" id="consentLabel">I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Supplementation Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
+          </div>
+          <button type="submit" id="submitBtn" disabled>Claim my formula — get the guide</button>
+        </form>
+        <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
+        <p id="emailP">Enter your email to get the guide and claim your personalised Bioniq GO multivitamin — your pouch arrives with your name on it. Free assessment · see formula + price before buy · from £103.09/month for a personalised 30-day supply (exact total shown before you pay). Fit Score matched for 72 hours.</p>
+        <div class="what-next" id="whatNextEmail">
+          <h4 id="whatNextH">What happens next</h4>
+          <ol id="whatNextOl">            <li>Enter your email</li>
+            <li>Choose your country or join the waiting list</li>
+            <li>Bioniq Wellness Assessment on shop Bioniq</li>
+            <li>See your personalised Bioniq GO formula + price, then buy</li>
+          </ol>
+          <p class="what-next-note" id="whatNextNote">A second email confirmation on the Bioniq shop is normal.</p>
+        </div>
+        <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
+      </div>
+      <div id="downloadArea">
+        <p id="pdfNote" class="email-pdf-note">Your free 10-page guide is on its way to your email.</p>
+        <div class="handoff">
+          <p id="handoffP">Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.</p>
+          <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" id="handoffA" class="handoff-cta">Go to Bioniq and start the Wellness Assessment</a>
+          <p id="handoffNote" class="handoff-note">Bioniq will ask for your email again. Use the same one.</p>
+          <div class="what-next" id="whatNextHandoff">
+            <h4 id="whatNextHandoffH">What happens next</h4>
+            <ol id="whatNextHandoffOl">              <li>Enter your email</li>
+              <li>Choose your country or join the waiting list</li>
+              <li>Bioniq Wellness Assessment on shop Bioniq</li>
+              <li>See your personalised Bioniq GO formula + price, then buy</li>
+            </ol>
+            <p class="what-next-note" id="whatNextHandoffNote">A second email confirmation on the Bioniq shop is normal.</p>
+          </div>
+          <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
+          <p id="handoffFine" class="handoff-fine">You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.</p>
+        </div>
+      </div>
       <p class="age-tag" id="ageTag"></p>
       <div class="insights" id="insightsList"></div>
       <div class="what-next" id="whatNextScore" style="margin-top:22px">
@@ -570,48 +647,6 @@
         <p class="what-next-note" id="whatNextScoreNote">A second email confirmation on the Bioniq shop is normal.</p>
       </div>
 <div class="person-trust"><img src="/bart-headshot-circle.png" alt="Bart Kauwenberghs, Dose-IQ" width="92" height="92" loading="lazy" decoding="async" /><div class="person-trust-text"><div class="person-trust-name" id="trustNameGate">Bart Kauwenberghs</div><div class="person-trust-role" id="trustRoleGate">Dose-IQ</div><div class="person-trust-product" id="trustProductGate">Bioniq GO</div></div></div>
-      <div class="email-gate" id="emailGate">
-        <h3 id="emailH">Your Fit Score is ready — claim your formula in 72 hours</h3>
-        <p id="emailP">Enter your email to get the guide and claim your personalised Bioniq GO multivitamin — your pouch arrives with your name on it. Free assessment · see formula + price before buy · from £103.09/month for a personalised 30-day supply (exact total shown before you pay). Fit Score matched for 72 hours.</p>
-        <form class="email-form" id="emailForm" action="/api/subscribe" method="POST">
-          <input type="email" name="email" id="emailInput" placeholder="Your email address" required autocomplete="email">
-          <input type="hidden" name="lang" id="langField" value="en">
-          <div class="consent-row">
-            <input type="checkbox" id="consentCheck" name="privacy_consent" value="yes" required>
-            <label for="consentCheck" id="consentLabel">I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and to Dose-IQ using my email to send the free Personalised Supplementation Guide. I can request deletion at any time via <a href="mailto:info@dose-iq.com">info@dose-iq.com</a>.</label>
-          </div>
-          <button type="submit" id="submitBtn" disabled>Claim my formula — get the guide</button>
-        <div class="what-next" id="whatNextEmail">
-          <h4 id="whatNextH">What happens next</h4>
-          <ol id="whatNextOl">            <li>Enter your email</li>
-            <li>Choose your country or join the waiting list</li>
-            <li>Bioniq Wellness Assessment on shop Bioniq</li>
-            <li>See your personalised Bioniq GO formula + price, then buy</li>
-          </ol>
-          <p class="what-next-note" id="whatNextNote">A second email confirmation on the Bioniq shop is normal.</p>
-        </div>
-        </form>
-        <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
-        <p id="formStatus" style="font-size:0.85rem;color:var(--muted);margin-top:10px;display:none;"></p>
-      </div>
-      <div id="downloadArea">
-        <p id="pdfNote" class="email-pdf-note">Your free 10-page guide is on its way to your email.</p>
-        <div class="handoff">
-          <div class="what-next" id="whatNextHandoff">
-            <h4 id="whatNextHandoffH">What happens next</h4>
-            <ol id="whatNextHandoffOl">              <li>Enter your email</li>
-              <li>Choose your country or join the waiting list</li>
-              <li>Bioniq Wellness Assessment on shop Bioniq</li>
-              <li>See your personalised Bioniq GO formula + price, then buy</li>
-            </ol>
-            <p class="what-next-note" id="whatNextHandoffNote">A second email confirmation on the Bioniq shop is normal.</p>
-          </div>
-          <p id="handoffP">Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.</p>
-          <a href="/en/protocol?choose=1" id="handoffA" class="handoff-cta">Claim your formula — see price first →</a>
-          <a class="shop-secondary" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Shop Bioniq GO here</a>
-          <p id="handoffFine" class="handoff-fine">You continue on the official Bioniq shop. They may ask for your email again to start the assessment — that is normal.</p>
-        </div>
-      </div>
       <p class="disclaimer" id="disclaimer">This Fit Score is for educational and motivational purposes only. It is not a medical diagnosis or a substitute for professional advice. It is completely separate from the detailed Wellness Assessment used to generate a Bioniq GO formula. Food supplements should not replace a varied and balanced diet and healthy lifestyle.</p>
     </div>
   </div>
@@ -722,11 +757,17 @@ function applyLang(lang){
   fillWhatNext("whatNext", lang);
   fillWhatNext("whatNextHandoff", lang);
   fillWhatNext("whatNextScore", lang);
-  const HANDOFF_CTA = {en:"Claim your formula — see price first →",de:"Wellness Assessment starten",fr:"Commencer la Wellness Assessment",it:"Inizia la Wellness Assessment",es:"Empezar la Wellness Assessment",pt:"Começar a Wellness Assessment",nl:"Start de Wellness Assessment",pl:"Rozpocznij Wellness Assessment",cs:"Spustit Wellness Assessment"};
+  const HANDOFF_CTA = {en:"Go to Bioniq and start the Wellness Assessment",de:"Wellness Assessment starten",fr:"Commencer la Wellness Assessment",it:"Inizia la Wellness Assessment",es:"Empezar la Wellness Assessment",pt:"Começar a Wellness Assessment",nl:"Start de Wellness Assessment",pl:"Rozpocznij Wellness Assessment",cs:"Spustit Wellness Assessment"};
   document.getElementById("handoffA").textContent = HANDOFF_CTA[lang] || HANDOFF_CTA.en;
   var hp=document.getElementById("handoffP"); if(hp) hp.textContent = (HANDOFF_P[lang]||HANDOFF_P.en);
   var hf=document.getElementById("handoffFine"); if(hf) hf.textContent = (HANDOFF_FINE[lang]||HANDOFF_FINE.en);
-  document.getElementById("handoffA").setAttribute("href", "/"+lang+"/protocol?choose=1");
+  // UK/EN visitors go straight to the UK Bioniq shop (rule: page language = en; the quiz does not know the country yet).
+  // Other languages keep the protocol page + country picker path.
+  const HANDOFF_DIRECT_UK = "https://shopbioniq.com/en-GB/Dose-IQ-GB";
+  const handoffDirect = (lang === "en");
+  document.getElementById("handoffA").setAttribute("href", handoffDirect ? HANDOFF_DIRECT_UK : "/"+lang+"/protocol?choose=1");
+  document.getElementById("handoffA").setAttribute("data-direct", handoffDirect ? "1" : "0");
+  var hn=document.getElementById("handoffNote"); if(hn) hn.style.display = handoffDirect ? "" : "none";
   document.getElementById("disclaimer").textContent = x.disclaimer;
   document.getElementById("footerBrand").textContent = x.brand;
   var fs=document.getElementById("footerSold"); if(fs && x.sold_line) fs.textContent = x.sold_line;
@@ -901,6 +942,7 @@ emailForm.addEventListener('submit', async function(e) {
       if (window.doseIqLead) window.doseIqLead(email, eventId);
       emailGate.style.display = 'none';
       downloadArea.style.display = 'block';
+      try { downloadArea.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) {}
     } else {
       status.style.display = 'block';
       status.textContent = x.error;
@@ -923,6 +965,20 @@ emailForm.addEventListener('submit', async function(e) {
     if(cur!==want) history.replaceState({lang}, "", want+location.search);
   }
   renderQuestion();
+})();
+(function(){
+  // Direct UK hand-off: fire Meta StartAssessment (consent-gated inside) + Google start_assessment before leaving.
+  var a=document.getElementById("handoffA");
+  if(!a) return;
+  a.addEventListener("click", function(e){
+    if(a.getAttribute("data-direct")!=="1") return;
+    try{ if(typeof window.doseIqStartAssessment==="function") window.doseIqStartAssessment("Dose IQ Quiz"); }catch(err){}
+    if(e.defaultPrevented || e.button!==0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    var href=a.href, went=false;
+    function go(){ if(went) return; went=true; location.href=href; }
+    setTimeout(go, 300);
+  });
 })();
 window.addEventListener("popstate", ()=> setLang(pathLang()||detectLang(), {skipUrl:true}));
 

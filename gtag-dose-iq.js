@@ -304,29 +304,44 @@ window.doseIqStartAssessment = function (contentName) {
     });
     if (v === "granted") window.doseIqLoadMetaPixel();
     var bar = document.getElementById("doseiq-consent");
-    if (bar) bar.remove();
+    if (bar) {
+      if (typeof bar._doseIqRelease === "function") bar._doseIqRelease();
+      bar.remove();
+    }
   }
 
   function paint() {
     if (document.getElementById("doseiq-consent")) return;
     var style = document.createElement("style");
-    style.textContent = "#doseiq-consent{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px 16px;background:rgba(15,23,42,.48);font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.45;box-sizing:border-box}#doseiq-consent *{box-sizing:border-box}#doseiq-consent .doseiq-card{width:100%;max-width:420px;max-height:min(90vh,560px);overflow:auto;background:#0F172A;color:#F8FAFC;border:2px solid #F28C38;border-radius:16px;box-shadow:0 24px 64px rgba(15,23,42,.45);padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px}#doseiq-consent p{margin:0;color:#E2E8F0;font-size:16px;font-weight:500}#doseiq-consent a{color:#7DD3FC;font-weight:600;text-decoration:underline}#doseiq-consent .doseiq-actions{display:flex;gap:10px;flex-wrap:wrap}#doseiq-consent button{font-family:inherit;font-size:16px;font-weight:700;border-radius:999px;padding:14px 22px;cursor:pointer;flex:1 1 40%;min-width:120px;min-height:48px}#doseiq-consent .doseiq-reject{background:transparent;border:2px solid #94A3B8;color:#F8FAFC}#doseiq-consent .doseiq-accept{background:#F28C38;border:2px solid #F28C38;color:#fff}@media (max-width:560px){#doseiq-consent{padding:16px 12px}#doseiq-consent .doseiq-card{padding:18px 16px 16px;border-radius:14px}#doseiq-consent p{font-size:15px}#doseiq-consent button{min-width:0;padding:14px 16px}}";
+    // Slim non-blocking bottom bar (no scrim). Accept and Reject share identical styling = equal prominence.
+    style.textContent = "#doseiq-consent{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#0F172A;color:#F8FAFC;border-top:2px solid #F28C38;box-shadow:0 -6px 24px rgba(15,23,42,.18);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.4;box-sizing:border-box;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}#doseiq-consent *{box-sizing:border-box}#doseiq-consent .doseiq-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px}#doseiq-consent p{margin:0;flex:1 1 auto;color:#E2E8F0;font-size:14px;font-weight:500}#doseiq-consent a{color:#7DD3FC;font-weight:600;text-decoration:underline}#doseiq-consent .doseiq-actions{display:flex;gap:8px;flex:0 0 auto}#doseiq-consent button{font-family:inherit;font-size:14px;font-weight:700;border-radius:999px;padding:9px 20px;cursor:pointer;min-width:112px;min-height:40px;background:#F8FAFC;border:2px solid #F8FAFC;color:#0F172A}#doseiq-consent button:hover,#doseiq-consent button:focus-visible{background:#E2E8F0;border-color:#E2E8F0}@media (max-width:640px){#doseiq-consent{padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px))}#doseiq-consent .doseiq-inner{flex-direction:column;align-items:stretch;gap:6px}#doseiq-consent p{font-size:12px;line-height:1.3}#doseiq-consent button{flex:1 1 0;min-width:0;min-height:36px;padding:6px 12px;font-size:14px}}";
     document.head.appendChild(style);
     var bar = document.createElement("div");
     bar.id = "doseiq-consent";
-    bar.setAttribute("role", "dialog");
+    bar.setAttribute("role", "region");
     bar.setAttribute("aria-live", "polite");
     bar.setAttribute("aria-label", copy.msg);
-    bar.innerHTML = "<div class=\"doseiq-card\"><p>" + copy.msg + ' <a href="/privacy.html" target="_blank" rel="noopener">' + copy.privacy + "</a></p><div class=\"doseiq-actions\"><button type=\"button\" class=\"doseiq-reject\">" + copy.reject + "</button><button type=\"button\" class=\"doseiq-accept\">" + copy.accept + "</button></div></div>";
+    bar.innerHTML = "<div class=\"doseiq-inner\"><p>" + copy.msg + ' <a href="/privacy.html" target="_blank" rel="noopener">' + copy.privacy + "</a></p><div class=\"doseiq-actions\"><button type=\"button\" class=\"doseiq-reject\">" + copy.reject + "</button><button type=\"button\" class=\"doseiq-accept\">" + copy.accept + "</button></div></div>";
     document.body.appendChild(bar);
     bar.querySelector(".doseiq-accept").addEventListener("click", function () { setConsent("granted"); });
     bar.querySelector(".doseiq-reject").addEventListener("click", function () { setConsent("denied"); });
-    // Scrim/overlay click must NOT grant consent (and does not dismiss).
-    bar.addEventListener("click", function (e) {
-      if (e.target === bar) { e.preventDefault(); }
-    });
-    var card = bar.querySelector(".doseiq-card");
-    if (card) card.addEventListener("click", function (e) { e.stopPropagation(); });
+    // Reserve space so the bar never covers page content or sticky quiz buttons.
+    function reserve() {
+      try {
+        var h = bar.offsetHeight || 0;
+        document.documentElement.style.setProperty("--doseiq-consent-h", h + "px");
+        document.body.style.paddingBottom = h + "px";
+      } catch (e) {}
+    }
+    reserve();
+    window.addEventListener("resize", reserve);
+    bar._doseIqRelease = function () {
+      window.removeEventListener("resize", reserve);
+      try {
+        document.documentElement.style.removeProperty("--doseiq-consent-h");
+        document.body.style.paddingBottom = "";
+      } catch (e) {}
+    };
   }
 
   if (document.body) paint();
