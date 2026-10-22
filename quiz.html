@@ -542,6 +542,19 @@
     #emailP { margin: 14px 0 0; font-size: 0.98rem; }
     #results .age-tag { margin-top: 24px; }
     .handoff .handoff-note { margin: 10px 0 0; font-size: 0.92rem; font-weight: 500; line-height: 1.4; color: #475569; }
+    /* Optional first-name ask (secondary; sits under the primary shop CTA + note) */
+    .handoff .name-ask { margin: 16px 0 4px; padding: 12px 14px; border: 1px dashed #CBD5E1; border-radius: 14px; background: #fff; text-align: left; }
+    .handoff .name-ask .name-ask-q { display: block; margin: 0 0 8px; font-size: 0.86rem; font-weight: 500; line-height: 1.4; color: #475569; }
+    .handoff .name-ask-row { display: flex; gap: 8px; }
+    .handoff .name-ask-row input { flex: 1 1 auto; min-width: 0; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.92rem; font-family: inherit; background: var(--bg); color: var(--text); }
+    .handoff .name-ask-row input:focus { outline: none; border-color: #94A3B8; }
+    .handoff .name-ask-save { flex: 0 0 auto; padding: 9px 16px; border: 1.5px solid #CBD5E1; border-radius: 999px; background: #fff; color: var(--text); font-family: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+    .handoff .name-ask-save:hover { border-color: #94A3B8; background: #F8FAFC; }
+    .handoff .name-ask-save:disabled { opacity: 0.6; cursor: default; }
+    .handoff .name-ask-msg { margin: 6px 0 0; min-height: 0; font-size: 0.8rem; line-height: 1.35; color: #B33A2B; }
+    .handoff .name-ask-msg:empty { display: none; }
+    .handoff .name-ask-skip { display: inline-block; margin-top: 6px; padding: 2px 0; border: none; background: none; color: #64748B; font-family: inherit; font-size: 0.82rem; text-decoration: underline; cursor: pointer; }
+    .handoff .name-ask-thanks { margin: 0; font-size: 0.9rem; font-weight: 600; line-height: 1.4; color: var(--good); text-align: center; }
     #downloadArea { margin-top: 14px; }
     #downloadArea .handoff { margin-top: 14px; }
     @media (max-width: 640px) {
@@ -621,6 +634,18 @@
           <p id="handoffP">Claim your personalised Bioniq GO multivitamin while your Fit Score is still matched (72 hours). See formula + price first — your pouch arrives with your name on it. No card to start.</p>
           <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" id="handoffA" class="handoff-cta">Go to Bioniq and start the Wellness Assessment</a>
           <p id="handoffNote" class="handoff-note">Bioniq will ask for your email again. Use the same one.</p>
+          <div class="name-ask" id="nameAsk">
+            <form class="name-ask-form" id="nameAskForm" novalidate>
+              <label for="nameAskInput" class="name-ask-q" id="nameAskQ">Got it, your result is on its way. What should I call you?</label>
+              <div class="name-ask-row">
+                <input type="text" id="nameAskInput" name="first_name" maxlength="40" autocomplete="given-name" autocapitalize="words" spellcheck="false" placeholder="First name" aria-describedby="nameAskMsg">
+                <button type="submit" id="nameAskSave" class="name-ask-save">Save</button>
+              </div>
+              <p class="name-ask-msg" id="nameAskMsg" role="status" aria-live="polite"></p>
+              <button type="button" id="nameAskSkip" class="name-ask-skip">Skip</button>
+            </form>
+            <p class="name-ask-thanks" id="nameAskThanks" role="status" aria-live="polite" hidden></p>
+          </div>
           <div class="what-next" id="whatNextHandoff">
             <h4 id="whatNextHandoffH">What happens next</h4>
             <ol id="whatNextHandoffOl">              <li>Enter your email</li>
@@ -781,6 +806,7 @@ function applyLang(lang){
   document.getElementById("logoHome").setAttribute("href", home);
   document.getElementById("footerLogo").setAttribute("href", home);
   if(document.getElementById("quizCard").style.display !== "none") renderQuestion();
+  if(typeof applyNameAskLang==="function") applyNameAskLang(lang);
 }
 let current = 0;
 const answers = [];
@@ -937,6 +963,7 @@ emailForm.addEventListener('submit', async function(e) {
     });
     if (res.ok) {
       try { localStorage.setItem('doseiq_lead_email', email); } catch (err) {}
+      window.__diqLead = { email: email, lang: currentLang };
       if (window.doseIqLead) window.doseIqLead(email, eventId);
       emailGate.style.display = 'none';
       downloadArea.style.display = 'block';
@@ -976,6 +1003,70 @@ emailForm.addEventListener('submit', async function(e) {
     var href=a.href, went=false;
     function go(){ if(went) return; went=true; location.href=href; }
     setTimeout(go, 300);
+  });
+})();
+(function(){
+  // Optional first-name ask after signup (secondary; never blocks the shop CTA).
+  window.NAME_ASK = {
+    en:{q:"Got it, your result is on its way. What should I call you?",ph:"First name",save:"Save",skip:"Skip",thanks:"Thanks, {name}!",invalid:"Please use letters only (max 40 characters).",fail:"Couldn’t save that just now. No problem, you can carry on.",saving:"Saving…"},
+    de:{q:"Erledigt, Ihr Ergebnis ist unterwegs. Wie darf ich Sie nennen?",ph:"Vorname",save:"Speichern",skip:"Überspringen",thanks:"Danke, {name}!",invalid:"Bitte nur Buchstaben verwenden (max. 40 Zeichen).",fail:"Das konnte gerade nicht gespeichert werden. Kein Problem, Sie können weitermachen.",saving:"Wird gespeichert…"},
+    fr:{q:"C’est noté, votre résultat est en route. Comment dois-je vous appeler ?",ph:"Prénom",save:"Enregistrer",skip:"Passer",thanks:"Merci, {name} !",invalid:"Merci d’utiliser uniquement des lettres (40 caractères max.).",fail:"Impossible d’enregistrer pour le moment. Pas de souci, vous pouvez continuer.",saving:"Enregistrement…"},
+    it:{q:"Fatto, il tuo risultato è in arrivo. Come posso chiamarti?",ph:"Nome",save:"Salva",skip:"Salta",thanks:"Grazie, {name}!",invalid:"Usa solo lettere (max 40 caratteri).",fail:"Non è stato possibile salvare ora. Nessun problema, puoi continuare.",saving:"Salvataggio…"},
+    es:{q:"Listo, tu resultado está en camino. ¿Cómo te llamo?",ph:"Nombre",save:"Guardar",skip:"Omitir",thanks:"¡Gracias, {name}!",invalid:"Usa solo letras (máx. 40 caracteres).",fail:"No se pudo guardar ahora. No pasa nada, puedes continuar.",saving:"Guardando…"},
+    pt:{q:"Feito, o seu resultado está a caminho. Qual é o seu primeiro nome?",ph:"Nome próprio",save:"Guardar",skip:"Saltar",thanks:"Obrigado, {name}!",invalid:"Use apenas letras (máx. 40 caracteres).",fail:"Não foi possível guardar agora. Não faz mal, pode continuar.",saving:"A guardar…"},
+    nl:{q:"Gelukt, je resultaat is onderweg. Hoe mag ik je noemen?",ph:"Voornaam",save:"Opslaan",skip:"Overslaan",thanks:"Bedankt, {name}!",invalid:"Gebruik alleen letters (max. 40 tekens).",fail:"Opslaan lukte nu niet. Geen probleem, je kunt gewoon verder.",saving:"Opslaan…"},
+    pl:{q:"Gotowe, Twój wynik jest w drodze. Jak mam się do Ciebie zwracać?",ph:"Imię",save:"Zapisz",skip:"Pomiń",thanks:"Dzięki, {name}!",invalid:"Użyj tylko liter (maks. 40 znaków).",fail:"Nie udało się teraz zapisać. Nic nie szkodzi, możesz kontynuować.",saving:"Zapisywanie…"},
+    cs:{q:"Hotovo, váš výsledek je na cestě. Jak vám mám říkat?",ph:"Křestní jméno",save:"Uložit",skip:"Přeskočit",thanks:"Díky, {name}!",invalid:"Použijte prosím jen písmena (max. 40 znaků).",fail:"Teď se to nepodařilo uložit. Nevadí, můžete pokračovat.",saving:"Ukládání…"}
+  };
+  var NAME_RE = /^[\p{L}\p{M}](?:[\p{L}\p{M}' \u2019-]*[\p{L}\p{M}])?$/u;
+  function nameLang(){ var l=(window.__diqLead&&window.__diqLead.lang)||currentLang; return window.NAME_ASK[l]?l:"en"; }
+  function nx(){ return window.NAME_ASK[nameLang()] || window.NAME_ASK.en; }
+  function cleanName(v){ return String(v==null?"":v).normalize("NFC").replace(/\s+/g," ").trim(); }
+  function validName(n){ return n.length>=1 && n.length<=40 && NAME_RE.test(n); }
+  function ev(name){
+    try{ if(typeof window.doseIqLightEvent==="function") window.doseIqLightEvent(name); }catch(e){}
+  }
+  window.applyNameAskLang = function(lang){
+    var x = window.NAME_ASK[lang] || window.NAME_ASK.en;
+    var q=document.getElementById("nameAskQ"); if(q) q.textContent=x.q;
+    var i=document.getElementById("nameAskInput"); if(i) i.placeholder=x.ph;
+    var s=document.getElementById("nameAskSave"); if(s && !s.disabled) s.textContent=x.save;
+    var k=document.getElementById("nameAskSkip"); if(k) k.textContent=x.skip;
+  };
+  try{ window.applyNameAskLang(currentLang); }catch(e){}
+  var form=document.getElementById("nameAskForm");
+  if(!form) return;
+  var input=document.getElementById("nameAskInput"), save=document.getElementById("nameAskSave"),
+      msg=document.getElementById("nameAskMsg"), skip=document.getElementById("nameAskSkip"),
+      thanks=document.getElementById("nameAskThanks"), box=document.getElementById("nameAsk");
+  var attempts=0, busy=false;
+  input.addEventListener("input", function(){ msg.textContent=""; });
+  skip.addEventListener("click", function(){ box.hidden=true; box.style.display="none"; ev("name_skipped"); });
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+    if(busy) return;
+    var x=nx(), name=cleanName(input.value);
+    if(!validName(name)){ msg.textContent=x.invalid; input.focus(); return; }
+    var lead=window.__diqLead;
+    if(!lead || !lead.email){ msg.textContent=x.fail; return; }
+    if(attempts>=3){ msg.textContent=x.fail; return; }
+    attempts++; busy=true; save.disabled=true; save.textContent=x.saving; msg.textContent="";
+    var ok=false;
+    try{
+      var r=await fetch("/api/name",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body:JSON.stringify({email:lead.email,name:name,lang:lead.lang||currentLang})});
+      var j=null; try{ j=await r.json(); }catch(_){}
+      ok = r.ok && j && j.ok===true;
+      if(!ok && r.status===400 && j && j.error==="invalid_name"){ msg.textContent=x.invalid; }
+      else if(!ok){ msg.textContent=x.fail; }
+    }catch(err){ msg.textContent=x.fail; }
+    busy=false; save.disabled=false; save.textContent=x.save;
+    if(ok){
+      form.hidden=true; form.style.display="none";
+      thanks.textContent=x.thanks.replace("{name}", name);
+      thanks.hidden=false;
+      ev("name_saved");
+    }
   });
 })();
 window.addEventListener("popstate", ()=> setLang(pathLang()||detectLang(), {skipUrl:true}));

@@ -285,6 +285,24 @@ window.doseIqStartAssessment = function (contentName) {
   } catch (e) {}
 };
 
+/* Light custom events (e.g. name_saved / name_skipped). Google via consent mode as other events;
+   Meta trackCustom only after Accept. No Meta standard events. */
+window.doseIqLightEvent = function (name) {
+  try {
+    if (!name) return;
+    if (typeof gtag === "function") {
+      gtag("event", name, { event_category: "engagement", event_label: "Dose IQ Quiz" });
+    }
+    try { window.dataLayer.push({ event: name }); } catch (eDl) {}
+    var consented = false;
+    try { consented = localStorage.getItem(DOSEIQ_CONSENT_KEY) === "granted"; } catch (eC) {}
+    if (consented) {
+      window.doseIqLoadMetaPixel();
+      if (typeof fbq === "function") fbq("trackCustom", name, { content_name: "Dose IQ Quiz" });
+    }
+  } catch (e) {}
+};
+
 (function () {
   if (doseIqConsent === "granted" || doseIqConsent === "denied") return;
 
