@@ -306,13 +306,114 @@ window.doseIqLightEvent = function (name) {
 (function () {
   if (doseIqConsent === "granted" || doseIqConsent === "denied") return;
 
-  var LANGS = {"en": {"msg": "We use Google Ads and Meta cookies to measure quiz signups from ads. You can reject and still use the site.", "accept": "Accept", "reject": "Reject", "privacy": "Privacy"}, "de": {"msg": "Wir verwenden Google-Ads- und Meta-Cookies, um Quiz-Anmeldungen aus Anzeigen zu messen. Ablehnen ist möglich — die Seite bleibt nutzbar.", "accept": "Akzeptieren", "reject": "Ablehnen", "privacy": "Datenschutz"}, "fr": {"msg": "Nous utilisons des cookies Google Ads et Meta pour mesurer les inscriptions au quiz issues des publicités. Vous pouvez refuser et continuer.", "accept": "Accepter", "reject": "Refuser", "privacy": "Confidentialité"}, "it": {"msg": "Usiamo cookie di Google Ads e Meta per misurare le iscrizioni al quiz dalle inserzioni. Puoi rifiutare e usare comunque il sito.", "accept": "Accetta", "reject": "Rifiuta", "privacy": "Privacy"}, "es": {"msg": "Usamos cookies de Google Ads y Meta para medir altas al quiz desde anuncios. Puedes rechazar y seguir usando el sitio.", "accept": "Aceptar", "reject": "Rechazar", "privacy": "Privacidad"}, "pt": {"msg": "Usamos cookies do Google Ads e da Meta para medir inscrições no quiz a partir de anúncios. Pode recusar e continuar a usar o site.", "accept": "Aceitar", "reject": "Recusar", "privacy": "Privacidade"}, "nl": {"msg": "We gebruiken Google Ads- en Meta-cookies om quiz-aanmeldingen uit advertenties te meten. Je kunt weigeren en de site gewoon gebruiken.", "accept": "Accepteren", "reject": "Weigeren", "privacy": "Privacy"}, "pl": {"msg": "Używamy plików cookie Google Ads i Meta, aby mierzyć zapisy z quizu z reklam. Możesz odrzucić i nadal korzystać z witryny.", "accept": "Akceptuj", "reject": "Odrzuć", "privacy": "Prywatność"}, "cs": {"msg": "Používáme cookies Google Ads a Meta k měření registrací z kvízu z reklam. Můžete odmítnout a web dál používat.", "accept": "Přijmout", "reject": "Odmítnout", "privacy": "Soukromí"}};
+  /* Mid-screen card. Accept and Reject share identical size and visual weight (UK GDPR/PECR). */
+  var LANGS = {
+    en: {
+      title: "Your choice on cookies",
+      msg: "We use a few Google Ads and Meta cookies only to see which ads bring people to this Fit Score quiz. You can reject them and still take the quiz and get your result — nothing else changes.",
+      accept: "Accept",
+      reject: "Reject",
+      privacy: "Privacy"
+    },
+    de: {
+      title: "Ihre Wahl zu Cookies",
+      msg: "Wir verwenden einige Google-Ads- und Meta-Cookies nur, um zu sehen, welche Anzeigen Menschen zu diesem Fit-Score-Quiz bringen. Sie können sie ablehnen und das Quiz trotzdem machen und Ihr Ergebnis erhalten — sonst ändert sich nichts.",
+      accept: "Akzeptieren",
+      reject: "Ablehnen",
+      privacy: "Datenschutz"
+    },
+    fr: {
+      title: "Votre choix sur les cookies",
+      msg: "Nous utilisons quelques cookies Google Ads et Meta uniquement pour voir quelles publicités amènent les gens à ce quiz Fit Score. Vous pouvez les refuser et quand même faire le quiz et obtenir votre résultat — rien d’autre ne change.",
+      accept: "Accepter",
+      reject: "Refuser",
+      privacy: "Confidentialité"
+    },
+    it: {
+      title: "La tua scelta sui cookie",
+      msg: "Usiamo alcuni cookie di Google Ads e Meta solo per vedere quali annunci portano le persone a questo quiz Fit Score. Puoi rifiutarli e fare comunque il quiz e ottenere il tuo risultato — nient’altro cambia.",
+      accept: "Accetta",
+      reject: "Rifiuta",
+      privacy: "Privacy"
+    },
+    es: {
+      title: "Tu elección sobre cookies",
+      msg: "Usamos unas pocas cookies de Google Ads y Meta solo para ver qué anuncios traen personas a este quiz Fit Score. Puedes rechazarlas y seguir haciendo el quiz y obteniendo tu resultado — no cambia nada más.",
+      accept: "Aceptar",
+      reject: "Rechazar",
+      privacy: "Privacidad"
+    },
+    pt: {
+      title: "A sua escolha sobre cookies",
+      msg: "Usamos alguns cookies do Google Ads e da Meta só para ver quais anúncios trazem pessoas a este quiz Fit Score. Pode recusá-los e mesmo assim fazer o quiz e obter o seu resultado — mais nada muda.",
+      accept: "Aceitar",
+      reject: "Recusar",
+      privacy: "Privacidade"
+    },
+    nl: {
+      title: "Jouw keuze over cookies",
+      msg: "We gebruiken een paar Google Ads- en Meta-cookies alleen om te zien welke advertenties mensen naar deze Fit Score-quiz brengen. Je kunt ze weigeren en de quiz toch doen en je resultaat krijgen — verder verandert er niets.",
+      accept: "Accepteren",
+      reject: "Weigeren",
+      privacy: "Privacy"
+    },
+    pl: {
+      title: "Twój wybór dotyczący plików cookie",
+      msg: "Używamy kilku plików cookie Google Ads i Meta tylko po to, by zobaczyć, które reklamy przyprowadzają ludzi do tego quizu Fit Score. Możesz je odrzucić i nadal rozwiązać quiz oraz otrzymać wynik — nic więcej się nie zmienia.",
+      accept: "Akceptuj",
+      reject: "Odrzuć",
+      privacy: "Prywatność"
+    },
+    cs: {
+      title: "Vaše volba ohledně cookies",
+      msg: "Používáme několik cookies Google Ads a Meta jen proto, abychom viděli, které reklamy přivádějí lidi k tomuto Fit Score kvízu. Můžete je odmítnout a kvíz i tak absolvovat a získat výsledek — nic jiného se nemění.",
+      accept: "Přijmout",
+      reject: "Odmítnout",
+      privacy: "Soukromí"
+    }
+  };
+
   var parts = (location.pathname.replace(/\/+$/, "") || "/").split("/").filter(Boolean);
   var lang = (parts[0] || "").toLowerCase();
   var copy = LANGS[lang] || LANGS.en;
 
+  function qparam(name) {
+    try {
+      return new URLSearchParams(location.search).get(name) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function doseIqConsentBeacon(eventName) {
+    try {
+      var payload = JSON.stringify({
+        event: eventName,
+        lang: lang || "en",
+        path: location.pathname || "/",
+        utm_source: qparam("utm_source"),
+        utm_content: qparam("utm_content"),
+        ts: new Date().toISOString()
+      });
+      var url = "/api/consent-event";
+      if (navigator.sendBeacon) {
+        var blob = new Blob([payload], { type: "application/json" });
+        if (navigator.sendBeacon(url, blob)) return;
+      }
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+        credentials: "omit",
+        cache: "no-store"
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   function setConsent(state) {
     var v = state === "granted" ? "granted" : "denied";
+    doseIqConsentBeacon(v === "granted" ? "accepted" : "rejected");
     try { localStorage.setItem(DOSEIQ_CONSENT_KEY, v); } catch (e) {}
     gtag("consent", "update", {
       ad_storage: v,
@@ -322,46 +423,40 @@ window.doseIqLightEvent = function (name) {
     });
     if (v === "granted") window.doseIqLoadMetaPixel();
     var bar = document.getElementById("doseiq-consent");
-    if (bar) {
-      if (typeof bar._doseIqRelease === "function") bar._doseIqRelease();
-      bar.remove();
-    }
+    if (bar) bar.remove();
   }
 
   function paint() {
     if (document.getElementById("doseiq-consent")) return;
     var style = document.createElement("style");
-    // Slim non-blocking bottom bar (no scrim). Accept and Reject share identical styling = equal prominence.
-    style.textContent = "#doseiq-consent{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#0F172A;color:#F8FAFC;border-top:2px solid #F28C38;box-shadow:0 -6px 24px rgba(15,23,42,.18);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.4;box-sizing:border-box;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}#doseiq-consent *{box-sizing:border-box}#doseiq-consent .doseiq-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px}#doseiq-consent p{margin:0;flex:1 1 auto;color:#E2E8F0;font-size:14px;font-weight:500}#doseiq-consent a{color:#7DD3FC;font-weight:600;text-decoration:underline}#doseiq-consent .doseiq-actions{display:flex;gap:8px;flex:0 0 auto}#doseiq-consent button{font-family:inherit;font-size:14px;font-weight:700;border-radius:999px;padding:9px 20px;cursor:pointer;min-width:112px;min-height:40px;background:#F8FAFC;border:2px solid #F8FAFC;color:#0F172A}#doseiq-consent button:hover,#doseiq-consent button:focus-visible{background:#E2E8F0;border-color:#E2E8F0}@media (max-width:640px){#doseiq-consent{padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px))}#doseiq-consent .doseiq-inner{flex-direction:column;align-items:stretch;gap:6px}#doseiq-consent p{font-size:12px;line-height:1.3}#doseiq-consent button{flex:1 1 0;min-width:0;min-height:36px;padding:6px 12px;font-size:14px}}";
+    // Mid-screen card + soft scrim. Accept and Reject: identical size, weight, hit area.
+    style.textContent = "#doseiq-consent{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px 16px;background:rgba(15,23,42,.48);font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.45;box-sizing:border-box}#doseiq-consent *{box-sizing:border-box}#doseiq-consent .doseiq-card{width:100%;max-width:420px;max-height:min(90vh,560px);overflow:auto;background:#0F172A;color:#F8FAFC;border:2px solid #F28C38;border-radius:16px;box-shadow:0 24px 64px rgba(15,23,42,.45);padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px}#doseiq-consent .doseiq-title{margin:0;font-size:18px;font-weight:700;color:#F8FAFC;line-height:1.3}#doseiq-consent p{margin:0;color:#E2E8F0;font-size:15px;font-weight:500}#doseiq-consent a{color:#7DD3FC;font-weight:600;text-decoration:underline}#doseiq-consent .doseiq-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}#doseiq-consent button{font-family:inherit;font-size:16px;font-weight:700;border-radius:999px;padding:14px 22px;cursor:pointer;flex:1 1 40%;min-width:120px;min-height:48px;background:#F8FAFC;border:2px solid #F8FAFC;color:#0F172A}#doseiq-consent button:hover,#doseiq-consent button:focus-visible{background:#E2E8F0;border-color:#E2E8F0}#doseiq-consent .doseiq-accept,#doseiq-consent .doseiq-reject{background:#F8FAFC;border:2px solid #F8FAFC;color:#0F172A}@media (max-width:560px){#doseiq-consent{padding:16px 12px}#doseiq-consent .doseiq-card{padding:18px 16px 16px;border-radius:14px}#doseiq-consent .doseiq-title{font-size:17px}#doseiq-consent p{font-size:14px}#doseiq-consent button{min-width:0;padding:14px 16px}}";
     document.head.appendChild(style);
     var bar = document.createElement("div");
     bar.id = "doseiq-consent";
-    bar.setAttribute("role", "region");
+    bar.setAttribute("role", "dialog");
+    bar.setAttribute("aria-modal", "true");
     bar.setAttribute("aria-live", "polite");
-    bar.setAttribute("aria-label", copy.msg);
-    bar.innerHTML = "<div class=\"doseiq-inner\"><p>" + copy.msg + ' <a href="/privacy.html" target="_blank" rel="noopener">' + copy.privacy + "</a></p><div class=\"doseiq-actions\"><button type=\"button\" class=\"doseiq-reject\">" + copy.reject + "</button><button type=\"button\" class=\"doseiq-accept\">" + copy.accept + "</button></div></div>";
+    bar.setAttribute("aria-label", copy.title);
+    bar.innerHTML =
+      '<div class="doseiq-card">' +
+      '<p class="doseiq-title">' + copy.title + "</p>" +
+      "<p>" + copy.msg + ' <a href="/privacy.html" target="_blank" rel="noopener">' + copy.privacy + "</a></p>" +
+      '<div class="doseiq-actions">' +
+      '<button type="button" class="doseiq-accept">' + copy.accept + "</button>" +
+      '<button type="button" class="doseiq-reject">' + copy.reject + "</button>" +
+      "</div></div>";
     document.body.appendChild(bar);
     bar.querySelector(".doseiq-accept").addEventListener("click", function () { setConsent("granted"); });
     bar.querySelector(".doseiq-reject").addEventListener("click", function () { setConsent("denied"); });
-    // Reserve space so the bar never covers page content or sticky quiz buttons.
-    function reserve() {
-      try {
-        var h = bar.offsetHeight || 0;
-        document.documentElement.style.setProperty("--doseiq-consent-h", h + "px");
-        document.body.style.paddingBottom = h + "px";
-      } catch (e) {}
-    }
-    reserve();
-    window.addEventListener("resize", reserve);
-    bar._doseIqRelease = function () {
-      window.removeEventListener("resize", reserve);
-      try {
-        document.documentElement.style.removeProperty("--doseiq-consent-h");
-        document.body.style.paddingBottom = "";
-      } catch (e) {}
-    };
+    // Scrim click does not grant or dismiss — both choices stay equally available.
+    bar.addEventListener("click", function (e) {
+      if (e.target === bar) e.stopPropagation();
+    });
+    doseIqConsentBeacon("shown");
   }
 
   if (document.body) paint();
   else document.addEventListener("DOMContentLoaded", paint);
 })();
+
