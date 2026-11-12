@@ -2,7 +2,7 @@
 // Does not accept the secret in the query string (avoids log leakage).
 
 import { timingSafeEqual } from "node:crypto";
-import { readConsentStats, sofiaDate, vercelEnv } from "./consent-store.js";
+import { readConsentStats, sofiaDate, vercelEnv } from "../lib/consent-store.js";
 
 function providedSecret(req) {
   const auth = String(req.headers.authorization || "");

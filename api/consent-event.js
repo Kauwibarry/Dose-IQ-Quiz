@@ -4,7 +4,7 @@
 // may still retain request metadata outside this handler — see report caveat.
 // Durable daily totals (Europe/Sofia, keyed by VERCEL_ENV) go to Upstash Redis.
 
-import { incrConsent, isSynthetic } from "./consent-store.js";
+import { incrConsent, isSynthetic } from "../lib/consent-store.js";
 
 const ALLOWED = new Set(["shown", "accepted", "rejected"]);
 const LANG_OK = new Set(["en", "de", "fr", "it", "es", "pt", "nl", "pl", "cs", ""]);
