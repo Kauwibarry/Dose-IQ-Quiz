@@ -2,6 +2,9 @@
 // Logs a single structured line for Vercel runtime logs. Does not store IP,
 // cookies, or any durable identifier in our payload. Platform access logs
 // may still retain request metadata outside this handler — see report caveat.
+// Durable daily totals (Europe/Sofia, keyed by VERCEL_ENV) go to Upstash Redis.
+
+import { incrConsent, isSynthetic } from "./consent-store.js";
 
 const ALLOWED = new Set(["shown", "accepted", "rejected"]);
 const LANG_OK = new Set(["en", "de", "fr", "it", "es", "pt", "nl", "pl", "cs", ""]);
@@ -77,6 +80,14 @@ export default async function handler(req, res) {
 
   // Structured log line — searchable in Vercel runtime logs as consent_event
   console.log("consent_event", JSON.stringify(payload));
+
+  if (!isSynthetic(payload)) {
+    try {
+      await incrConsent(event, payload.lang);
+    } catch (err) {
+      console.error("consent_counter_error", err && err.message ? err.message : "incr_failed");
+    }
+  }
 
   return res.status(204).end();
 }
