@@ -78,35 +78,35 @@
     },
     {
       "source": "/de/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/fr/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/it/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/es/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/pt/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/nl/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/pl/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/cs/quiz",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/en/quiz/",
@@ -114,35 +114,35 @@
     },
     {
       "source": "/de/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/fr/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/it/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/es/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/pt/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/nl/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/pl/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/cs/quiz/",
-      "destination": "/quiz.html"
+      "destination": "/quiz-legacy.html"
     },
     {
       "source": "/en/protocol",
