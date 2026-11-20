@@ -963,11 +963,13 @@ const TOP2 = {
     wellbeing: "Your basics are strong. Building around general wellbeing keeps it that way.",
     ageing: "Your basics are strong. Building around healthy ageing keeps it that way."
   },
+  // {w} = "of all your answers" when #2 is the overall lowest, "of the rest" when the goal area itself scored lowest
   line2: {
-    energy: "Your energy and plant answers scored lowest of the rest, so tick it as well.",
-    sleep: "Your sleep rhythm scored lowest of the rest. There's no sleep box, so tick Tiredness and Fatigue Management.",
-    stress: "Your stress answer scored lowest of the rest, so say Yes to managing your daily stress as well.",
-    wellbeing: "Your movement answer scored lowest of the rest, so pick Support my general wellbeing as well."
+    energy: "Your energy and plant answers scored lowest {w}, so tick it as well.",
+    sleep: "Your sleep rhythm scored lowest {w}. There's no sleep box, so tick Tiredness and Fatigue Management.",
+    sleep_shared: "Your sleep rhythm scored lowest {w}. There's no sleep box, and Tiredness and Fatigue Management covers both of your areas.",
+    stress: "Your stress answer scored lowest {w}, so say Yes to managing your daily stress as well.",
+    wellbeing: "Your movement answer scored lowest {w}, so pick Support my general wellbeing as well."
   }
 };
 function listJoin(a) { return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
@@ -979,15 +981,24 @@ function computeTop2(bandKey) {
   const frac = { energy: (P("energy") + P("plants")) / 20, sleep: P("sleep") / 10, stress: P("stress") / 10, wellbeing: P("move") / 10 };
   const order = ["energy", "sleep", "stress", "wellbeing"];
   const box1 = TOP2.box[a1];
-  const cands = order.filter(k => k !== track1 && TOP2.box[k] !== box1);   // never the same assessment box twice
-  const a2 = bandKey === "optimal" ? null : cands.slice().sort((x, y) => (frac[x] - frac[y]) || (order.indexOf(x) - order.indexOf(y)))[0];
-  const box2 = a2 ? TOP2.box[a2] : "";
+  const byScore = (list) => list.slice().sort((x, y) => (frac[x] - frac[y]) || (order.indexOf(x) - order.indexOf(y)));
+  const lowest = byScore(order)[0];                 // lowest-scored area overall (tie order: energy, sleep, stress, wellbeing)
+  // Routing (Bart 20 Nov 13:24): email track = lowest-scored area, and it is always one of the named areas.
+  //  - Optimal Fit: only #1 is named, so the track follows #1 (the goal).
+  //  - lowest != goal area: #2 = lowest, track = lowest. If it shares #1's box (energy + sleep), both are still named, one box is ticked.
+  //  - lowest == goal area: track = goal area, #2 = next-lowest other area with a different box.
+  let a2 = null, track = track1, shared = false, overall = false;
+  if (bandKey !== "optimal") {
+    if (lowest !== track1) { a2 = lowest; track = lowest; overall = true; shared = TOP2.box[lowest] === box1; }
+    else a2 = byScore(order.filter(k => k !== track1 && TOP2.box[k] !== box1))[0];
+  }
+  const box2 = a2 && !shared ? TOP2.box[a2] : "";
   const used = [box1, box2].filter(Boolean), rest = [];
   // "Support my general wellbeing" is a single-choice goal answer in the assessment, so it never goes in the "also tick" line
   order.forEach(k => { const b = TOP2.box[k]; if (k !== "wellbeing" && used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
   const ai = (ans("areas") && ans("areas").multi) || [];
   ai.forEach(i => { const b = stripTags(T.en.questions[qIndex("areas")].options[i].text).replace(/\s*\(.*\)\s*$/, "").trim(); if (used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
-  return { a1, a2, track1, box1, box2, rest: a2 ? rest : [], frac };
+  return { a1, a2, track1, track, lowest, shared, overall, box1, box2, rest: a2 ? rest : [], frac };
 }
 function renderV2Result() {
   const f = window.__fitV2; if (!f) return;
@@ -1000,8 +1011,8 @@ function renderV2Result() {
   if (t2 && currentLang === "en") {
     document.getElementById("focusH").textContent = t2.a2 ? "Your two main areas: " + TOP2.name[t2.a1] + " and " + TOP2.name[t2.a2] : "Your main area: " + TOP2.name[t2.a1];
     document.getElementById("focusP").textContent = (opt ? TOP2.line1_opt : TOP2.line1)[t2.a1];
-    document.getElementById("focusP2").textContent = t2.a2 ? TOP2.line2[t2.a2] : "The rest is in good shape.";
-    document.getElementById("tickNote").innerHTML = "In the assessment, tick ✔ <b>" + t2.box1 + "</b>" + (t2.a2 ? " and ✔ <b>" + t2.box2 + "</b>" : "") + ". Your Bioniq GO formula is built around the areas you choose.";
+    document.getElementById("focusP2").textContent = t2.a2 ? TOP2.line2[t2.shared ? t2.a2 + "_shared" : t2.a2].replace("{w}", t2.overall ? "of all your answers" : "of the rest") : "The rest is in good shape.";
+    document.getElementById("tickNote").innerHTML = "In the assessment, tick ✔ <b>" + t2.box1 + "</b>" + (t2.box2 ? " and ✔ <b>" + t2.box2 + "</b>" : "") + (t2.shared ? ". It covers both of your areas" : "") + ". Your Bioniq GO formula is built around the areas you choose.";
     const rl = document.getElementById("restLine");
     if (t2.rest.length) { rl.textContent = "You can also tick " + listJoin(t2.rest) + " in the assessment, but start with these two."; rl.hidden = false; } else rl.hidden = true;
   }
@@ -1058,7 +1069,7 @@ function showResults() {
   else if (finalScore >= 40) bandKey = "fair";
   const fc = computeFocus(bandKey);
   const top2 = computeTop2(bandKey);
-  fc.track = top2.track1;                       // email routing = area #1 (the main goal)
+  fc.track = top2.track;                        // email routing = lowest-scored area, always one of the named areas (see computeTop2)
   if (top2.a2 === "wellbeing") fc.tick.goal = "goal_wb";
   if (top2.a2 === "stress") fc.tick.stress = "yes";
   if (top2.a2 === "energy" || top2.a2 === "sleep") fc.tick.tired = "yes";
