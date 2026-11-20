@@ -579,6 +579,9 @@
     .v2 .focus-box { background: var(--accent-soft); border-radius: 16px; padding: 16px 18px; margin: 0 0 16px; text-align: left; }
     .v2 .focus-box h2 { font-size: 1.3rem; line-height: 1.3; margin: 0 0 6px; letter-spacing: -.02em; }
     .v2 .focus-box p { color: var(--text); font-size: 1rem; margin: 0; }
+    .v2 .focus-box p.focus-2 { margin-top: 8px; }
+    .v2 .tick-note { border: 1.5px solid #e6d9c9; background: #fffaf3; border-radius: 12px; padding: 10px 14px; margin: 16px 0 6px; font-size: .95rem; line-height: 1.5; text-align: left; }
+    .v2 .rest-line { color: #6b6b6b; font-size: .85rem; line-height: 1.45; margin: 0 0 12px; text-align: left; }
     .v2 .shop-small { display: inline-flex; width: auto; min-height: 40px; margin: 0 0 14px; padding: 8px 18px; font-size: .92rem; font-weight: 600; }
     .v2 .fit-video { margin: 0 0 16px; }
     .v2 .fit-video video { width: 100%; aspect-ratio: 16/9; border-radius: 16px; background: #0F172A; display: block; }
@@ -653,12 +656,14 @@
       </div>
       <div id="downloadArea" class="v2">
         <p class="tone-line" id="toneLine"></p>
-        <div class="focus-box" id="focusBox"><h2 id="focusH"></h2><p id="focusP"></p></div>
+        <div class="focus-box" id="focusBox"><h2 id="focusH"></h2><p id="focusP"></p><p class="focus-2" id="focusP2"></p></div>
         <a class="shop-secondary shop-small" id="shopTop" href="https://shopbioniq.com/en-GB/Dose-IQ-GB">Go to the Bioniq shop</a>
         <figure class="fit-video" id="fitVideo" hidden>
           <video id="fitVideoEl" controls playsinline preload="none"></video>
           <figcaption id="videoCap">60 seconds of why, 60 seconds of what to do next. From Bart.</figcaption>
         </figure>
+        <div class="tick-note" id="tickNote"></div>
+        <p class="rest-line" id="restLine" hidden></p>
         <a href="https://shopbioniq.com/en-GB/Dose-IQ-GB" id="handoffA" class="handoff-cta">Take the Bioniq Wellness Assessment</a>
         <p id="handoffNote" class="handoff-note">Bioniq will ask for your email again. Use the same one.</p>
         <p id="handoffFine" class="handoff-fine" style="display:none"></p>
@@ -943,6 +948,46 @@ function tickText(lang, key, val) {
   return val ? x.ta[val] : "";
 }
 function stripTags(s){ return String(s || "").replace(/<[^>]+>/g, ""); }
+// Top-two areas (Bart 20 Nov 12:32). #1 = main goal answer; #2 = lowest-scored other area.
+// Box labels = the Bioniq Wellness Assessment's own wording (see 2026-11-20-fit-score-realign.md, section 2).
+const TOP2 = {
+  name: { energy: "Energy & tiredness", sleep: "Sleep rhythm", stress: "Daily stress", wellbeing: "Feel good overall", ageing: "Healthy ageing & longevity" },
+  box: { energy: "Tiredness and Fatigue Management", sleep: "Tiredness and Fatigue Management", stress: "Manage daily stress", wellbeing: "Support my general wellbeing", ageing: "Healthy aging" },
+  line1: {
+    energy: "You picked more energy day to day as your main goal, so steadier energy is the thing to build around. In the assessment, that's the Tiredness and Fatigue Management box.",
+    wellbeing: "You picked feeling good overall as your main goal, so general wellbeing is the thing to build around. In the assessment, that's the answer Support my general wellbeing.",
+    ageing: "You picked healthy ageing and longevity as your main goal, so ageing well is the thing to build around. In the assessment, that's the Healthy aging box."
+  },
+  line1_opt: {
+    energy: "Your energy's in decent shape. Building your formula around tiredness and fatigue keeps it that way.",
+    wellbeing: "Your basics are strong. Building around general wellbeing keeps it that way.",
+    ageing: "Your basics are strong. Building around healthy ageing keeps it that way."
+  },
+  line2: {
+    energy: "Your energy and plant answers scored lowest of the rest, so tick it as well.",
+    sleep: "Your sleep rhythm scored lowest of the rest. There's no sleep box, so tick Tiredness and Fatigue Management.",
+    stress: "Your stress answer scored lowest of the rest, so say Yes to managing your daily stress as well.",
+    wellbeing: "Your movement answer scored lowest of the rest, so pick Support my general wellbeing as well."
+  }
+};
+function listJoin(a) { return a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+function computeTop2(bandKey) {
+  const goal = ansV("goal");
+  const a1 = goal === "energy" ? "energy" : (goal === "ageing" ? "ageing" : "wellbeing");
+  const track1 = a1 === "ageing" ? "wellbeing" : a1;          // healthy ageing routes to the Feel good overall track
+  const P = (k) => { const q = T.en.questions[qIndex(k)]; const a = ans(k); return a && q.options[a.idx] ? (q.options[a.idx].points || 0) : 0; };
+  const frac = { energy: (P("energy") + P("plants")) / 20, sleep: P("sleep") / 10, stress: P("stress") / 10, wellbeing: P("move") / 10 };
+  const order = ["energy", "sleep", "stress", "wellbeing"];
+  const box1 = TOP2.box[a1];
+  const cands = order.filter(k => k !== track1 && TOP2.box[k] !== box1);   // never the same assessment box twice
+  const a2 = bandKey === "optimal" ? null : cands.slice().sort((x, y) => (frac[x] - frac[y]) || (order.indexOf(x) - order.indexOf(y)))[0];
+  const box2 = a2 ? TOP2.box[a2] : "";
+  const used = [box1, box2].filter(Boolean), rest = [];
+  order.forEach(k => { const b = TOP2.box[k]; if (used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
+  const ai = (ans("areas") && ans("areas").multi) || [];
+  ai.forEach(i => { const b = stripTags(T.en.questions[qIndex("areas")].options[i].text).replace(/\s*\(.*\)\s*$/, "").trim(); if (used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
+  return { a1, a2, track1, box1, box2, rest: a2 ? rest : [], frac };
+}
 function renderV2Result() {
   const f = window.__fitV2; if (!f) return;
   const x = t();
@@ -950,6 +995,15 @@ function renderV2Result() {
   document.getElementById("toneLine").textContent = x.tone[f.bandKey] || "";
   document.getElementById("focusH").textContent = x.focus_h.replace("{x}", x.focus_name[f.track]);
   document.getElementById("focusP").textContent = (opt ? x.focus_line_opt : x.focus_line)[f.track];
+  const t2 = f.top2;
+  if (t2 && currentLang === "en") {
+    document.getElementById("focusH").textContent = t2.a2 ? "Your two main areas: " + TOP2.name[t2.a1] + " and " + TOP2.name[t2.a2] : "Your main area: " + TOP2.name[t2.a1];
+    document.getElementById("focusP").textContent = (opt ? TOP2.line1_opt : TOP2.line1)[t2.a1];
+    document.getElementById("focusP2").textContent = t2.a2 ? TOP2.line2[t2.a2] : "The rest is in good shape.";
+    document.getElementById("tickNote").innerHTML = "In the assessment, tick ✔ <b>" + t2.box1 + "</b>" + (t2.a2 ? " and ✔ <b>" + t2.box2 + "</b>" : "") + ". Your Bioniq GO formula is built around the areas you choose.";
+    const rl = document.getElementById("restLine");
+    if (t2.rest.length) { rl.textContent = "You can also tick " + listJoin(t2.rest) + " in the assessment, but start with these two."; rl.hidden = false; } else rl.hidden = true;
+  }
   const rows = [];
   const tk = f.tick;
   rows.push([x.tq.alert, tickText(currentLang, "alert", tk.alert)]);
@@ -1002,6 +1056,12 @@ function showResults() {
   else if (finalScore >= 60) bandKey = "good";
   else if (finalScore >= 40) bandKey = "fair";
   const fc = computeFocus(bandKey);
+  const top2 = computeTop2(bandKey);
+  fc.track = top2.track1;                       // email routing = area #1 (the main goal)
+  if (top2.a2 === "wellbeing") fc.tick.goal = "goal_wb";
+  if (top2.a2 === "stress") fc.tick.stress = "yes";
+  if (top2.a2 === "energy" || top2.a2 === "sleep") fc.tick.tired = "yes";
+  fc.top2 = top2;
   window.__fitV2 = Object.assign({ bandKey }, fc);
   // English values for GetResponse (emails are EN; tick labels are Bioniq's exact EN labels)
   const tk = fc.tick;
@@ -1025,6 +1085,9 @@ function showResults() {
       focusDetail: fc.detail,
       goal: fc.goal,
       tick: grTick,
+      area1: top2.box1,
+      area2: top2.box2,
+      areaRest: listJoin(top2.rest),
       lang: currentLang,
       ts: Date.now()
     }));

@@ -235,6 +235,10 @@ export default async function handler(req, res) {
     tick_areas: "n21JjJ",
     tick_eyes: "n21JiZ",
     tick_stress: "n21JLR",
+  // Top-two areas (created 2026-11-20 12:40)
+  area_1: "n21hDE",
+  area_2: "n21hew",
+  area_rest: "n21hSo",
   };
   const FOCUS_OK = ["energy", "sleep", "stress", "wellbeing"];
   const GOAL_OK = ["energy", "stress", "focus", "ageing", "wellbeing"];
@@ -285,6 +289,9 @@ export default async function handler(req, res) {
     const goal = asStr(fit.goal).toLowerCase();
     if (GOAL_OK.includes(goal)) add(FIELD.fit_goal, goal);
     const tick = fit.tick && typeof fit.tick === "object" ? fit.tick : {};
+    add(FIELD.area_1, asStr(fit.area1).slice(0, 120));
+    add(FIELD.area_2, asStr(fit.area2).slice(0, 120));
+    add(FIELD.area_rest, asStr(fit.areaRest).slice(0, 300));
     for (const k of ["tick_alert", "tick_tired", "tick_goal", "tick_areas", "tick_eyes", "tick_stress"]) {
       add(FIELD[k], asStr(tick[k]).slice(0, 200));
     }
