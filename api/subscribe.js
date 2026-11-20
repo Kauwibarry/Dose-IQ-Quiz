@@ -226,7 +226,18 @@ export default async function handler(req, res) {
     insight_2_text: "nmTrFR",
     insight_3_title: "nmTrX9",
     insight_3_text: "nmTr7K",
+    // Fit Score v2 (created 2026-11-20)
+    fit_focus: "n21JBm",
+    fit_goal: "n21Jzq",
+    tick_alert: "n21JrH",
+    tick_tired: "n21JqX",
+    tick_goal: "n21J5a",
+    tick_areas: "n21JjJ",
+    tick_eyes: "n21JiZ",
+    tick_stress: "n21JLR",
   };
+  const FOCUS_OK = ["energy", "sleep", "stress", "wellbeing"];
+  const GOAL_OK = ["energy", "stress", "focus", "ageing", "wellbeing"];
 
   const body = req.body || {};
   const email = String(body.email || "").trim();
@@ -269,11 +280,34 @@ export default async function handler(req, res) {
       add(FIELD["insight_" + (i + 1) + "_title"], ins.title || "");
       add(FIELD["insight_" + (i + 1) + "_text"], ins.text || "");
     }
+    const focus = asStr(fit.focus).toLowerCase();
+    if (FOCUS_OK.includes(focus)) add(FIELD.fit_focus, focus);
+    const goal = asStr(fit.goal).toLowerCase();
+    if (GOAL_OK.includes(goal)) add(FIELD.fit_goal, goal);
+    const tick = fit.tick && typeof fit.tick === "object" ? fit.tick : {};
+    for (const k of ["tick_alert", "tick_tired", "tick_goal", "tick_areas", "tick_eyes", "tick_stress"]) {
+      add(FIELD[k], asStr(tick[k]).slice(0, 200));
+    }
   }
 
   const ftFields = buildFirstTouchFields(body);
   for (const f of ftFields) customFieldValues.push(f);
   const sourceTags = pickSourceTags(body);
+
+  // Synthetic verification traffic on non-production deployments: return the mapped
+  // GetResponse fields without creating a contact or firing CAPI.
+  const synthetic =
+    asStr(body.utm_source).toLowerCase() === "prod-verify" ||
+    /synthetic-exclude/i.test(asStr(body.utm_content));
+  if (synthetic && process.env.VERCEL_ENV !== "production") {
+    const names = Object.fromEntries(Object.entries(FIELD).map(([k, v]) => [v, k]));
+    return res.status(200).json({
+      ok: true,
+      dry_run: true,
+      campaignId,
+      fields: customFieldValues.map((f) => ({ name: names[f.customFieldId] || f.customFieldId, value: f.value[0] })),
+    });
+  }
 
   async function updateExisting() {
     if (!customFieldValues.length) return;
