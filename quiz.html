@@ -983,7 +983,8 @@ function computeTop2(bandKey) {
   const a2 = bandKey === "optimal" ? null : cands.slice().sort((x, y) => (frac[x] - frac[y]) || (order.indexOf(x) - order.indexOf(y)))[0];
   const box2 = a2 ? TOP2.box[a2] : "";
   const used = [box1, box2].filter(Boolean), rest = [];
-  order.forEach(k => { const b = TOP2.box[k]; if (used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
+  // "Support my general wellbeing" is a single-choice goal answer in the assessment, so it never goes in the "also tick" line
+  order.forEach(k => { const b = TOP2.box[k]; if (k !== "wellbeing" && used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
   const ai = (ans("areas") && ans("areas").multi) || [];
   ai.forEach(i => { const b = stripTags(T.en.questions[qIndex("areas")].options[i].text).replace(/\s*\(.*\)\s*$/, "").trim(); if (used.indexOf(b) === -1 && rest.indexOf(b) === -1) rest.push(b); });
   return { a1, a2, track1, box1, box2, rest: a2 ? rest : [], frac };
