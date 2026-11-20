@@ -1014,7 +1014,7 @@ function renderV2Result() {
     document.getElementById("focusP2").textContent = t2.a2 ? TOP2.line2[t2.shared ? t2.a2 + "_shared" : t2.a2].replace("{w}", t2.overall ? "of all your answers" : "of the rest") : "The rest is in good shape.";
     document.getElementById("tickNote").innerHTML = "In the assessment, tick ✔ <b>" + t2.box1 + "</b>" + (t2.box2 ? " and ✔ <b>" + t2.box2 + "</b>" : "") + (t2.shared ? ". It covers both of your areas" : "") + ". Your Bioniq GO formula is built around the areas you choose.";
     const rl = document.getElementById("restLine");
-    if (t2.rest.length) { rl.textContent = "You can also tick " + listJoin(t2.rest) + " in the assessment, but start with these two."; rl.hidden = false; } else rl.hidden = true;
+    if (t2.rest.length) { rl.textContent = "You can also tick " + listJoin(t2.rest) + " in the assessment, but start with " + (t2.shared ? "this one." : "these two."); rl.hidden = false; } else rl.hidden = true;
   }
   const rows = [];
   const tk = f.tick;
